@@ -42,16 +42,16 @@ public class PassJsonAdapterBasic implements PassJsonAdapter {
      * {@inheritDoc}
      */
     public byte[] toJson(PassEntity passObj, boolean includePassContext) { 
-        if (passObj==null) {
+        if (passObj == null) {
             throw new IllegalArgumentException("passObject cannot be null");
         }
         if (includePassContext) {
             //Assign pass context
-            LOG.debug("Converting {} to JSON with context",passObj.getClass().getSimpleName());
+            LOG.debug("Converting {} to JSON with context", passObj.getClass().getSimpleName());
             passObj.setContext(getPassJsonLdContext());                
         } else {
             //scrub context if there is one
-            LOG.debug("Converting {} to JSON without context",passObj.getClass().getSimpleName());
+            LOG.debug("Converting {} to JSON without context", passObj.getClass().getSimpleName());
             passObj.setContext(null);
         }
 
@@ -85,7 +85,7 @@ public class PassJsonAdapterBasic implements PassJsonAdapter {
         try {
             ObjectMapper objectMapper = new ObjectMapper();
             model = (PassEntity) objectMapper.readValue(json, valueType);
-            LOG.debug("JSON converted to model {}",valueType.getSimpleName());
+            LOG.debug("JSON converted to model {}", valueType.getSimpleName());
         } catch (IOException e) {
             throw new RuntimeException("Could not map JSON to " + valueType.getSimpleName(), e);    
         } 
@@ -123,7 +123,7 @@ public class PassJsonAdapterBasic implements PassJsonAdapter {
      */
     private static String getPassJsonLdContext() {
         String context = ConfigUtil.getSystemProperty(CONTEXT_PROPKEY, DEFAULT_CONTEXT);
-        LOG.debug("Using JSONLD Context: {}",context);
+        LOG.debug("Using JSONLD Context: {}", context);
         return context;
     }
     
