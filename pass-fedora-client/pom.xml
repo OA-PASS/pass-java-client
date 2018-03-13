@@ -13,13 +13,13 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
   <dependencies>
-	<dependency>
+    <dependency>
       <groupId>org.dataconservancy.pass</groupId>
       <artifactId>pass-model</artifactId>
       <version>${project.version}</version>
     </dependency>
     
-	<dependency>
+    <dependency>
       <groupId>org.dataconservancy.pass</groupId>
       <artifactId>pass-json-adapter</artifactId>
       <version>${project.version}</version>
@@ -31,11 +31,11 @@
       <version>${project.version}</version>
     </dependency>
     
-	<dependency>
-	  <groupId>org.fcrepo.client</groupId>
-	  <artifactId>fcrepo-java-client</artifactId>
-	  <version>${fcrepo-java-client.version}</version>
-	</dependency>
+    <dependency>
+      <groupId>org.fcrepo.client</groupId>
+      <artifactId>fcrepo-java-client</artifactId>
+      <version>${fcrepo-java-client.version}</version>
+    </dependency>
     
     <dependency>
       <groupId>ch.qos.logback</groupId>
@@ -43,7 +43,7 @@
       <version>${logback.version}</version>
       <optional>true</optional>
     </dependency>
-	
+    
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
