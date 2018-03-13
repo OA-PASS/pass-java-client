@@ -54,11 +54,14 @@ public enum PassEntityType {
      * @param name
      * @return matching PassEntityType or null if no matches
      */
-    public static PassEntityType getTypeByName(String name){
-        for(PassEntityType type : PassEntityType.values()){
-            if(name.equals(type.getName())) return type;
+    public static PassEntityType getTypeByName(String name) {
+        if (name!=null && name.length()>0) {
+            for(PassEntityType type : PassEntityType.values()){
+                if(name.equals(type.getName())) return type;
+            }
         }
-        return null;
+        //no match found or name empty, throw argument exception
+        throw new IllegalArgumentException(String.format("Entity type \"%s\" is not recognized", name));
     }
     
     
