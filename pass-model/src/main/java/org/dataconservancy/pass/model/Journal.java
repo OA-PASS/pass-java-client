@@ -52,12 +52,6 @@ public class Journal extends PassEntity {
     public String getType() {
         return type;
     }
-
-    
-    @Override
-    public void setType(String type) {
-        this.type = type;
-    }
     
     
     /**

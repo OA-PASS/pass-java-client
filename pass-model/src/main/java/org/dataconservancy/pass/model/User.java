@@ -53,12 +53,6 @@ public class User extends PassEntity {
     }
 
     
-    @Override
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    
     /**
      * @return the username
      */

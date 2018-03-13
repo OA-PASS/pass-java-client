@@ -45,11 +45,6 @@ public class Funder extends PassEntity {
     }
 
     
-    @Override
-    public void setType(String type) {
-        this.type = type;
-    }    
-    
     /**
      * @return the name
      */
