@@ -37,18 +37,18 @@ public class Publisher extends PassEntity {
     /** 
      * Name of publisher 
      */
-    public String name;
+    private String name;
     
     /** 
      * URIs of Journals associated with publisher
      */
-    public List<URI> journals;
+    private List<URI> journals;
     
     /** 
      * This field indicates whether a journal participates in the NIH Public Access Program by sending final 
      * published article to PMC. If so, whether it requires additional processing fee.  
      */
-    public PmcParticipation pmcParticipation;
+    private PmcParticipation pmcParticipation;
 
     
     @Override
