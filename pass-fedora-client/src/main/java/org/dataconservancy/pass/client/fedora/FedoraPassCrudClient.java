@@ -73,15 +73,14 @@ public class FedoraPassCrudClient {
      * @param adapter
      */
     public FedoraPassCrudClient(FcrepoClient client, PassJsonAdapter adapter) {
+        if (client == null) {
+            throw new IllegalArgumentException("client parameter cannot be null");
+        }
+        if (adapter == null) {
+            throw new IllegalArgumentException("adapter parameter cannot be null");
+        }
         this.client = client;   
         this.adapter = adapter;
-        //set defaults if values are null
-        if (this.client == null) {
-            this.client = FcrepoClient.client().credentials(FedoraConfig.getUserName(), FedoraConfig.getPassword()).build();            
-        }
-        if (this.adapter == null) {
-            this.adapter = new PassJsonAdapterBasic();            
-        }
     }
     
     /**
