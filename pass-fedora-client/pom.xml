@@ -14,19 +14,19 @@
     <dependency>
       <groupId>org.dataconservancy.pass</groupId>
       <artifactId>pass-model</artifactId>
-      <version>${project.version}</version>
+      <version>${project.parent.version}</version>
     </dependency>
     
     <dependency>
       <groupId>org.dataconservancy.pass</groupId>
       <artifactId>pass-json-adapter</artifactId>
-      <version>${project.version}</version>
+      <version>${project.parent.version}</version>
     </dependency>
     
     <dependency>
       <groupId>org.dataconservancy.pass</groupId>
       <artifactId>pass-client-util</artifactId>
-      <version>${project.version}</version>
+      <version>${project.parent.version}</version>
     </dependency>
     
     <dependency>
