@@ -33,7 +33,7 @@ public interface PassJsonAdapter {
      * @param includeContext true if the JSON-LD context should be included in the JSON
      * @return
      */
-    public <T> byte[] toJson(PassEntity modelObject, boolean includeContext);
+    public byte[] toJson(PassEntity modelObject, boolean includeContext);
     
     /**
      * Pass in the JSON data as a byte array and the model class to match it to e.g. Deposit.class, returns populated model
