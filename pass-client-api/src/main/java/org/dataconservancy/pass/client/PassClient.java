@@ -30,7 +30,6 @@ import org.dataconservancy.pass.model.PassEntity;
  * For example, you can use findAllByAttribute to retrieve all Deposits with a specific Repository.id 
  * 
  * @author Karen Hanson
- * @version $Id$
  */
 public interface PassClient {
 

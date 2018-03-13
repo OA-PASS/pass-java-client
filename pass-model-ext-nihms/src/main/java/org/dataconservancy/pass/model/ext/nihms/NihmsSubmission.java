@@ -20,7 +20,6 @@ import org.dataconservancy.pass.model.Submission;
 /**
  * 
  * @author Karen Hanson
- * @version $Id$
  */
 public class NihmsSubmission extends Submission {
 

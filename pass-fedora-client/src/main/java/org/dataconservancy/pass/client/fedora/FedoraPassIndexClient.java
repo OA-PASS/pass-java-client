@@ -25,7 +25,6 @@ import org.slf4j.LoggerFactory;
 /**
  *
  * @author Karen Hanson
- * @version $Id$
  */
 public class FedoraPassIndexClient {
 

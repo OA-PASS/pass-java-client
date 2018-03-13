@@ -43,7 +43,6 @@ import org.fcrepo.client.PutBuilder;
  * Fedora CRUD client does basic work of creating, retrieving, updating, and deleting
  * records in Fedora based on model and/or URI provided.
  * @author Karen Hanson
- * @version $Id$
  */
 public class FedoraPassCrudClient {
 

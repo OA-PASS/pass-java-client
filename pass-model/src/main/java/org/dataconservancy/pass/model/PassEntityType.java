@@ -19,7 +19,6 @@ package org.dataconservancy.pass.model;
 /**
  * Defines names of entity types and their plurals
  * @author Karen Hanson
- * @version $Id$
  */
 public enum PassEntityType {
     DEPOSIT ("Deposit", "deposits"),

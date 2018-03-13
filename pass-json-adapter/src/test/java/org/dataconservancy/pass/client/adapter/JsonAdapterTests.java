@@ -32,7 +32,6 @@ import static org.junit.Assert.assertEquals;
 /**
  *
  * @author Karen Hanson
- * @version $Id$
  */
 public class JsonAdapterTests {
 

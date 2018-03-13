@@ -24,7 +24,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  *
  * @author Karen Hanson
- * @version $Id$
  */
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 @JsonIgnoreProperties(ignoreUnknown = true)

@@ -19,7 +19,6 @@ package org.dataconservancy.pass.model;
 /**
  * PMC route options. Full documentation here: https://publicaccess.nih.gov/submit_process.htm
  * @author Karen Hanson
- * @version $Id$
  */
 public enum PmcParticipation {
     /** 

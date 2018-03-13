@@ -30,7 +30,6 @@ import org.joda.time.DateTime;
 /**
  * Grant model for the PASS system
  * @author Karen Hanson
- * @version $Id$
  */
 
 public class Grant extends PassEntity {

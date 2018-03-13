@@ -19,7 +19,6 @@ package org.dataconservancy.pass.client.util;
 /**
  *
  * @author Karen Hanson
- * @version $Id$
  */
 public class ConfigUtil {
 

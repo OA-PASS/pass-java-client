@@ -23,7 +23,6 @@ import org.slf4j.LoggerFactory;
 /**
  * Holds information and methods required to configure Fedora.
  * @author Karen Hanson
- * @version $Id$
  */
 public class FedoraConfig {
 

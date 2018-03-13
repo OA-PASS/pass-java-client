@@ -35,7 +35,6 @@ import static org.junit.Assert.assertTrue;
  * Model has been annotated with JSON tags. These tests do a simple check to ensure the
  * Jackson integration is functional and the equals / hashcode functions work
  * @author Karen Hanson
- * @version $Id$
  */
 public class JournalModelTests {
             

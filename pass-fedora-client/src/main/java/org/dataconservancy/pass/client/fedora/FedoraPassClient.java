@@ -26,7 +26,6 @@ import org.dataconservancy.pass.model.PassEntity;
  * Creates instances of objects needed to perform PassClient requirements, and redirects to appropriate
  * service (Index client or CRUD client)
  * @author Karen Hanson
- * @version $Id$
  */
 public class FedoraPassClient implements PassClient {
 

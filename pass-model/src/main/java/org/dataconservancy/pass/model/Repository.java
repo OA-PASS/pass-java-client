@@ -20,7 +20,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * Describes a Repository. A Repository is the target of a Deposit.
  * @author Karen Hanson
- * @version $Id$
  */
 
 public class Repository extends PassEntity {

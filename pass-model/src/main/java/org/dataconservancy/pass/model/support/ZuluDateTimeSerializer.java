@@ -26,7 +26,6 @@ import org.joda.time.DateTime;
 /**
  * Serializes date into JSON as zulu date format
  * @author Karen Hanson
- * @version $Id$
  */
 public class ZuluDateTimeSerializer extends JsonSerializer<DateTime> {
 

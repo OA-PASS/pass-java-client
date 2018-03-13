@@ -30,7 +30,6 @@ import org.joda.time.DateTime;
 /**
  * Submission model. Contains details of work being submitted, where it is being deposited to, related Grants etc.
  * @author Karen Hanson
- * @version $Id$
  */
 
 public class Submission extends PassEntity {

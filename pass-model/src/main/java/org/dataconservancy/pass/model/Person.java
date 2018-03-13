@@ -20,7 +20,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * Description of Person. A person be a PI or co-PI for a Grant, be an author for a Submission, or be associated with a User.
  * @author Karen Hanson
- * @version $Id$
  */
 
 public class Person extends PassEntity {

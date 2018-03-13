@@ -24,7 +24,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * Describes a Journal and the path of it's participation in PubMedCentral
  * @author Karen Hanson
- * @version $Id$
  */
 
 public class Journal extends PassEntity {

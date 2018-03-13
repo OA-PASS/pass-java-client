@@ -23,7 +23,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * A Submission can have multiple Deposits, each to a different Repository. This describes a single deposit to a Repository and captures 
  * its current status.
  * @author Karen Hanson
- * @version $Id$
  */
 
 public class Deposit extends PassEntity {

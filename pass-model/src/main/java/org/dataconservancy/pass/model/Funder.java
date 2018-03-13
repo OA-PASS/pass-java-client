@@ -22,7 +22,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * The funder or sponsor of Grant or award.
  * @author Karen Hanson
- * @version $Id$
  */
 
 public class Funder extends PassEntity {

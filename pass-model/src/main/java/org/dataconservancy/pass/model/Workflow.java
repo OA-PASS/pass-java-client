@@ -20,7 +20,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * The Workflow tracks the current status of a Submission process in the application
  * @author Karen Hanson
- * @version $Id$
  */
 
 public class Workflow extends PassEntity {

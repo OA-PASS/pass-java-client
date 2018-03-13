@@ -22,7 +22,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * User model for users logging into PASS
  * @author Karen Hanson
- * @version $Id$
  */
 
 public class User extends PassEntity {

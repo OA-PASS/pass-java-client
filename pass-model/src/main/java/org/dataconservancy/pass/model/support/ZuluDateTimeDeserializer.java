@@ -29,7 +29,6 @@ import org.joda.time.format.DateTimeFormatter;
 /**
  * Used to deserialize zulu string date to Joda DateTime
  * @author Karen Hanson
- * @version $Id$
  */
 public class ZuluDateTimeDeserializer extends JsonDeserializer<DateTime> {
 

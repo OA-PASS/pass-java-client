@@ -24,7 +24,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * Describes a Policy. Policies determine the rules that need to be followed by a Submission.
  * @author Karen Hanson
- * @version $Id$
  */
 
 public class Policy extends PassEntity {

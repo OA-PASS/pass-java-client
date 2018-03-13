@@ -22,7 +22,6 @@ import org.dataconservancy.pass.model.PassEntity;
 /**
  *
  * @author Karen Hanson
- * @version $Id$
  */
 public interface PassJsonAdapter {
     
