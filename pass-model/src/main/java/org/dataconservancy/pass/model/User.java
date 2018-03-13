@@ -32,16 +32,24 @@ public class User extends PassEntity {
     @JsonProperty("@type")
     private String type = PassEntityType.USER.getName();
     
-    /** Unique login name used by user */
+    /** 
+     * Unique login name used by user 
+     */
     private String username;
 
-    /** User role */
+    /** 
+     * User role 
+     */
     private Role role;
 
-    /** Person associated with the account */
+    /** 
+     * Person associated with the account 
+     */
     private URI person;
 
-    /** list of possible user Roles **/
+    /** 
+     * list of possible user Roles 
+     */
     public enum Role {
         @JsonProperty("admin")
         ADMIN,

@@ -23,11 +23,13 @@ import org.dataconservancy.pass.model.Submission;
  */
 public class NihmsSubmission extends Submission {
 
-    /** PubMed ID */
+    /** 
+     * PubMed ID 
+     */
     private String pmid;
     
     /**
-     * @return the example
+     * @return the PMID
      */
     public String getPmid() {
         return pmid;

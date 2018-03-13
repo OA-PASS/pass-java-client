@@ -32,13 +32,19 @@ public class Funder extends PassEntity {
     @JsonProperty("@type")
     private String type = PassEntityType.FUNDER.getName();
     
-    /** Funder name **/
+    /** 
+     * Funder name 
+     */
     private String name;
     
-    /** Funder URL **/
+    /** 
+     * Funder URL 
+     */
     private String url;
     
-    /** URI of the Policy associated with funder **/
+    /** 
+     * URI of the Policy associated with funder
+     */
     private URI policy;
 
     

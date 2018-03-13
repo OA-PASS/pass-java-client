@@ -33,19 +33,29 @@ public class Deposit extends PassEntity {
     @JsonProperty("@type")
     private String type = PassEntityType.DEPOSIT.getName();
     
-    /** Status of deposit **/
+    /** 
+     * Status of deposit 
+     */
     private Status status;
     
-    /** URI of Repository being deposited to **/
+    /** 
+     * URI of Repository being deposited to 
+     */
     private URI repository;
     
-    /** ID assigned by repository **/
+    /** 
+     * ID assigned by repository 
+     */
     private String assignedId;
     
-    /** URL to access the item in the repository **/
+    /** 
+     * URL to access the item in the repository 
+     */
     private String accessUrl;
     
-    /** True if deposit was requested by the user rather than resulting from a required policy **/
+    /** 
+     * True if deposit was requested by the user rather than resulting from a required policy 
+     */
     private Boolean requested;
     
     public enum Status {

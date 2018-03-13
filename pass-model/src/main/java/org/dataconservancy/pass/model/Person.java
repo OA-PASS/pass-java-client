@@ -30,30 +30,46 @@ public class Person extends PassEntity {
     @JsonProperty("@type")
     private String type = PassEntityType.PERSON.getName();
     
-    /** First name(s) of person */
+    /** 
+     * First name(s) of person 
+     */
     private String firstName;
 
-    /** Middle name(s) of person */
+    /** 
+     * Middle name(s) of person 
+     */
     private String middleName;
 
-    /** Last name(s) of person */
+    /** 
+     * Last name(s) of person 
+     */
     private String lastName;
     
-    /** Name for display. Separate names may not be available, but a person should always at least 
-     * have a display name. */
-    private String displayName;
+    /** 
+     * Name for display. Separate names may not be available, but a person should always at least 
+     * have a display name.
+     */
+    private String displayName; 
     
-    /** Contact email for person */
+    /** 
+     * Contact email for person 
+     */
     private String email;
     
-    /** ID assigned by person's institution */
+    /** 
+     * ID assigned by person's institution 
+     */
     private String institutionalId;
     
-    /** ORCID ID for person */
+    /** 
+     * ORCID ID for person 
+     */
     private String orcidId;
     
-    /** Affiliation string for person. Where Person is embedded in Submission or Grant, 
-     * this is the affiliation relevant to that item */
+    /** 
+     * Affiliation string for person. Where Person is embedded in Submission or Grant, 
+     * this is the affiliation relevant to that item 
+     */
     private String affiliation; 
 
     

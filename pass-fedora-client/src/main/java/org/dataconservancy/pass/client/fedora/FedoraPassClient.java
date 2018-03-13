@@ -29,10 +29,14 @@ import org.dataconservancy.pass.model.PassEntity;
  */
 public class FedoraPassClient implements PassClient {
 
-    /** Client that interacts with Fedora repo to carry out CRUD operations **/
+    /** 
+     * Client that interacts with Fedora repo to carry out CRUD operations 
+     */
     private FedoraPassCrudClient crudClient;
     
-    /** Client that interacts with Index repo to do lookups and searches **/
+    /** 
+     * Client that interacts with Index repo to do lookups and searches 
+     */
     private FedoraPassIndexClient indexClient;
         
     public FedoraPassClient() {

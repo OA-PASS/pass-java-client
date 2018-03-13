@@ -30,13 +30,19 @@ public class Repository extends PassEntity {
     @JsonProperty("@type")
     private String type = PassEntityType.REPOSITORY.getName();
     
-    /** Name of repository e.g. "PubMed Central" */
+    /** 
+     * Name of repository e.g. "PubMed Central" 
+     */
     private String name;
 
-    /** Several sentence description of repository */
+    /** 
+     * Several sentence description of repository 
+     */
     private String description;
 
-    /** URL to the homepage of the repository so that PASS users can view the platform before deciding whether to participate in it */
+    /** 
+     * URL to the homepage of the repository so that PASS users can view the platform before deciding whether to participate in it 
+     */
     private String url;
 
     

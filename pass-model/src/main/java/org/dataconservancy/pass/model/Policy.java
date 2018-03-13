@@ -34,17 +34,25 @@ public class Policy extends PassEntity {
     @JsonProperty("@type")
     private String type = PassEntityType.POLICY.getName();
     
-    /** Title of policy e.g. "NIH Public Access Policy" */
+    /** 
+     * Title of policy e.g. "NIH Public Access Policy" 
+     */
     private String title;
     
-    /** Several sentence description of policy */
+    /** 
+     * Several sentence description of policy 
+     */
     private String description;
     
-    /** List of URIs for repositories that can satisfying this policy */
+    /** 
+     * List of URIs for repositories that can satisfying this policy 
+     */
     private List<URI> repositories;
     
-    /** True if this policy should appear for all submission. This can be used to identify a policy or 
-     * policies that should show up for everything */
+    /** 
+     * True if this policy should appear for all submission. This can be used to identify a policy or 
+     * policies that should show up for everything 
+     */
     private Boolean isDefault;
 
     

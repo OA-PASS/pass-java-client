@@ -34,14 +34,20 @@ public class Publisher extends PassEntity {
     @JsonProperty("@type")
     private String type = PassEntityType.PUBLISHER.getName();
     
-    /** Name of publisher */
+    /** 
+     * Name of publisher 
+     */
     public String name;
     
-    /** URIs of Journals associated with publisher */
+    /** 
+     * URIs of Journals associated with publisher
+     */
     public List<URI> journals;
     
-    /** This field indicates whether a journal participates in the NIH Public Access Program by sending final 
-     * published article to PMC. If so, whether it requires additional processing fee.  */
+    /** 
+     * This field indicates whether a journal participates in the NIH Public Access Program by sending final 
+     * published article to PMC. If so, whether it requires additional processing fee.  
+     */
     public PmcParticipation pmcParticipation;
 
     

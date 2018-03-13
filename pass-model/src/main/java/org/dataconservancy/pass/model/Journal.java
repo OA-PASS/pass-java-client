@@ -34,20 +34,30 @@ public class Journal extends PassEntity {
     @JsonProperty("@type")
     private String type = PassEntityType.JOURNAL.getName();
     
-    /** Name of journal */
+    /** 
+     * Name of journal 
+     */
     private String name;
     
-    /** Array of ISSN(s) for Journal */
+    /** 
+     * Array of ISSN(s) for Journal 
+     */
     private List<String> issns;
     
-    /** ID of publisher */
+    /** 
+     * ID of publisher 
+     */
     private URI publisher;
     
-    /** National Library of Medicine Title Abbreviation */
+    /** 
+     * National Library of Medicine Title Abbreviation
+     */
     private String nlmta;
 
-    /** This field indicates whether a journal participates in the NIH Public Access Program by sending final 
-     * published article to PMC. If so, whether it requires additional processing fee.  */
+    /** 
+     * This field indicates whether a journal participates in the NIH Public Access Program by sending final 
+     * published article to PMC. If so, whether it requires additional processing fee.  
+     */
     private PmcParticipation pmcParticipation;
 
     

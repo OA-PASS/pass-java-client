@@ -40,28 +40,44 @@ public class Grant extends PassEntity {
     @JsonProperty("@type")
     private String type = PassEntityType.GRANT.getName();
     
-    /** Award number from funder **/
+    /** 
+     * Award number from funder 
+     */
     private String awardNumber;
     
-    /** Status of award */
+    /** 
+     * Status of award 
+     */
     private AwardStatus awardStatus;
     
-    /** Award number or ID assigned to the grant within the researcher's institution **/
+    /** 
+     * Award number or ID assigned to the grant within the researcher's institution 
+     */
     private String localAwardId;
     
-    /** Title of the research project **/
+    /** 
+     * Title of the research project 
+     */
     private String projectName;
     
-    /** The URI of the funder.id of the sponsor that is the original source of the funds */
+    /** 
+     * The URI of the funder.id of the sponsor that is the original source of the funds 
+     */
     private URI primaryFunder;
     
-    /** The URI of the funder.id of the organization from which funds are directly received */
+    /** 
+     * The URI of the funder.id of the organization from which funds are directly received 
+     */
     private URI directFunder;
 
-    /** URI of the Principal investigator */
+    /** 
+     * URI of the Principal investigator 
+     */
     private URI pi;
     
-    /** Co-principal investigator list */
+    /** 
+     * Co-principal investigator list 
+     */
     private List<URI> coPis;
     
     /* TODO: need to decide how to handle these dates that have no times. 

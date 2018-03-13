@@ -30,13 +30,19 @@ public class Workflow extends PassEntity {
     @JsonProperty("@type")
     private String type = PassEntityType.WORKFLOW.getName();
     
-    /** Name of workflow */
+    /** 
+     * Name of workflow 
+     */
     private String name;
     
-    /** Current step in workflow */
+    /** 
+     * Current step in workflow 
+     */
     private String step;
     
-    /** Comma-separated list of steps required in workflow */
+    /** 
+     * Comma-separated list of steps required in workflow 
+     */
     private String steps;
 
     

@@ -40,50 +40,78 @@ public class Submission extends PassEntity {
     @JsonProperty("@type")
     private String type = PassEntityType.SUBMISSION.getName();
     
-    /** Status of Submission */
+    /** 
+     * Status of Submission 
+     */
     private Status status;
 
-    /** Title of work represented by Submission e.g. the title of the article */
+    /** 
+     * Title of work represented by Submission e.g. the title of the article 
+     */
     private String title;
 
-    /** List of person URIs for authors for work represented by Submission */
+    /** 
+     * List of person URIs for authors for work represented by Submission 
+     */
     private List<URI> authors;
 
-    /** Abstract for work represented by Submission */
+    /** 
+     * Abstract for work represented by Submission 
+     */
     @JsonProperty("abstract")
     private String submissionAbstract;
 
-    /** DOI of item being submitted */
+    /** 
+     * DOI of item being submitted 
+     */
     private String doi;
 
-    /** URI of the journal the submission is part of (if article) */
+    /** 
+     * URI of the journal the submission is part of (if article) 
+     */
     private URI journal;
 
-    /** Volume of journal that contains item (if article) */
+    /** 
+     * Volume of journal that contains item (if article) 
+     */
     private String volume;
 
-    /** Issue of journal that contains item (if article) */
+    /** 
+     * Issue of journal that contains item (if article) 
+     */
     private String issue;
 
-    /** List of places the submission will be deposited to */
+    /** 
+     * List of places the submission will be deposited to 
+     */
     private List<URI> deposits;
 
-    /** List of URIs for grants associated with the submission */
+    /** 
+     * List of URIs for grants associated with the submission 
+     */
     private List<URI> grants;
 
-    /** List of URIs of Workflows to track the status of submission process */
+    /** 
+     * List of URIs of Workflows to track the status of submission process 
+     */
     private List<URI> workflows;
 
-    /** Date the record was submitted by the User through PASS */
+    /** 
+     * Date the record was submitted by the User through PASS 
+     */
     @JsonSerialize(using = ZuluDateTimeSerializer.class)
     @JsonDeserialize(using = ZuluDateTimeDeserializer.class)
     private DateTime submittedDate;
     
-    /** Source of Submission record */
+    /** 
+     * Source of Submission record 
+     */
     private Source source;
     
     
-    /** Status of submission */
+    /** 
+     * Status of submission 
+     */
     public enum Status {
         @JsonProperty("in-progress")
         IN_PROGRESS("in-progress"),
@@ -100,7 +128,8 @@ public class Submission extends PassEntity {
     }
 
 
-    /** Source of the Submission, from a PASS user or imported from another source*/
+    /** 
+     * Source of the Submission, from a PASS user or imported from another source*/
     public enum Source {
         @JsonProperty("pass")
         PASS,

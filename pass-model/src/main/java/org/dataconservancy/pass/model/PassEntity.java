@@ -30,12 +30,16 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public abstract class PassEntity {
     
-    /** Unique URI for the resource. This corresponds to the URI of this resource in the 
-     * repository. This URI can be used to retrieve the resource from the repository **/
+    /** 
+     * Unique URI for the resource. This corresponds to the URI of this resource in the 
+     * repository. This URI can be used to retrieve the resource from the repository 
+     */
     @JsonProperty("@id")
     protected URI id;
     
-    /** Optional context field, when present this can be used to convert the JSON to JSON-LD**/
+    /** 
+     * Optional context field, when present this can be used to convert the JSON to JSON-LD
+     */
     @JsonProperty("@context")
     protected String context = null;
     

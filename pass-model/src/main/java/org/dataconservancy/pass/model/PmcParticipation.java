@@ -26,7 +26,8 @@ public enum PmcParticipation {
      */
     A,
     
-    /** PMC deposit route B. Authors must make special arrangements for some journals and 
+    /** 
+     * PMC deposit route B. Authors must make special arrangements for some journals and 
      * publishers to post the paper directly to PMC 
      */
     B,

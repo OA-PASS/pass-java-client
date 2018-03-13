@@ -52,10 +52,14 @@ public class FedoraPassCrudClient {
     private final static String SERVER_MANAGED_OMITTYPE = "http://fedora.info/definitions/v4/repository#ServerManaged";
     private final static String COMPACTED_ACCEPTTYPE = "application/ld+json; profile=\"http://www.w3.org/ns/json-ld#compacted\"";
     
-    /** The Fedora client tool */
+    /** 
+     * The Fedora client tool 
+     */
     private FcrepoClient client;
     
-    /** A JSON adapter for PASS */
+    /**
+     * A JSON adapter for PASS 
+     */
     private PassJsonAdapter adapter;
 
     public FedoraPassCrudClient() {
