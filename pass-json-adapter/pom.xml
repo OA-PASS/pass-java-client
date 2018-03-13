@@ -8,10 +8,7 @@
     <version>0.0.1-SNAPSHOT</version>
   </parent>
   <artifactId>pass-json-adapter</artifactId>
-  <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-  </properties>
-    
+  
   <dependencies>
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>

@@ -9,9 +9,7 @@
   </parent>
   <artifactId>pass-fedora-client</artifactId>
   <name>pass-fedora-client</name>
-  <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-  </properties>
+
   <dependencies>
     <dependency>
       <groupId>org.dataconservancy.pass</groupId>

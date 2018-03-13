@@ -11,10 +11,6 @@
   <artifactId>pass-model-nihms</artifactId>
   <packaging>jar</packaging>
   <name>PASS Data Model: NIHMS Extension</name>
-  
-  <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-  </properties>
 
   <dependencies>
     <dependency>
