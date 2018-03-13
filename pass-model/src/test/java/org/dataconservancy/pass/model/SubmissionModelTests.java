@@ -27,8 +27,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Test;
 
 import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
+import org.joda.time.format.ISODateTimeFormat;
 import org.json.JSONObject;
 
 import static org.junit.Assert.assertEquals;
@@ -41,7 +41,7 @@ import static org.junit.Assert.assertTrue;
  */
 public class SubmissionModelTests {
 
-    private static final String datePattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
+    private DateTimeFormatter dateFormatter = ISODateTimeFormat.dateTime().withZoneUTC();
     
     /**
      * Simple verification that JSON file can be converted to Submission model
@@ -49,6 +49,7 @@ public class SubmissionModelTests {
      */
     @Test
     public void testSubmissionFromJsonConversion() throws Exception {
+
         
         InputStream json = SubmissionModelTests.class.getResourceAsStream("/submission.json");
         ObjectMapper objectMapper = new ObjectMapper();
@@ -70,7 +71,7 @@ public class SubmissionModelTests {
         assertEquals(TestValues.GRANT_ID_1, submission.getGrants().get(0).toString());
         assertEquals(TestValues.GRANT_ID_2, submission.getGrants().get(1).toString());
         assertEquals(TestValues.WORKFLOW_ID_1, submission.getWorkflows().get(0).toString());
-        assertEquals(TestValues.SUBMISSION_DATE_STR, submission.getSubmittedDate().toString(datePattern));
+        assertEquals(TestValues.SUBMISSION_DATE_STR, dateFormatter.print(submission.getSubmittedDate()));
     }
 
     /**
@@ -102,7 +103,7 @@ public class SubmissionModelTests {
         assertEquals(root.getJSONArray("grants").get(0),TestValues.GRANT_ID_1);
         assertEquals(root.getJSONArray("grants").get(1),TestValues.GRANT_ID_2);
         assertEquals(root.getJSONArray("workflows").get(0),TestValues.WORKFLOW_ID_1);
-        assertEquals(root.getString("submittedDate").toString(),TestValues.SUBMISSION_DATE_STR);    
+        assertEquals(root.getString("submittedDate"),TestValues.SUBMISSION_DATE_STR);    
     }
     
     /**
@@ -158,7 +159,6 @@ public class SubmissionModelTests {
         workflows.add(new URI(TestValues.WORKFLOW_ID_1));
         submission.setWorkflows(workflows);
 
-        DateTimeFormatter dateFormatter = DateTimeFormat.forPattern(datePattern);
         DateTime dt = dateFormatter.parseDateTime(TestValues.SUBMISSION_DATE_STR);
         submission.setSubmittedDate(dt);
         

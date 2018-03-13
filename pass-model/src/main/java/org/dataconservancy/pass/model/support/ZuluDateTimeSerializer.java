@@ -22,22 +22,22 @@ import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
 
 import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormatter;
+import org.joda.time.format.ISODateTimeFormat;
 
 /**
  * Serializes date into JSON as zulu date format
  * @author Karen Hanson
  */
 public class ZuluDateTimeSerializer extends JsonSerializer<DateTime> {
-
-    private static final String datePattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
     
     /**
      * {@inheritDoc}
      */
     @Override
     public void serialize(DateTime value, JsonGenerator gen, SerializerProvider serializers) throws IOException {
-        // TODO Auto-generated method stub
-        String dt = value.toString(datePattern);
+        DateTimeFormatter dateFormatter = ISODateTimeFormat.dateTime().withZoneUTC();
+        String dt = value.toString(dateFormatter);
         gen.writeString(dt);        
     }
 

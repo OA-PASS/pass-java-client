@@ -27,8 +27,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Test;
 
 import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
+import org.joda.time.format.ISODateTimeFormat;
 import org.json.JSONObject;
 
 import static org.junit.Assert.assertEquals;
@@ -41,7 +41,7 @@ import static org.junit.Assert.assertTrue;
  */
 public class GrantModelTests {
 
-    private static final String datePattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
+    private DateTimeFormatter dateFormatter = ISODateTimeFormat.dateTime().withZoneUTC();
     /**
      * Simple verification that JSON file can be converted to Grant model
      * @throws Exception
@@ -64,9 +64,9 @@ public class GrantModelTests {
         assertEquals(TestValues.PERSON_ID_1, grant.getPi().toString());
         assertEquals(TestValues.PERSON_ID_2, grant.getCoPis().get(0).toString());
         assertEquals(TestValues.PERSON_ID_3, grant.getCoPis().get(1).toString());
-        assertEquals(TestValues.GRANT_AWARD_DATE_STR, grant.getAwardDate().toString(datePattern));
-        assertEquals(TestValues.GRANT_START_DATE_STR, grant.getStartDate().toString(datePattern));
-        assertEquals(TestValues.GRANT_END_DATE_STR, grant.getEndDate().toString(datePattern));
+        assertEquals(TestValues.GRANT_AWARD_DATE_STR, dateFormatter.print(grant.getAwardDate()));
+        assertEquals(TestValues.GRANT_START_DATE_STR, dateFormatter.print(grant.getStartDate()));
+        assertEquals(TestValues.GRANT_END_DATE_STR, dateFormatter.print(grant.getEndDate()));
         assertEquals(TestValues.SUBMISSION_ID_1, grant.getSubmissions().get(0).toString());
         assertEquals(TestValues.SUBMISSION_ID_2, grant.getSubmissions().get(1).toString());
         
@@ -138,7 +138,6 @@ public class GrantModelTests {
         coPis.add(new URI(TestValues.PERSON_ID_3));
         grant.setCoPis(coPis);
 
-        DateTimeFormatter dateFormatter = DateTimeFormat.forPattern(datePattern);
         DateTime dt = dateFormatter.parseDateTime(TestValues.GRANT_AWARD_DATE_STR);
         grant.setAwardDate(dt);
         dt = dateFormatter.parseDateTime(TestValues.GRANT_START_DATE_STR);
