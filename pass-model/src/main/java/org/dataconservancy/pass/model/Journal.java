@@ -28,8 +28,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Journal extends PassEntity {
 
+    /** 
+     * String type name, specifically used to set "@type" in JSON serialization
+     */
     @JsonProperty("@type")
-    protected String type = PassEntityType.JOURNAL.getName();
+    private String type = PassEntityType.JOURNAL.getName();
     
     /** Name of journal */
     private String name;

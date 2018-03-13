@@ -34,8 +34,11 @@ import org.joda.time.DateTime;
 
 public class Grant extends PassEntity {
 
+    /** 
+     * String type name, specifically used to set "@type" in JSON serialization
+     */
     @JsonProperty("@type")
-    protected String type = PassEntityType.GRANT.getName();
+    private String type = PassEntityType.GRANT.getName();
     
     /** Award number from funder **/
     private String awardNumber;

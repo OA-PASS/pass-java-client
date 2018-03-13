@@ -27,8 +27,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Deposit extends PassEntity {
 
+    /** 
+     * String type name, specifically used to set "@type" in JSON serialization
+     */
     @JsonProperty("@type")
-    protected String type = PassEntityType.DEPOSIT.getName();
+    private String type = PassEntityType.DEPOSIT.getName();
     
     /** Status of deposit **/
     private Status status;

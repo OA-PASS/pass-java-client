@@ -26,8 +26,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class User extends PassEntity {
 
+    /** 
+     * String type name, specifically used to set "@type" in JSON serialization
+     */
     @JsonProperty("@type")
-    protected String type = PassEntityType.USER.getName();
+    private String type = PassEntityType.USER.getName();
     
     /** Unique login name used by user */
     private String username;

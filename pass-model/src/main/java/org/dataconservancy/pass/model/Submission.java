@@ -34,8 +34,11 @@ import org.joda.time.DateTime;
 
 public class Submission extends PassEntity {
 
+    /** 
+     * String type name, specifically used to set "@type" in JSON serialization
+     */
     @JsonProperty("@type")
-    protected String type = PassEntityType.SUBMISSION.getName();
+    private String type = PassEntityType.SUBMISSION.getName();
     
     /** Status of Submission */
     private Status status;

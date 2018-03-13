@@ -26,8 +26,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Funder extends PassEntity {
 
+    /** 
+     * String type name, specifically used to set "@type" in JSON serialization
+     */
     @JsonProperty("@type")
-    protected String type = PassEntityType.FUNDER.getName();
+    private String type = PassEntityType.FUNDER.getName();
     
     /** Funder name **/
     private String name;

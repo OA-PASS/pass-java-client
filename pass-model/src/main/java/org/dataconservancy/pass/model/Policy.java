@@ -28,8 +28,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Policy extends PassEntity {
 
+    /** 
+     * String type name, specifically used to set "@type" in JSON serialization
+     */
     @JsonProperty("@type")
-    protected String type = PassEntityType.POLICY.getName();
+    private String type = PassEntityType.POLICY.getName();
     
     /** Title of policy e.g. "NIH Public Access Policy" */
     private String title;

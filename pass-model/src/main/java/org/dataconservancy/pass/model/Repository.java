@@ -24,8 +24,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Repository extends PassEntity {
 
+    /** 
+     * String type name, specifically used to set "@type" in JSON serialization
+     */
     @JsonProperty("@type")
-    protected String type = PassEntityType.REPOSITORY.getName();
+    private String type = PassEntityType.REPOSITORY.getName();
     
     /** Name of repository e.g. "PubMed Central" */
     private String name;
