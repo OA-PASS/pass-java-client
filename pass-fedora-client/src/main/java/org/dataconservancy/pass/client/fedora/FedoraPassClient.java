@@ -80,7 +80,7 @@ public class FedoraPassClient implements PassClient {
      * {@inheritDoc}
      */
     @Override
-    public <T> PassEntity findByAttribute(Class<T> modelClass, String attribute, Object value) {
+    public <T> URI findByAttribute(Class<T> modelClass, String attribute, Object value) {
         return indexClient.findByAttribute(modelClass, attribute, value);
     }
 
@@ -88,7 +88,7 @@ public class FedoraPassClient implements PassClient {
      * {@inheritDoc}
      */
     @Override
-    public <T> Set<PassEntity> findAllByAttribute(Class<T> modelClass, String attribute, Object value) {
+    public <T> Set<URI> findAllByAttribute(Class<T> modelClass, String attribute, Object value) {
         return indexClient.findAllByAttribute(modelClass, attribute, value);
     }
 

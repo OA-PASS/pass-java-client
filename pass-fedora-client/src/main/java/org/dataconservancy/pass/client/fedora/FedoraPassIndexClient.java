@@ -15,10 +15,11 @@
  */
 package org.dataconservancy.pass.client.fedora;
 
+import java.net.URI;
+
 import java.util.HashSet;
 import java.util.Set;
 
-import org.dataconservancy.pass.model.PassEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -34,40 +35,35 @@ public class FedoraPassIndexClient {
     /**
      * @see org.dataconservancy.pass.client.PassClient#findByAttribute(Class, String, Object)
      */
-    public <T> PassEntity findByAttribute(Class<T> modelClass, String attribute, Object value) {
+    public <T> URI findByAttribute(Class<T> modelClass, String attribute, Object value) {
         if (modelClass==null) {throw new IllegalArgumentException("modelClass cannot be null");}
         if (attribute==null || attribute.length()==0) {throw new IllegalArgumentException("attribute cannot be null");}
         if (value==null) {throw new IllegalArgumentException("value cannot be null");}
         
-        PassEntity passEntity = null;
-        try {
-            passEntity = (PassEntity) modelClass.newInstance();
-        } catch (InstantiationException | IllegalAccessException ex) {
-            throw new RuntimeException("modelClass provided could not be converted to a new PassEntity object");
-        } 
+        URI passEntityUri = null;
         
         LOG.debug("Searching for {} where {} is \"{}\"", modelClass.getSimpleName(), attribute, value.toString());
         
         //TODO: do stuff
         
-        return passEntity;
+        return passEntityUri;
     }
 
     /**
      * @see org.dataconservancy.pass.client.PassClient#findAllByAttribute(Class, String, Object)
      */
-    public <T> Set<PassEntity> findAllByAttribute(Class<T> modelClass, String attribute, Object value) {
+    public <T> Set<URI> findAllByAttribute(Class<T> modelClass, String attribute, Object value) {
         if (modelClass==null) {throw new IllegalArgumentException("modelClass cannot be null");}
         if (attribute==null || attribute.length()==0) {throw new IllegalArgumentException("attribute cannot be null");}
         if (value==null) {throw new IllegalArgumentException("value cannot be null");}
         
-        Set<PassEntity> passEntities = new HashSet<PassEntity>();
+        Set<URI> passEntityUris = new HashSet<URI>();
         
         //TODO: do stuff
 
         LOG.debug("Searching for {} where {} is \"{}\"", modelClass.getSimpleName(), attribute, value.toString());
         
-        return passEntities;
+        return passEntityUris;
     }
 
 }

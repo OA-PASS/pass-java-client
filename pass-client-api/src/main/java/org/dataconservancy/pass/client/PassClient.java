@@ -65,36 +65,34 @@ public interface PassClient {
     public <T> PassEntity readResource(URI uri, Class<T> modelClass);
     
     /**
-     * Retrieves a SINGLE RECORD by matching the entity type and filtering by the field
+     * Retrieves URI for a SINGLE RECORD by matching the entity type and filtering by the field
      * specified using the value provided. For example, to find the Grant using the 
      * awardNumber:
      * 
      *    String awardNum = "abcdef123";
-     *    Grant grant = (Grant) findByAttribute(Grant.class, "awardNumber", awardNum);
+     *    URI grantId = findByAttribute(Grant.class, "awardNumber", awardNum);
      * 
      * @param modelClass
      * @param attribute
      * @param value
      * @return
      */
-    public <T> PassEntity findByAttribute(Class<T> modelClass, String attribute, Object value);
+    public <T> URI findByAttribute(Class<T> modelClass, String attribute, Object value);
     
     
     /**
-     * Retrieves ALL MATCHING RECORDS by matching the entity type and filtering by the field
+     * Retrieves URIs for ALL MATCHING RECORDS by matching the entity type and filtering by the field
      * specified using the value provided. For example, to find Deposits using a Repository.id:
      * 
      *    URI repositoryId = new URI("https://example.com/fedora/repositories/3");
-     *    Set<PassEntity> entities = findByAttribute(Deposit.class, "repository", repositoryId);
-     * 
-     * Then each item in the set would need to be cast to a Deposit
+     *    Set<URI> entities = findByAttribute(Deposit.class, "repository", repositoryId);
      * 
      * @param modelClass
      * @param attribute
      * @param value
      * @return
      */
-    public <T> Set<PassEntity> findAllByAttribute(Class<T> modelClass, String attribute, Object value);
+    public <T> Set<URI> findAllByAttribute(Class<T> modelClass, String attribute, Object value);
     
     
 }
