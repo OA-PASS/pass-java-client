@@ -17,6 +17,7 @@ package org.dataconservancy.pass.client.fedora;
 
 import java.net.URI;
 
+import java.util.Map;
 import java.util.Set;
 
 import org.dataconservancy.pass.client.PassClient;
@@ -90,6 +91,15 @@ public class FedoraPassClient implements PassClient {
     @Override
     public <T> Set<URI> findAllByAttribute(Class<T> modelClass, String attribute, Object value) {
         return indexClient.findAllByAttribute(modelClass, attribute, value);
+    }
+
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> Set<URI> findAllByAttributes(Class<T> modelClass, Map<String, Object> valueAttributesMap) {
+        return indexClient.findAllByAttributes(modelClass, valueAttributesMap);
     }
 
 }

@@ -18,6 +18,7 @@ package org.dataconservancy.pass.client.fedora;
 import java.net.URI;
 
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import org.slf4j.Logger;
@@ -49,6 +50,7 @@ public class FedoraPassIndexClient {
         return passEntityUri;
     }
 
+    
     /**
      * @see org.dataconservancy.pass.client.PassClient#findAllByAttribute(Class, String, Object)
      */
@@ -66,4 +68,22 @@ public class FedoraPassIndexClient {
         return passEntityUris;
     }
 
+
+    /**
+     * @see org.dataconservancy.pass.client.PassClient#findAllByAttributes(Class, Map<String, Object>)
+     */
+    public <T> Set<URI> findAllByAttributes(Class<T> modelClass, Map<String, Object> valueAttributesMap) {
+        if (modelClass==null) {throw new IllegalArgumentException("modelClass cannot be null");}
+        if (valueAttributesMap==null || valueAttributesMap.size()==0) {throw new IllegalArgumentException("valueAttributesMap cannot be empty");}
+        //TODO:check map fields are valid
+        
+        Set<URI> passEntityUris = new HashSet<URI>();
+        
+        //TODO: do stuff
+
+        LOG.debug("Searching for {} using multiple filters", modelClass.getSimpleName());
+        
+        return passEntityUris;
+    }
+    
 }

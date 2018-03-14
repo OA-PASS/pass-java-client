@@ -17,6 +17,7 @@ package org.dataconservancy.pass.client;
 
 import java.net.URI;
 
+import java.util.Map;
 import java.util.Set;
 
 import org.dataconservancy.pass.model.PassEntity;
@@ -24,13 +25,20 @@ import org.dataconservancy.pass.model.PassEntity;
 /**
  * Interface for interactions with PASS database
  * 
- * TODO: lets see if this satisfies our use cases, if not we can add others. For example, 
- * if we need to filter by multiple fields, we should add additional methods.  
- * Note also that for now we will assume that you can filter by IDs using these find methods.
- * For example, you can use findAllByAttribute to retrieve all Deposits with a specific Repository.id 
- * 
  * @author Karen Hanson
  */
+
+/* 
+ *  TODO: lets see if this satisfies our use cases, if not we can add others as needed.
+ *  For now we will assume that you can filter by IDs using these findByAttribute methods.
+ *  For example, you can use findAllByAttribute to retrieve all Deposits with a specific Repository.id.
+ *  We will need to revisit how one-to-many joins work here, for example, should you be able to say:
+ *    
+ *       Set<URI> entityUris = findByAttribute(Submission.class, "grants", grantUri);
+ *       
+ *  Assuming "yes" for now
+ */
+
 public interface PassClient {
 
     /**
@@ -85,7 +93,7 @@ public interface PassClient {
      * specified using the value provided. For example, to find Deposits using a Repository.id:
      * 
      *    URI repositoryId = new URI("https://example.com/fedora/repositories/3");
-     *    Set<URI> entities = findByAttribute(Deposit.class, "repository", repositoryId);
+     *    Set<URI> entityUris = findByAttribute(Deposit.class, "repository", repositoryId);
      * 
      * @param modelClass
      * @param attribute
@@ -94,5 +102,24 @@ public interface PassClient {
      */
     public <T> Set<URI> findAllByAttribute(Class<T> modelClass, String attribute, Object value);
     
+    
+    /**
+     * Retrieves URIs for ALL MATCHING RECORDS by matching the entity type and filtering by the attributes
+     * and values specified. For example, to find a Submission using a GrantId and DOI:
+     * 
+     *    Map<String, Object> map = new HashMap<String, Object>();
+     *    URI grantId = new URI("https://example.com/fedora/grants/3");
+     *    String doi = "10.001/12345abc";
+     *    map.put("grants", grantId)
+     *    map.put("doi", doi);
+     *    Set<URI> entityUris = findByAttribute(Submission.class, map);
+     * 
+     * @param modelClass
+     * @param attribute
+     * @param value
+     * @return
+     */
+    public <T> Set<URI> findAllByAttributes(Class<T> modelClass, Map<String, Object> attributeValuesMap);
+       
     
 }
