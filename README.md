@@ -22,9 +22,5 @@ The index client has not been written yet. This will allow you to look up record
 ```
 String localAwardId = "AB123456";
 PassClient client = new FedoraPassClient();
-PassEntity match = client.findByAttribute(Grant.class, "localAwardId", localAwardId);
-if (match!=null) {
-	Grant grant = (Grant) match;
-	...
-}
+URI grantUri = client.findByAttribute(Grant.class, "localAwardId", localAwardId);
 ```
