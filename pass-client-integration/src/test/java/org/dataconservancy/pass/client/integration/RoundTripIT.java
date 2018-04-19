@@ -16,12 +16,12 @@
 
 package org.dataconservancy.pass.client.integration;
 
-import static org.unitils.reflectionassert.ReflectionAssert.assertReflectionEquals;
+import org.junit.Test;
 
 import org.dataconservancy.pass.model.PassEntity;
-
-import org.junit.Test;
 import org.unitils.reflectionassert.ReflectionComparatorMode;
+
+import static org.unitils.reflectionassert.ReflectionAssert.assertReflectionEquals;
 
 /**
  * Creates PASS entities, and makes sure they can be roundtripped to the repository.
@@ -31,7 +31,7 @@ import org.unitils.reflectionassert.ReflectionComparatorMode;
 
 public class RoundTripIT extends ClientITBase {
 
-    /* Roundrtip with all lists containing multiple values */
+    /* Roundtrip with all lists containing multiple values */
     @Test
     public void roundTripWithFullListsTest() {
 
