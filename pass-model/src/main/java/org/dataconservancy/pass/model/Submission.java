@@ -42,6 +42,17 @@ public class Submission extends PassEntity {
      */
     @JsonProperty("@type")
     private String type = PassEntityType.SUBMISSION.getName();
+
+    /** 
+     * Stringified JSON representation of metadata captured by the relevant repository forms
+     */
+    private String metadata;
+
+    /** 
+     * When true, this value signals that the Submission will no longer be edited by the User. 
+     * It indicates to Deposit services that it can generate Deposits for any Repositories that need one. 
+     */
+    private Boolean submitted;
     
     /** 
      * Status of Submission 
@@ -52,6 +63,11 @@ public class Submission extends PassEntity {
      * URI of Publication associated with the Submission
      */
     private URI publication;
+
+    /**
+     *vURI of the User responsible for managing the Submission.
+     */
+    private URI user;
     
     /** 
      * List of repositories that the submission will be deposited to 
@@ -136,13 +152,36 @@ public class Submission extends PassEntity {
     public String getType() {
         return type;
     }
-        
+
+    
+    /**
+     * @return the metadata
+     */
+    public String getMetadata() {
+        return metadata;
+    }
+
+    
+    /**
+     * @param metadata the metadata to set
+     */
+    public void setMetadata(String metadata) {
+        this.metadata = metadata;
+    }
+
+    
+    /**
+     * @param submitted the submitted value to set
+     */
+    public void setSubmitted(Boolean submitted) {
+        this.submitted = submitted;
+    }
         
     /**
-     * @return the aggregatedDepositStatus
+     * @return submitted value
      */
-    public AggregatedDepositStatus getAggregatedDepositStatus() {
-        return aggregatedDepositStatus;
+    public Boolean getSubmitted() {
+        return submitted;
     }
 
     
@@ -151,6 +190,14 @@ public class Submission extends PassEntity {
      */
     public void setAggregatedDepositStatus(AggregatedDepositStatus aggregatedDepositStatus) {
         this.aggregatedDepositStatus = aggregatedDepositStatus;
+    }
+    
+    
+    /**
+     * @return the aggregatedDepositStatus
+     */
+    public AggregatedDepositStatus getAggregatedDepositStatus() {
+        return aggregatedDepositStatus;
     }
 
     
@@ -200,12 +247,21 @@ public class Submission extends PassEntity {
         this.submittedDate = submittedDate;
     }
     
+    
     /**
      * @return the source
      */
     public Source getSource() {
         return source;
     }
+    
+
+    /**
+     * @param source the source to set
+     */
+    public void setSource(Source source) {
+        this.source = source;
+    }    
 
     
     /**
@@ -222,14 +278,22 @@ public class Submission extends PassEntity {
     public void setPublication(URI publication) {
         this.publication = publication;
     }
-    
 
+    
     /**
-     * @param source the source to set
+     * @return the URI of the User
      */
-    public void setSource(Source source) {
-        this.source = source;
-    }    
+    public URI getUser() {
+        return user;
+    }
+
+    
+    /**
+     * @param user the URI user to set
+     */
+    public void setUser(URI user) {
+        this.user = user;
+    }
     
 
     @Override
@@ -247,6 +311,7 @@ public class Submission extends PassEntity {
         if (grants != null ? !grants.equals(that.grants) : that.grants != null) return false;
         if (submittedDate != null ? !submittedDate.equals(that.submittedDate) : that.submittedDate != null) return false;
         if (source != null ? !source.equals(that.source) : that.source != null) return false;
+        if (metadata != null ? !metadata.equals(that.metadata) : that.metadata != null) return false;
         return true;
     }
 
@@ -261,6 +326,7 @@ public class Submission extends PassEntity {
         result = 31 * result + (grants != null ? grants.hashCode() : 0);
         result = 31 * result + (submittedDate != null ? submittedDate.hashCode() : 0);
         result = 31 * result + (source != null ? source.hashCode() : 0);
+        result = 31 * result + (metadata != null ? metadata.hashCode() : 0);
         return result;
     }
 
