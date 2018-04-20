@@ -16,10 +16,10 @@
 
 package org.dataconservancy.pass.client.integration;
 
-import static com.openpojo.reflection.impl.PojoClassFactory.enumerateClassesByExtendingType;
-
 import java.lang.reflect.Method;
+
 import java.net.URI;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -27,15 +27,17 @@ import java.util.Random;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import com.openpojo.reflection.PojoClass;
+
+import org.apache.commons.beanutils.BeanUtils;
+
 import org.dataconservancy.pass.client.PassClient;
 import org.dataconservancy.pass.client.fedora.FedoraPassClient;
 import org.dataconservancy.pass.model.PassEntity;
-
-import org.apache.commons.beanutils.BeanUtils;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 
-import com.openpojo.reflection.PojoClass;
+import static com.openpojo.reflection.impl.PojoClassFactory.enumerateClassesByExtendingType;
 
 /**
  * Base class for client ITs.
@@ -143,7 +145,7 @@ public abstract class ClientITBase {
         @SuppressWarnings("rawtypes")
         final List list = new ArrayList<>();
         for (int i = 0; i < size; i++) {
-            if (method.getName().equals("setIssns")) {
+            if (method.getName().equals("setIssns")||method.getName().equals("setExternalIds")) {
                 list.add(UUID.randomUUID().toString());
             } else {
                 list.add(URI.create("urn:uuid:" + UUID.randomUUID().toString()));
