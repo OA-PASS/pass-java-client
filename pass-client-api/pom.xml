@@ -8,7 +8,7 @@
     <version>0.1.0-SNAPSHOT</version>
   </parent>
   <artifactId>pass-client-api</artifactId>
-  <name>pass-client-api</name>
+  <name>PASS Client API</name>
   
   <dependencies>
     <dependency>
