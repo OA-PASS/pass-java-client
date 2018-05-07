@@ -27,8 +27,10 @@ import org.dataconservancy.pass.model.PassEntity;
 
 import org.apache.commons.beanutils.BeanUtils;
 import org.junit.Test;
+import org.dataconservancy.pass.model.User;
 import org.unitils.reflectionassert.ReflectionComparatorMode;
 
+import static org.junit.Assert.assertEquals;
 /**
  * Tests client update functionality
  *
@@ -60,6 +62,42 @@ public class UpdateResourceIT extends ClientITBase {
                 .map(cls -> random(cls, 2))
                 .forEach(resource -> createAndUpdate(resource, removeRelationships(resource)));
     }
+    
+    /**
+     * Checks the behavior of PATCH - PATCH should allow partial updates of the data model, 
+     * in which only the fields that are available should be affected by changes. Here we use
+     * a partial User model to do an update on a whole User, including assigning a null value to username.
+     */
+    @Test
+    public void patchUpdateWithDifferentModelsTest() {        
+        //create a complete user
+        User user = random(User.class, 1);
+        URI userId = client.createResource(user);
+        
+        try {
+            //update using an incomplete user
+            TestUserModel incompleteUser = new TestUserModel();
+            incompleteUser.setId(userId);
+            incompleteUser.setDisplayName("Ms Tester");
+            incompleteUser.setEmail("mtester@blahblahetc.test");
+            incompleteUser.setUsername(null);
+            client.updateResource(incompleteUser);
+            
+            //verify user still has original fields and has new field values incorporated including the null username
+            User updatedUser = client.readResource(userId, User.class);
+            assertEquals(userId, updatedUser.getId());
+            assertEquals(user.getAffiliation(), updatedUser.getAffiliation());
+            assertEquals(user.getFirstName(), updatedUser.getFirstName());
+            assertEquals(user.getLastName(), updatedUser.getLastName());
+            assertEquals(incompleteUser.getDisplayName(), updatedUser.getDisplayName());
+            assertEquals(incompleteUser.getEmail(), updatedUser.getEmail());
+            assertEquals(null, updatedUser.getUsername());
+        } finally {
+            client.deleteResource(userId);
+        }
+    }
+    
+    
 
     PassEntity removeRelationships(PassEntity resource) {
         try {
