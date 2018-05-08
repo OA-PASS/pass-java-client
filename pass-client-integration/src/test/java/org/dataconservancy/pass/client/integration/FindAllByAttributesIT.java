@@ -132,16 +132,19 @@ public class FindAllByAttributesIT extends ClientITBase {
         URI expectedUri4 = client.createResource(deposit1);
 
         try {
-            attempt(30, () -> {
-                assertEquals(expectedUri1.getPath(),
-                        client.findByAttribute(Submission.class, "@id", expectedUri1).getPath());
-                assertEquals(expectedUri2.getPath(),
-                        client.findByAttribute(Submission.class, "@id", expectedUri2).getPath());
-                assertEquals(expectedUri3.getPath(),
-                        client.findByAttribute(Submission.class, "@id", expectedUri3).getPath());
-                assertEquals(expectedUri4.getPath(),
-                        client.findByAttribute(Deposit.class, "@id", expectedUri4).getPath());
+            attempt(RETRIES, () -> {
+                assertEquals(expectedUri1, client.findByAttribute(Submission.class, "@id", expectedUri1));
             });
+            attempt(RETRIES, () -> {
+                assertEquals(expectedUri2, client.findByAttribute(Submission.class, "@id", expectedUri2));
+            });
+            attempt(RETRIES, () -> {
+                assertEquals(expectedUri3, client.findByAttribute(Submission.class, "@id", expectedUri3));
+            });
+            attempt(RETRIES, () -> {
+                assertEquals(expectedUri4, client.findByAttribute(Deposit.class, "@id", expectedUri4));
+            });
+            
 
             Set<URI> uris = client.findAllByAttributes(Submission.class, new HashMap<String, Object>() {{
                 put("metadata", "foo");
@@ -206,7 +209,7 @@ public class FindAllByAttributesIT extends ClientITBase {
             matches = client.findAllByAttributes(Deposit.class, attribs, 4, 8);
             assertEquals(2, matches.size());
         } finally {
-            Set <URI> matches = client.findAllByAttributes(Deposit.class, attribs);
+            Set <URI> matches = client.findAllByAttributes(Deposit.class, attribs, 20, 0);
             for (URI match : matches) {
                 client.deleteResource(match);
             }
