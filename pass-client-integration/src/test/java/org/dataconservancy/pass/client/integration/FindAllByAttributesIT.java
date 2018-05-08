@@ -133,14 +133,10 @@ public class FindAllByAttributesIT extends ClientITBase {
 
         try {
             attempt(30, () -> {
-                assertEquals(expectedUri1.getPath(),
-                        client.findByAttribute(Submission.class, "@id", expectedUri1).getPath());
-                assertEquals(expectedUri2.getPath(),
-                        client.findByAttribute(Submission.class, "@id", expectedUri2).getPath());
-                assertEquals(expectedUri3.getPath(),
-                        client.findByAttribute(Submission.class, "@id", expectedUri3).getPath());
-                assertEquals(expectedUri4.getPath(),
-                        client.findByAttribute(Deposit.class, "@id", expectedUri4).getPath());
+                assertEquals(expectedUri1, client.findByAttribute(Submission.class, "@id", expectedUri1));
+                assertEquals(expectedUri2, client.findByAttribute(Submission.class, "@id", expectedUri2));
+                assertEquals(expectedUri3, client.findByAttribute(Submission.class, "@id", expectedUri3));
+                assertEquals(expectedUri4, client.findByAttribute(Deposit.class, "@id", expectedUri4));
             });
 
             Set<URI> uris = client.findAllByAttributes(Submission.class, new HashMap<String, Object>() {{
