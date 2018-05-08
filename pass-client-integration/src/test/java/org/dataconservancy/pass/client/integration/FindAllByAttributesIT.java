@@ -132,12 +132,19 @@ public class FindAllByAttributesIT extends ClientITBase {
         URI expectedUri4 = client.createResource(deposit1);
 
         try {
-            attempt(30, () -> {
+            attempt(RETRIES, () -> {
                 assertEquals(expectedUri1, client.findByAttribute(Submission.class, "@id", expectedUri1));
+            });
+            attempt(RETRIES, () -> {
                 assertEquals(expectedUri2, client.findByAttribute(Submission.class, "@id", expectedUri2));
+            });
+            attempt(RETRIES, () -> {
                 assertEquals(expectedUri3, client.findByAttribute(Submission.class, "@id", expectedUri3));
+            });
+            attempt(RETRIES, () -> {
                 assertEquals(expectedUri4, client.findByAttribute(Deposit.class, "@id", expectedUri4));
             });
+            
 
             Set<URI> uris = client.findAllByAttributes(Submission.class, new HashMap<String, Object>() {{
                 put("metadata", "foo");
