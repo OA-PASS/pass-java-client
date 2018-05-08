@@ -117,23 +117,21 @@ public class UpdateResourceIT extends ClientITBase {
     }
 
     void createAndUpdate(PassEntity toDeposit, PassEntity updatedContent) {
-
-        final PassEntity intermediate = client.readResource(client.createResource(toDeposit), toDeposit.getClass());
+        final URI passEntityUri = client.createResource(toDeposit);
 
         try {
-            final URI id = intermediate.getId();
+            final PassEntity intermediate = client.readResource(passEntityUri, toDeposit.getClass());
             BeanUtils.copyProperties(intermediate, updatedContent);
-            intermediate.setId(id);
+            intermediate.setId(passEntityUri);
+            client.updateResource(intermediate);
+            final PassEntity asUpdated = client.readResource(passEntityUri, intermediate.getClass());
+            assertReflectionEquals(normalized(updatedContent), normalized(asUpdated),
+                                   ReflectionComparatorMode.LENIENT_ORDER);
         } catch (final Exception e) {
             throw new RuntimeException(e);
+        } finally { 
+            client.deleteResource(passEntityUri);
         }
-
-        client.updateResource(intermediate);
-
-        final PassEntity asUpdated = client.readResource(intermediate.getId(), intermediate.getClass());
-
-        assertReflectionEquals(normalized(updatedContent), normalized(asUpdated),
-                ReflectionComparatorMode.LENIENT_ORDER);
 
     }
 }

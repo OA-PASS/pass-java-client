@@ -177,7 +177,10 @@ public class FindAllByAttributeIT extends ClientITBase {
             assertEquals(1, deposits.size());
             assertEquals(expectedUri.getPath(), deposits.iterator().next().getPath());
         } finally {
-            client.deleteResource(expectedUri);
+            Set <URI> matches = client.findAllByAttribute(Deposit.class, "depositStatus", null);
+            for (URI match : matches) {
+                client.deleteResource(match);
+            }
         }
     }
 
