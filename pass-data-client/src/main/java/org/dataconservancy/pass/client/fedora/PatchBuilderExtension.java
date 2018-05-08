@@ -23,12 +23,10 @@ import java.net.URI;
 import org.fcrepo.client.FcrepoClient;
 import org.fcrepo.client.PatchBuilder;
 
-import static org.fcrepo.client.FedoraHeaderConstants.PREFER;
-
 /**
  * The org.fcrepo.client.PatchBuilder class does not currently have several features needed
- * to perform a PATCH operation in which you can define the content type and add the "prefer lenient"
- * header. This extends the PatchBuilder to include these for use on FedoraPassCrudClient.updateResource()
+ * to perform a PATCH operation in which you can define the content type header. This extends the 
+ * PatchBuilder to include these for use on FedoraPassCrudClient.updateResource()
  * @author Karen Hanson
  */
 public class PatchBuilderExtension extends PatchBuilder {
@@ -47,15 +45,5 @@ public class PatchBuilderExtension extends PatchBuilder {
     public PatchBuilderExtension body(final InputStream stream, final String contentType) {
         return (PatchBuilderExtension) super.body(stream, contentType);
     }
-
-    /**
-     * Set the prefer header for this request to lenient handling, to indicate that server-managed triples will not
-     * be included in the request body.
-     *
-     * @return this builder
-     */
-    public PatchBuilderExtension preferLenient() {
-        request.setHeader(PREFER, "handling=lenient; received=\"minimal\"");
-        return this;
-    }
+    
 }

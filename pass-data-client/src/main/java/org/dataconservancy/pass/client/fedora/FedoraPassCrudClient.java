@@ -122,7 +122,6 @@ public class FedoraPassCrudClient {
         PatchBuilderExtension patchbuilder = new PatchBuilderExtension(modelObj.getId(), client);
         try (FcrepoResponse response = patchbuilder
                             .body(jsonIS, JSONLD_PATCH_CONTENTTYPE)
-                            .preferLenient()
                             .perform()) {
             LOG.info("Container update status and location: {}, {}", response.getStatusCode(), modelObj.getId());
         } catch (IOException | FcrepoOperationFailedException e) {
