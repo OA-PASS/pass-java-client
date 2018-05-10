@@ -43,6 +43,9 @@ public class FedoraConfig {
      */
     public static String getBaseUrl() {
         String baseUrl = ConfigUtil.getSystemProperty(BASEURL_KEY, DEFAULT_BASE_URL);
+        if (!baseUrl.endsWith("/")) {
+            baseUrl = baseUrl + "/";
+        }
         LOG.debug("Using baseUrl: {}", baseUrl);
         return baseUrl;
     }
