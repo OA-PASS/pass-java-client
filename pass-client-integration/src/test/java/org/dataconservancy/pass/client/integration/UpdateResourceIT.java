@@ -16,21 +16,23 @@
 
 package org.dataconservancy.pass.client.integration;
 
-import static org.unitils.reflectionassert.ReflectionAssert.assertReflectionEquals;
-
 import java.lang.reflect.Method;
+
 import java.net.URI;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import org.dataconservancy.pass.model.PassEntity;
-
 import org.apache.commons.beanutils.BeanUtils;
+
 import org.junit.Test;
+
+import org.dataconservancy.pass.model.PassEntity;
 import org.dataconservancy.pass.model.User;
 import org.unitils.reflectionassert.ReflectionComparatorMode;
 
 import static org.junit.Assert.assertEquals;
+import static org.unitils.reflectionassert.ReflectionAssert.assertReflectionEquals;
 /**
  * Tests client update functionality
  *
@@ -96,8 +98,6 @@ public class UpdateResourceIT extends ClientITBase {
             client.deleteResource(userId);
         }
     }
-    
-    
 
     PassEntity removeRelationships(PassEntity resource) {
         try {
