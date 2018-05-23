@@ -16,12 +16,13 @@
 
 package org.dataconservancy.pass.client.integration;
 
-import static org.unitils.reflectionassert.ReflectionAssert.assertReflectionEquals;
-import java.net.URI;
-
 import org.dataconservancy.pass.model.PassEntity;
 import org.junit.Test;
 import org.unitils.reflectionassert.ReflectionComparatorMode;
+
+import java.net.URI;
+
+import static org.unitils.reflectionassert.ReflectionAssert.assertReflectionEquals;
 
 /**
  * Creates PASS entities, and makes sure they can be roundtripped to the repository.
@@ -66,6 +67,42 @@ public class CreateReadResourceRoundTripIT extends ClientITBase {
                 .forEach(this::roundTrip);
     }
 
+    /* Roundtrip with all lists containing multiple values */
+    @Test
+    public void roundTripCreateAndReadWithFullListsTest() {
+
+        PASS_TYPES.stream()
+                .map(cls -> random(cls, 2))
+                .forEach(this::roundTripCreateAndRead);
+    }
+
+    /* Roundtrip with all lists containing ONE entry.. an edge case */
+    @Test
+    public void roundTripCreateAndReadWithSingleListsTest() {
+
+        PASS_TYPES.stream()
+                .map(cls -> random(cls, 1))
+                .forEach(this::roundTripCreateAndRead);
+    }
+
+    /* Roundtrip with all lists empty - for completeness */
+    @Test
+    public void roundTripCreateAndReadWithEmptyListsTest() {
+
+        PASS_TYPES.stream()
+                .map(cls -> random(cls, 0))
+                .forEach(this::roundTripCreateAndRead);
+    }
+
+    /* Sparse roundtrip - empty objects */
+    @Test
+    public void roundTripCreateAndReadSparseTest() {
+        PASS_TYPES.stream()
+                .map(ClientITBase::empty)
+                .forEach(this::roundTripCreateAndRead);
+    }
+
+
     void roundTrip(PassEntity asDeposited) {
         final URI entityUri = client.createResource(asDeposited);   
         final PassEntity retrieved = client.readResource(entityUri, asDeposited.getClass());
@@ -73,4 +110,13 @@ public class CreateReadResourceRoundTripIT extends ClientITBase {
                                ReflectionComparatorMode.LENIENT_ORDER);
         createdUris.put(entityUri, asDeposited.getClass());
     }
+
+    @SuppressWarnings("unchecked")
+    <T extends PassEntity> void roundTripCreateAndRead(T asDeposited) {
+        final PassEntity retrieved = client.createAndReadResource(asDeposited, (Class<T>) asDeposited.getClass());
+        assertReflectionEquals(normalized(asDeposited), normalized(retrieved),
+                ReflectionComparatorMode.LENIENT_ORDER);
+        createdUris.put(retrieved.getId(), asDeposited.getClass());
+    }
+
 }

@@ -15,14 +15,13 @@
  */
 package org.dataconservancy.pass.client;
 
+import org.dataconservancy.pass.model.PassEntity;
+
 import java.io.InputStream;
 import java.net.URI;
-
 import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
-
-import org.dataconservancy.pass.model.PassEntity;
 
 /**
  * Interface for interactions with PASS database
@@ -40,6 +39,15 @@ public interface PassClient {
      * @return URI of new record
      */
     public URI createResource(PassEntity modelObj);
+
+    /**
+     * Takes any PassEntity and persists it in the database, and returns an updated version of the resource if
+     * successful or appropriate exception if not. Note that PassEntities that are being created should
+     * have null as their ID; the URI will be present on the returned object.
+     * @param modelObj
+     * @return an updated version of the resource
+     */
+    public <T extends PassEntity> T createAndReadResource(T modelObj, Class<T> modelClass);
     
     /**
      * Takes any PassEntity, and updates the record matching the ID field.  
@@ -50,6 +58,16 @@ public interface PassClient {
      * @return
      */
     public void updateResource(PassEntity modelObj);
+
+    /**
+     * Takes any PassEntity, and updates the record matching the ID field.
+     * Note that if you attempt to update an object that was updated between the readResource and the
+     * updateResource, an `UpdateConflictException` will be thrown. This comparison is based on
+     * the value in PassEntity.versionTag. Setting versionTag to null will ignore conflicts and do the update.
+     * @param modelObj
+     * @return an updated version of the resource
+     */
+    public <T extends PassEntity> T updateAndReadResource(T modelObj, Class<T> modelClass);
     
     /** 
      * Deletes the entity matching the URI provided
