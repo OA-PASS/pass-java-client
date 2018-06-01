@@ -32,7 +32,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- *
+ * JSON Adapter converts a PassEntity object into JSON (with or without context) and back
  * @author Karen Hanson
  */
 public class PassJsonAdapterBasic implements PassJsonAdapter {
