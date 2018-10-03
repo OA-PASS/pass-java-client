@@ -23,7 +23,7 @@ package org.dataconservancy.pass.model.support;
  * identifiers for the same PASS object can be looked for, as the JHU use cases illuminate several edge cases
  * where a single identifier will not be enough to determine whether a user object is present in Fedora.
  * This has to do with the variable availability of identifiers in different systems, and for users with different
- * sttus (active or inactive member of the JHU community; active or inactive JHU employee).
+ * status (active or inactive member of the JHU community; active or inactive JHU employee).
  */
 public class Identifier {
 
