@@ -16,6 +16,15 @@
 
 package org.dataconservancy.pass.model.support;
 
+/**
+ * This is a convenience class for handling identifiers which we use for locating objects in Fedora.
+ * These identifiers are serialized to work well with our JSON-LD transport. We localize these identifiers by
+ * domain so that a Fedora instance may support more than one institution. We add a type so that different
+ * identifiers for the same PASS object can be looked for, as the JHU use cases illuminate several edge cases
+ * where a single identifier will not be enough to determine whether a user object is present in Fedora.
+ * This has to do with the variable availability of identifiers in different systems, and for users with different
+ * sttus (active or inactive member of the JHU community; active or inactive JHU employee).
+ */
 public class Identifier {
 
     private String domain;
@@ -82,7 +91,7 @@ public class Identifier {
 
     @Override
     public int hashCode() {
-        int result = super.hashCode();
+        int result = 31;
         result = 31 * result + (domain != null ? domain.hashCode() : 0);
         result = 31 * result + (type != null ? type.hashCode() : 0);
         result = 31 * result + (value != null ? value.hashCode() : 0);
