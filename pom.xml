@@ -109,7 +109,7 @@
 
     <build-helper-maven-plugin.version>3.0.0</build-helper-maven-plugin.version>
     <docker-maven-plugin.version>0.27.2</docker-maven-plugin.version>
-    <maven-compiler-plugin.version>3.8.0</maven-compiler-plugin.version>
+    <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
     <maven-failsafe-plugin.version>2.22.0</maven-failsafe-plugin.version>
     <maven-gpg-plugin.version>1.6</maven-gpg-plugin.version>
     <maven-javadoc-pugin.version>3.0.1</maven-javadoc-pugin.version>
