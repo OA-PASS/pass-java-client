@@ -131,7 +131,7 @@
     <logback.version>1.2.3</logback.version>
     <mockito.version>3.1.0</mockito.version>
     <openpojo.version>0.8.10</openpojo.version>
-    <elasticsearch-client.version>6.2.4</elasticsearch-client.version>
+    <elasticsearch-client.version>6.8.9</elasticsearch-client.version>
     <slf4j.version>1.7.25</slf4j.version>
     <unitils.version>3.4.6</unitils.version>
     <okhttp.version>3.11.0</okhttp.version>
