@@ -123,7 +123,7 @@
 
     <commons-io.version>2.6</commons-io.version>
     <commons-beanutils.version>1.9.4</commons-beanutils.version>
-    <joda-time.version>2.10</joda-time.version>
+    <joda-time.version>2.10.8</joda-time.version>
     <org-json.version>20180813</org-json.version>
     <junit.version>4.12</junit.version>
     <jackson.version>2.9.10.1</jackson.version>
