@@ -36,7 +36,7 @@ public class ElasticsearchConfig {
     private static final String INDEXER_URL_KEY = "pass.elasticsearch.url";
     private static final String DEFAULT_INDEXER_URL = "http://localhost:9200";
 
-    private static final String INDEXES_KEY = "pass.elasticsearch.indices";
+    private static final String INDICES_KEY = "pass.elasticsearch.indices";
     private static final String DEFAULT_INDICES = "pass";
     
     private static final String INDEXER_LIMIT_KEY = "pass.elasticsearch.limit";
@@ -71,7 +71,7 @@ public class ElasticsearchConfig {
      */
 
     public static String[] getIndices() {
-        String sIndices =  ConfigUtil.getSystemProperty(INDEXES_KEY, DEFAULT_INDICES);
+        String sIndices =  ConfigUtil.getSystemProperty(INDICES_KEY, DEFAULT_INDICES);
         String[] arrIndices = sIndices.split( ",");
         LOG.debug("Using index array of {} ", arrIndices.toString() );
         return arrIndices;
