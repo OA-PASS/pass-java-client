@@ -34,7 +34,10 @@ public class ElasticsearchConfig {
     private static final Logger LOG = LoggerFactory.getLogger(ElasticsearchConfig.class);
     
     private static final String INDEXER_URL_KEY = "pass.elasticsearch.url";
-    private static final String DEFAULT_INDEXER_URL = "http://localhost:9200/pass";
+    private static final String DEFAULT_INDEXER_URL = "http://localhost:9200";
+
+    private static final String INDEXES_KEY = "pass.elasticsearch.indices";
+    private static final String DEFAULT_INDICES = "pass";
     
     private static final String INDEXER_LIMIT_KEY = "pass.elasticsearch.limit";
     private static final Integer DEFAULT_INDEXER_LIMIT = 200;
@@ -61,7 +64,19 @@ public class ElasticsearchConfig {
         return urls;
     }
 
-    
+
+    /**
+     * Get indexes to search, defaults to DEFAULT_INDEXES if not set
+     * @return indices
+     */
+
+    public static String[] getIndices() {
+        String sIndices =  ConfigUtil.getSystemProperty(INDEXES_KEY, DEFAULT_INDICES);
+        String[] arrIndices = sIndices.split( ",");
+        LOG.debug("Using index array of {} ", arrIndices.toString() );
+        return arrIndices;
+    }
+
     /**
      * Get indexer limit setting, defaults to DEFAULT_INDEXER_LIMIT if environment variable not set
      * @return indexer limit.
