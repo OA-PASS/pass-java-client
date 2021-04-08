@@ -125,7 +125,7 @@
     <commons-beanutils.version>1.9.4</commons-beanutils.version>
     <joda-time.version>2.10</joda-time.version>
     <org-json.version>20180813</org-json.version>
-    <junit.version>4.12</junit.version>
+    <junit.version>4.13.1</junit.version>
     <jackson.version>2.9.10.1</jackson.version>
     <fcrepo-java-client.version>0.3.0</fcrepo-java-client.version>
     <logback.version>1.2.3</logback.version>
