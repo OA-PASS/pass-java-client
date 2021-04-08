@@ -78,7 +78,12 @@ public class ElasticsearchPassClient {
      * URL(s) of indexer
      */
     private final HttpHost[] hosts;
-        
+
+    /**
+     * names of indexes
+     */
+    private final String[] indices;
+
     /** 
      * Default constructor for PASS client
      */
@@ -91,7 +96,7 @@ public class ElasticsearchPassClient {
             hosts[count] = new HttpHost(url.getHost(), url.getPort(), url.getProtocol());
             count = count+1;
         }
-        
+        indices = ElasticsearchConfig.getIndices();
     }
     
     /**
@@ -262,6 +267,7 @@ public class ElasticsearchPassClient {
             matchQueryBuilder.defaultOperator(Operator.AND);
             sourceBuilder.query(matchQueryBuilder);
             searchRequest.source(sourceBuilder);
+            searchRequest.indices(indices);
             SearchResponse searchResponse = client.search(searchRequest);
             SearchHits hits = searchResponse.getHits();
             Iterator<SearchHit> hitsIt = hits.iterator();

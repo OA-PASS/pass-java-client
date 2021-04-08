@@ -85,7 +85,8 @@ a system property `-Dpass.fedora.user=myUser` or as an environment variable `PAS
 * pass.fedora.baseurl (default=http://localhost:8080/fcrepo/rest)
 * pass.fedora.user (default=fedoraAdmin)
 * pass.fedora.password (default=moo)
-* pass.elasticsearch.url (defaults = http://localhost:9200/pass)
+* pass.elasticsearch.url (defaults = http://localhost:9200)
+* pass.elasticsearch.indices (default = pass)
 * pass.elasticsearch.limit (defaults = 200) you can also override the default by using the findBy functions that accept a limit and offset value
 
 ## Integration tests with Fedora and Elasticsearch
