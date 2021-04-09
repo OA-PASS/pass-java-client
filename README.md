@@ -89,7 +89,7 @@ a system property `-Dpass.fedora.user=myUser` or as an environment variable `PAS
 * pass.elasticsearch.indices (default = pass)
 * pass.elasticsearch.limit (defaults = 200) you can also override the default by using the findBy functions that accept a limit and offset value
 
-A note on pass.elasticsearch.indices: a value of "" will cause all indices on the host toe be searched, as should a target value of _all or *.
+A note on pass.elasticsearch.indices: a value of "" will cause all indices on the host to be searched, as should a target value of _all or *.
 
 ## Integration tests with Fedora and Elasticsearch
 
