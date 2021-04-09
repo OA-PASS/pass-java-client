@@ -89,11 +89,13 @@ a system property `-Dpass.fedora.user=myUser` or as an environment variable `PAS
 * pass.elasticsearch.indices (default = pass)
 * pass.elasticsearch.limit (defaults = 200) you can also override the default by using the findBy functions that accept a limit and offset value
 
+A note on pass.elasticsearch.indices: a value of "" will cause all indices on the host to be searched, as should a target value of _all or *.
+
 ## Integration tests with Fedora and Elasticsearch
 
 The integration test module `pass-client-integration` uses Docker to spin up an instance of Fedora and Elasticsearch for testing the client against.
 
-To run a the integration testing environment manually, from within `pass-client-integration`, do
+To run the integration testing environment manually, from within `pass-client-integration`, do
 
     mvn docker:run -Pstandard
 
