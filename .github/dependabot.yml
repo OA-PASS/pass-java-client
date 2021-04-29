@@ -1,0 +1,25 @@
+version: 2
+updates:
+- package-ecosystem: maven
+  directory: "/"
+  schedule:
+    interval: daily
+  open-pull-requests-limit: 10
+  ignore:
+  - dependency-name: org.elasticsearch.client:elasticsearch-rest-high-level-client
+    versions:
+    - ">= 7.a, < 8"
+  - dependency-name: org.elasticsearch.client:elasticsearch-rest-high-level-client
+    versions:
+    - 6.8.13
+    - 6.8.14
+    - 6.8.15
+  - dependency-name: joda-time:joda-time
+    versions:
+    - 2.10.9
+  - dependency-name: org.json:json
+    versions:
+    - "20201115"
+  - dependency-name: org.apache.logging.log4j:log4j-to-slf4j
+    versions:
+    - 2.14.0
