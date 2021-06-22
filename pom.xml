@@ -129,7 +129,7 @@
     <jackson.version>2.9.10.7</jackson.version>
     <fcrepo-java-client.version>0.3.0</fcrepo-java-client.version>
     <logback.version>1.2.3</logback.version>
-    <mockito.version>3.1.0</mockito.version>
+    <mockito.version>3.11.2</mockito.version>
     <openpojo.version>0.8.13</openpojo.version>
     <elasticsearch-client.version>6.7.2</elasticsearch-client.version>
     <slf4j.version>1.7.29</slf4j.version>
