@@ -127,7 +127,7 @@
     <org-json.version>20210307</org-json.version>
     <junit.version>4.13.1</junit.version>
     <jackson.version>2.9.10.7</jackson.version>
-    <fcrepo-java-client.version>0.3.0</fcrepo-java-client.version>
+    <fcrepo-java-client.version>6.0.0</fcrepo-java-client.version>
     <logback.version>1.2.3</logback.version>
     <mockito.version>3.1.0</mockito.version>
     <openpojo.version>0.8.13</openpojo.version>
