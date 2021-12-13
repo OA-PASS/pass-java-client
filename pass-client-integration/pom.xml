@@ -110,10 +110,6 @@
                   <PI_TYPE_PREFIX>http://oapass.org/ns/pass#</PI_TYPE_PREFIX>
                   <PI_LOG_LEVEL>DEBUG</PI_LOG_LEVEL>
                 </env>
-                <links>
-                  <link>fcrepo:localhost</link>
-                  <link>elasticsearch</link>
-                </links>
                 <volumes>
                   <bind>./src/test/resources/docker/hosts:/etc/hosts</bind>
                 </volumes>
