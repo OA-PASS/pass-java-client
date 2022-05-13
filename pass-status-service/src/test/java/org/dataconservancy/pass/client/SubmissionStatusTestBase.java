@@ -17,8 +17,6 @@ package org.dataconservancy.pass.client;
 
 import java.net.URI;
 
-import org.junit.Before;
-
 import org.dataconservancy.pass.model.Deposit;
 import org.dataconservancy.pass.model.Deposit.DepositStatus;
 import org.dataconservancy.pass.model.RepositoryCopy;
@@ -26,14 +24,16 @@ import org.dataconservancy.pass.model.RepositoryCopy.CopyStatus;
 import org.dataconservancy.pass.model.SubmissionEvent;
 import org.dataconservancy.pass.model.SubmissionEvent.EventType;
 import org.joda.time.DateTime;
+import org.junit.Before;
 
 /**
  * Some basic methods to support Submission Status testing.
+ *
  * @author Karen Hanson
  */
 public abstract class SubmissionStatusTestBase {
 
-    //some test URIs 
+    //some test URIs
     protected URI repo1Id;
     protected URI repo2Id;
     protected URI repo3Id;
@@ -44,8 +44,7 @@ public abstract class SubmissionStatusTestBase {
     protected URI repoCopy2Id;
     protected URI subEvent1Id;
     protected URI subEvent2Id;
-    
-    
+
     @Before
     public void initiate() throws Exception {
         repo1Id = new URI("repository:1");
@@ -59,7 +58,7 @@ public abstract class SubmissionStatusTestBase {
         subEvent1Id = new URI("submissionEvents:1");
         subEvent2Id = new URI("submissionEvents:2");
     }
-    
+
     protected Deposit deposit(DepositStatus status, URI repoUri) {
         Deposit d = new Deposit();
         d.setDepositStatus(status);
@@ -67,14 +66,12 @@ public abstract class SubmissionStatusTestBase {
         return d;
     }
 
-
     protected RepositoryCopy repoCopy(CopyStatus status, URI repoUri) {
         RepositoryCopy r = new RepositoryCopy();
         r.setCopyStatus(status);
         r.setRepository(repoUri);
         return r;
     }
-    
 
     protected SubmissionEvent submissionEvent(DateTime dt, EventType eventType) {
         SubmissionEvent event = new SubmissionEvent();
@@ -82,5 +79,5 @@ public abstract class SubmissionStatusTestBase {
         event.setEventType(eventType);
         return event;
     }
-    
+
 }

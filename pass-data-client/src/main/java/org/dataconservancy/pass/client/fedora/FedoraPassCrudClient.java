@@ -15,12 +15,16 @@
  */
 package org.dataconservancy.pass.client.fedora;
 
+import static java.lang.String.format;
+import static java.util.Base64.getEncoder;
+import static org.dataconservancy.pass.client.fedora.RepositoryCrawler.Ignore.IGNORE_CONTAINERS;
+import static org.dataconservancy.pass.client.fedora.RepositoryCrawler.Skip.SKIP_ACLS;
+import static org.dataconservancy.pass.client.fedora.RepositoryCrawler.Skip.depth;
+
 import java.io.IOException;
 import java.io.InputStream;
-
 import java.net.URI;
 import java.net.URISyntaxException;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -32,7 +36,6 @@ import java.util.function.Consumer;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import okhttp3.Interceptor;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -40,33 +43,24 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 import okhttp3.logging.HttpLoggingInterceptor;
-
 import org.apache.http.HttpStatus;
-
 import org.dataconservancy.pass.client.PassClientDefault;
 import org.dataconservancy.pass.client.PassJsonAdapter;
 import org.dataconservancy.pass.client.adapter.PassJsonAdapterBasic;
 import org.dataconservancy.pass.model.PassEntity;
-import org.fcrepo.client.PostBuilder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import org.fcrepo.client.DeleteBuilder;
 import org.fcrepo.client.FcrepoClient;
 import org.fcrepo.client.FcrepoOperationFailedException;
 import org.fcrepo.client.FcrepoResponse;
 import org.fcrepo.client.GetBuilder;
-
-import static java.lang.String.format;
-import static java.util.Base64.getEncoder;
-
-import static org.dataconservancy.pass.client.fedora.RepositoryCrawler.Ignore.IGNORE_CONTAINERS;
-import static org.dataconservancy.pass.client.fedora.RepositoryCrawler.Skip.depth;
-import static org.dataconservancy.pass.client.fedora.RepositoryCrawler.Skip.SKIP_ACLS;
+import org.fcrepo.client.PostBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Fedora CRUD client does basic work of creating, retrieving, updating, and deleting
  * records in Fedora based on model and/or URI provided.
+ *
  * @author Karen Hanson
  */
 public class FedoraPassCrudClient {
@@ -84,9 +78,9 @@ public class FedoraPassCrudClient {
     private final static String IFMATCH_HEADER = "If-Match";
     private final static String ETAG_HEADER = "ETag";
     private final static String ETAG_WEAK_PREFIX = "W/";
-    
-    /** 
-     * The Fedora client tool 
+
+    /**
+     * The Fedora client tool
      */
     private FcrepoClient client;
 
@@ -96,37 +90,38 @@ public class FedoraPassCrudClient {
     private OkHttpClient okHttpClient;
 
     /**
-     * A JSON adapter for PASS 
+     * A JSON adapter for PASS
      */
     private PassJsonAdapter adapter;
-    
+
     /**
      * Crawls the repository
      */
     private RepositoryCrawler crawler = new RepositoryCrawler();
-    
-    /** 
+
+    /**
      * If this is set to true, on update PUT will be used instead of PATCH to perform updates
-     * thus overwriting the updated record with the new version. This can be used when it is not 
-     * desirable to leave behind fields from previous model versions. This should be set 
+     * thus overwriting the updated record with the new version. This can be used when it is not
+     * desirable to leave behind fields from previous model versions. This should be set
      * one time on instantiation. Defaults to false (i.e. PATCH is used)
      */
     private boolean overwriteOnUpdate = false;
-    
+
     /**
      * Instantiates default implementations of the underlying Fedora client, JSON adapter, and OkHttpClient.
      */
     public FedoraPassCrudClient() {
         this(FcrepoClient.client()
-                .credentials(FedoraConfig.getUserName(), FedoraConfig.getPassword())
-                .throwExceptionOnFailure()
-                .build(),
+                         .credentials(FedoraConfig.getUserName(), FedoraConfig.getPassword())
+                         .throwExceptionOnFailure()
+                         .build(),
              new PassJsonAdapterBasic());
     }
 
-    /** 
+    /**
      * Support passing in of Fedora client and adapter.  Instantiates a default OkHttpClient.
-     * @param client Fedora client.
+     *
+     * @param client  Fedora client.
      * @param adapter JSON adapter.
      */
     public FedoraPassCrudClient(FcrepoClient client, PassJsonAdapter adapter) {
@@ -147,9 +142,10 @@ public class FedoraPassCrudClient {
                 LOG.trace("Adding 'Authorization' header for communication with {}", FedoraConfig.getBaseUrl());
                 Request.Builder reqBuilder = request.newBuilder();
                 byte[] bytes = format("%s:%s",
-                        FedoraConfig.getUserName(), FedoraConfig.getPassword()).getBytes();
+                                      FedoraConfig.getUserName(), FedoraConfig.getPassword()).getBytes();
                 return requestChain.proceed(reqBuilder.addHeader("Authorization",
-                        "Basic " + getEncoder().encodeToString(bytes)).build());
+                                                                 "Basic " + getEncoder().encodeToString(bytes))
+                                                      .build());
             });
         }
 
@@ -174,8 +170,9 @@ public class FedoraPassCrudClient {
 
     /**
      * Support passing in of Fedora client, JSON adapter, and OkHttpClient
-     * @param client Fedora client
-     * @param adapter JSON adapter
+     *
+     * @param client       Fedora client
+     * @param adapter      JSON adapter
      * @param okHttpClient HTTP client
      */
     public FedoraPassCrudClient(FcrepoClient client, PassJsonAdapter adapter, OkHttpClient okHttpClient) {
@@ -192,9 +189,10 @@ public class FedoraPassCrudClient {
         this.adapter = adapter;
         this.okHttpClient = okHttpClient;
     }
-    
-    /** 
+
+    /**
      * Set CRUD client to use PUT instead of PATCH when performing an update
+     *
      * @param overwriteOnUpdate
      * @return
      */
@@ -204,49 +202,47 @@ public class FedoraPassCrudClient {
     }
 
     /**
-     * @see org.dataconservancy.pass.client.PassClient#createResource(PassEntity)
-     * 
      * @param modelObj modelObj
      * @return URI
+     * @see org.dataconservancy.pass.client.PassClient#createResource(PassEntity)
      */
     public URI createResource(PassEntity modelObj) {
         return createInternal(modelObj, true).getId();
     }
 
     /**
-     * @see org.dataconservancy.pass.client.PassClient#createResource(PassEntity)
-     * 
-     * @param modelObj modelObj
+     * @param modelObj   modelObj
      * @param modelClass modelClass
+     * @param <T>        PASS entity type
      * @return PASS entity.
-     * @param <T> PASS entity type
+     * @see org.dataconservancy.pass.client.PassClient#createResource(PassEntity)
      */
     public <T extends PassEntity> T createAndReadResource(T modelObj, Class<T> modelClass) {
         return createInternal(modelObj, true);
     }
 
     /**
-     * @see org.dataconservancy.pass.client.PassClient#updateResource(PassEntity)
      * @param modelObj modelObj
+     * @see org.dataconservancy.pass.client.PassClient#updateResource(PassEntity)
      */
     public void updateResource(PassEntity modelObj) {
         updateInternal(modelObj, true, false);
     }
 
-    /** 
-     * @see org.dataconservancy.pass.client.PassClient#updateAndReadResource(PassEntity, Class)
-     * @param modelObj modelObj
+    /**
+     * @param modelObj   modelObj
      * @param modelClass modelClass
+     * @param <T>        PASS entity type
      * @return PASS entity.
-     * @param <T> PASS entity type
+     * @see org.dataconservancy.pass.client.PassClient#updateAndReadResource(PassEntity, Class)
      */
     public <T extends PassEntity> T updateAndReadResource(T modelObj, Class<T> modelClass) {
         return updateInternal(modelObj, true, true);
     }
 
     /**
-     * @see org.dataconservancy.pass.client.PassClient#deleteResource(URI)
      * @param uri uri.
+     * @see org.dataconservancy.pass.client.PassClient#deleteResource(URI)
      */
     public void deleteResource(URI uri) {
         try (FcrepoResponse response = new DeleteBuilder(uri, client).perform()) {
@@ -257,14 +253,13 @@ public class FedoraPassCrudClient {
     }
 
     /**
-     * @see org.dataconservancy.pass.client.PassClient#readResource(URI, Class)
-     * 
-     * @param uri uri
+     * @param uri        uri
      * @param modelClass modelClass
+     * @param <T>        PASS entity type
      * @return PASS entity
-     * @param <T> PASS entity type
+     * @see org.dataconservancy.pass.client.PassClient#readResource(URI, Class)
      */
-    public <T extends PassEntity> T readResource(URI uri, Class<T> modelClass) {      
+    public <T extends PassEntity> T readResource(URI uri, Class<T> modelClass) {
 
         List<URI> omits = new ArrayList<URI>();
         try {
@@ -272,42 +267,42 @@ public class FedoraPassCrudClient {
         } catch (URISyntaxException e) {
             throw new RuntimeException("Could not create required \"omit\" type.", e);
         }
-        
-        try (FcrepoResponse response = new GetBuilder(uri, client)
-                .accept(COMPACTED_ACCEPTTYPE)
-                .preferRepresentation(null, omits)
-                .perform()) {
 
-          LOG.info("Resource read status for {}: {}", uri, response.getStatusCode());
-          T model = adapter.toModel(response.getBody(), modelClass);
-          
-          //remove the etag prefix, not needed for version comparison
-          String etag = response.getHeaderValue(ETAG_HEADER);
-          if (etag!=null && etag.contains(ETAG_WEAK_PREFIX)) {
-              etag = etag.replace(ETAG_WEAK_PREFIX, "");
-          }
-          model.setVersionTag(etag);
-          
-          return model;
-          
+        try (FcrepoResponse response = new GetBuilder(uri, client)
+            .accept(COMPACTED_ACCEPTTYPE)
+            .preferRepresentation(null, omits)
+            .perform()) {
+
+            LOG.info("Resource read status for {}: {}", uri, response.getStatusCode());
+            T model = adapter.toModel(response.getBody(), modelClass);
+
+            //remove the etag prefix, not needed for version comparison
+            String etag = response.getHeaderValue(ETAG_HEADER);
+            if (etag != null && etag.contains(ETAG_WEAK_PREFIX)) {
+                etag = etag.replace(ETAG_WEAK_PREFIX, "");
+            }
+            model.setVersionTag(etag);
+
+            return model;
+
         } catch (IOException | FcrepoOperationFailedException e) {
             throw new RuntimeException("A problem occurred while attempting to read a Resource", e);
-        }        
+        }
     }
 
     /**
-     * @see org.dataconservancy.pass.client.PassClient#getIncoming(URI)
      * @param passEntityUri pass entity URI
      * @return map
+     * @see org.dataconservancy.pass.client.PassClient#getIncoming(URI)
      */
     public Map<String, Collection<URI>> getIncoming(URI passEntityUri) {
         List<URI> include = Collections.singletonList(URI.create(INCOMING_INCLUDETYPE));
         List<URI> omits = Collections.singletonList(URI.create(SERVER_MANAGED_OMITTYPE));
 
         try (FcrepoResponse response = new GetBuilder(passEntityUri, client)
-                .accept(COMPACTED_ACCEPTTYPE)
-                .preferRepresentation(include, omits)
-                .perform()) {
+            .accept(COMPACTED_ACCEPTTYPE)
+            .preferRepresentation(include, omits)
+            .perform()) {
 
             LOG.info("Resource read status: for {}: {}", passEntityUri, response.getStatusCode());
 
@@ -352,13 +347,12 @@ public class FedoraPassCrudClient {
     }
 
     /**
-     * @see PassClientDefault#upload(URI, InputStream, Map)
-     *
      * @param passEntityUri PASS entity
-     * @param content content to upload
-     * @param params parameters
+     * @param content       content to upload
+     * @param params        parameters
      * @return URI of uploaded content
      * @throws RuntimeException if building the request to the repository fails, or if performing the request fails
+     * @see PassClientDefault#upload(URI, InputStream, Map)
      */
     public URI upload(URI passEntityUri, InputStream content, Map<String, ?> params) {
         PostBuilder builder = new PostBuilder(passEntityUri, client);
@@ -370,7 +364,7 @@ public class FedoraPassCrudClient {
         }
 
         if (params.containsKey("slug")) {
-            builder.slug((String)params.get("slug"));
+            builder.slug((String) params.get("slug"));
         }
 
         if (params.containsKey("sha256")) {
@@ -397,24 +391,25 @@ public class FedoraPassCrudClient {
             return response.getLocation();
         } catch (Exception e) {
             throw new RuntimeException("An problem occurred while POSTing binary content to Resource " +
-                    passEntityUri + ": " + e.getMessage(), e);
+                                       passEntityUri + ": " + e.getMessage(), e);
         }
     }
-    
+
     /**
      * Process all entities
-     * @param processor processor
+     *
+     * @param processor  processor
      * @param modelClass modelClass
+     * @param <T>        PASS entity type
      * @return number visited
-     * @param <T> PASS entity type
      */
     public <T extends PassEntity> int processAllEntities(Consumer<URI> processor, Class<T> modelClass) {
         if (modelClass == null) {
             return crawler.visit(
-                    URI.create(FedoraConfig.getBaseUrl()), 
-                    processor, 
-                    IGNORE_CONTAINERS, 
-                    depth(2).or(SKIP_ACLS));
+                URI.create(FedoraConfig.getBaseUrl()),
+                processor,
+                IGNORE_CONTAINERS,
+                depth(2).or(SKIP_ACLS));
         }
 
         URI container = null;
@@ -425,10 +420,10 @@ public class FedoraPassCrudClient {
         }
 
         return crawler.visit(
-                container,
-                processor,
-                IGNORE_CONTAINERS,
-                depth(1).or(SKIP_ACLS));
+            container,
+            processor,
+            IGNORE_CONTAINERS,
+            depth(1).or(SKIP_ACLS));
     }
 
     private <T extends PassEntity> T createInternal(T modelObj, boolean includeContext) {
@@ -443,10 +438,10 @@ public class FedoraPassCrudClient {
         }
 
         Request.Builder reqBuilder = new Request.Builder()
-                .url(container.toString())
-                .post(body)
-                .addHeader(ACCEPT_HEADER, COMPACTED_ACCEPTTYPE)
-                .addHeader(PREFER_HEADER, "return=representation; omits=\"" + SERVER_MANAGED_OMITTYPE + "\"");
+            .url(container.toString())
+            .post(body)
+            .addHeader(ACCEPT_HEADER, COMPACTED_ACCEPTTYPE)
+            .addHeader(PREFER_HEADER, "return=representation; omits=\"" + SERVER_MANAGED_OMITTYPE + "\"");
 
         try (Response res = okHttpClient.newCall(reqBuilder.build()).execute()) {
             handleNon2xx(modelObj, res);
@@ -457,7 +452,7 @@ public class FedoraPassCrudClient {
             return (T) entity;
         } catch (Exception e) {
             throw new RuntimeException("A problem occurred while attempting to create a Resource: " +
-                    e.getMessage(), e);
+                                       e.getMessage(), e);
         }
     }
 
@@ -465,9 +460,9 @@ public class FedoraPassCrudClient {
         byte[] json = adapter.toJson(modelObj, true);
 
         Request.Builder reqBuilder = new Request.Builder()
-                .url(modelObj.getId().toString())
-                .addHeader(ACCEPT_HEADER, COMPACTED_ACCEPTTYPE);
-        
+            .url(modelObj.getId().toString())
+            .addHeader(ACCEPT_HEADER, COMPACTED_ACCEPTTYPE);
+
         if (overwriteOnUpdate) {
             RequestBody body = RequestBody.create(MediaType.parse(JSONLD_CONTENTTYPE), json);
             reqBuilder.put(body).addHeader(PREFER_HEADER, PREFER_LENIENT_VAL);
@@ -480,13 +475,13 @@ public class FedoraPassCrudClient {
             reqBuilder.addHeader(IFMATCH_HEADER, modelObj.getVersionTag());
         } else {
             LOG.warn("Executing update without 'If-Match' header: a {}, id '{}' has a null 'version tag'",
-                    modelObj.getClass().getName(), modelObj.getId());
+                     modelObj.getClass().getName(), modelObj.getId());
         }
 
         try (Response res = okHttpClient.newCall(reqBuilder.build()).execute()) {
             if (res.code() == HttpStatus.SC_PRECONDITION_FAILED) {
                 String msg = format("Failed to update %s - the data may have changed since %s was last retrieved.",
-                        modelObj.getId(), modelObj.getId());
+                                    modelObj.getId(), modelObj.getId());
                 throw new UpdateConflictException(msg);
             }
             LOG.info("Resource update status for {}: {}", modelObj.getId(), res.code());
@@ -495,7 +490,7 @@ public class FedoraPassCrudClient {
             throw e;
         } catch (Exception e) {
             String msg = format("A problem occurred while attempting to update Resource %s: %s ",
-                    modelObj.getId(), e.getMessage());
+                                modelObj.getId(), e.getMessage());
             throw new RuntimeException(msg, e);
         }
 
@@ -505,7 +500,7 @@ public class FedoraPassCrudClient {
     private static <T extends PassEntity> void handleNon2xx(T modelObj, Response res) throws IOException {
         if (res.code() < 200 || res.code() > 299) {
             String msg = format("Failed to update %s - unexpected status code %s: %s",
-                    modelObj.getId(), res.code(), res.body().string());
+                                modelObj.getId(), res.code(), res.body().string());
             throw new RuntimeException(msg);
         }
     }

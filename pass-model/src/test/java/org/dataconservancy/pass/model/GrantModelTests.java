@@ -15,45 +15,44 @@
  */
 package org.dataconservancy.pass.model;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
 import java.io.InputStream;
-
 import java.net.URI;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-
-import org.junit.Test;
-
 import org.dataconservancy.pass.model.Grant.AwardStatus;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.ISODateTimeFormat;
 import org.json.JSONObject;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import org.junit.Test;
 
 /**
  * Model has been annotated with JSON tags. These tests do a simple check to ensure the
  * Jackson integration is functional and the equals / hashcode functions work
+ *
  * @author Karen Hanson
  */
 public class GrantModelTests {
 
     private DateTimeFormatter dateFormatter = ISODateTimeFormat.dateTime().withZoneUTC();
+
     /**
      * Simple verification that JSON file can be converted to Grant model
+     *
      * @throws Exception
      */
     @Test
     public void testGrantFromJsonConversion() throws Exception {
-        
+
         InputStream json = GrantModelTests.class.getResourceAsStream("/grant.json");
         ObjectMapper objectMapper = new ObjectMapper();
         Grant grant = objectMapper.readValue(json, Grant.class);
-        
+
         assertEquals(TestValues.GRANT_ID_1, grant.getId().toString());
         assertEquals(TestValues.GRANT_AWARD_NUMBER, grant.getAwardNumber());
         assertEquals(TestValues.GRANT_STATUS, grant.getAwardStatus().toString());
@@ -67,11 +66,12 @@ public class GrantModelTests {
         assertEquals(TestValues.GRANT_AWARD_DATE_STR, dateFormatter.print(grant.getAwardDate()));
         assertEquals(TestValues.GRANT_START_DATE_STR, dateFormatter.print(grant.getStartDate()));
         assertEquals(TestValues.GRANT_END_DATE_STR, dateFormatter.print(grant.getEndDate()));
-        
+
     }
 
     /**
      * Simple verification that Grant model can be converted to JSON
+     *
      * @throws Exception
      */
     @Test
@@ -80,29 +80,30 @@ public class GrantModelTests {
         Grant grant = createGrant();
         ObjectMapper objectMapper = new ObjectMapper();
         String jsonGrant = objectMapper.writeValueAsString(grant);
-        
+
         JSONObject root = new JSONObject(jsonGrant);
-        
-        assertEquals(root.getString("@id"),TestValues.GRANT_ID_1);
-        assertEquals(root.getString("@type"),"Grant");
-        assertEquals(root.getString("awardNumber"),TestValues.GRANT_AWARD_NUMBER);
-        assertEquals(root.getString("awardStatus"),TestValues.GRANT_STATUS);
-        assertEquals(root.getString("localKey"),TestValues.GRANT_LOCALKEY);
-        assertEquals(root.getString("projectName"),TestValues.GRANT_PROJECT_NAME);
-        assertEquals(root.getString("primaryFunder"),TestValues.FUNDER_ID_1);
-        assertEquals(root.getString("directFunder"),TestValues.FUNDER_ID_2);
-        assertEquals(root.getString("pi"),TestValues.CONTRIBUTOR_ID_1);
-        assertEquals(root.getJSONArray("coPis").get(0),TestValues.USER_ID_2);
-        assertEquals(root.getJSONArray("coPis").get(1),TestValues.USER_ID_3);
-        assertEquals(root.getString("awardDate").toString(),TestValues.GRANT_AWARD_DATE_STR);
-        assertEquals(root.getString("startDate").toString(),TestValues.GRANT_START_DATE_STR);
-        assertEquals(root.getString("endDate").toString(),TestValues.GRANT_END_DATE_STR);
+
+        assertEquals(root.getString("@id"), TestValues.GRANT_ID_1);
+        assertEquals(root.getString("@type"), "Grant");
+        assertEquals(root.getString("awardNumber"), TestValues.GRANT_AWARD_NUMBER);
+        assertEquals(root.getString("awardStatus"), TestValues.GRANT_STATUS);
+        assertEquals(root.getString("localKey"), TestValues.GRANT_LOCALKEY);
+        assertEquals(root.getString("projectName"), TestValues.GRANT_PROJECT_NAME);
+        assertEquals(root.getString("primaryFunder"), TestValues.FUNDER_ID_1);
+        assertEquals(root.getString("directFunder"), TestValues.FUNDER_ID_2);
+        assertEquals(root.getString("pi"), TestValues.CONTRIBUTOR_ID_1);
+        assertEquals(root.getJSONArray("coPis").get(0), TestValues.USER_ID_2);
+        assertEquals(root.getJSONArray("coPis").get(1), TestValues.USER_ID_3);
+        assertEquals(root.getString("awardDate").toString(), TestValues.GRANT_AWARD_DATE_STR);
+        assertEquals(root.getString("startDate").toString(), TestValues.GRANT_START_DATE_STR);
+        assertEquals(root.getString("endDate").toString(), TestValues.GRANT_END_DATE_STR);
     }
-    
+
     /**
-     * Creates two identical Grants and checks the equals and hashcodes match. 
-     * Modifies one field on one of the Grants and verifies they no longer are 
+     * Creates two identical Grants and checks the equals and hashcodes match.
+     * Modifies one field on one of the Grants and verifies they no longer are
      * equal or have matching hashcodes.
+     *
      * @throws Exception
      */
     @Test
@@ -111,16 +112,17 @@ public class GrantModelTests {
         Grant grant1 = createGrant();
         Grant grant2 = createGrant();
 
-        assertEquals(grant1,grant2);
-        assertEquals(grant1.hashCode(),grant2.hashCode());
+        assertEquals(grant1, grant2);
+        assertEquals(grant1.hashCode(), grant2.hashCode());
         grant1.setAwardNumber("different");
         assertTrue(!grant1.equals(grant2));
-        assertTrue(grant1.hashCode()!=grant2.hashCode());
-        
+        assertTrue(grant1.hashCode() != grant2.hashCode());
+
     }
-    
+
     /**
      * Test copy constructor creates a valid duplicate that is not the same object
+     *
      * @throws Exception
      */
     @Test
@@ -128,7 +130,7 @@ public class GrantModelTests {
         Grant grant = createGrant();
         Grant grantCopy = new Grant(grant);
         assertEquals(grant, grantCopy);
-        
+
         String newLocalKey = "different:key";
         grantCopy.setLocalKey(newLocalKey);
         assertEquals(TestValues.GRANT_LOCALKEY, grant.getLocalKey());
@@ -140,7 +142,7 @@ public class GrantModelTests {
         assertEquals(dt, grant.getAwardDate());
         assertEquals(newAwardDate, grantCopy.getAwardDate());
     }
-    
+
     private Grant createGrant() throws Exception {
         Grant grant = new Grant();
         grant.setId(new URI(TestValues.GRANT_ID_1));
@@ -162,8 +164,8 @@ public class GrantModelTests {
         grant.setStartDate(dt);
         dt = dateFormatter.parseDateTime(TestValues.GRANT_END_DATE_STR);
         grant.setEndDate(dt);
-        
+
         return grant;
     }
-    
+
 }

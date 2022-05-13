@@ -15,6 +15,15 @@
  */
 package org.dataconservancy.pass.client.integration;
 
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
+import java.io.InputStream;
+import java.net.URI;
+import java.util.HashMap;
+
 import okhttp3.Request;
 import okhttp3.Response;
 import org.apache.commons.io.IOUtils;
@@ -26,15 +35,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.io.InputStream;
-import java.net.URI;
-import java.util.HashMap;
-
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 
 /**
  * Integration tests related to uploading binary content to repository resources
@@ -99,7 +99,7 @@ public class PostBinaryIT extends ClientITBase {
     public void postSimple() throws Exception {
         try (Response res = okHttp.newCall(getWithAccept(uploaded)).execute()) {
             MessageDigestCalculatingInputStream mdActualIn = new MessageDigestCalculatingInputStream(
-                    res.body().byteStream(), "SHA-1");
+                res.body().byteStream(), "SHA-1");
             IOUtils.copy(mdActualIn, new NullOutputStream());
 
             byte[] expectedDigest = uploadedIn.getMessageDigest().digest();
@@ -107,7 +107,7 @@ public class PostBinaryIT extends ClientITBase {
 
             assertTrue("Unexpected response code: " + res.code(), res.isSuccessful());
             assertArrayEquals("The checksum for " + uploaded + " differs from the expected value.",
-                    actualDigest, expectedDigest);
+                              actualDigest, expectedDigest);
         }
     }
 
@@ -141,10 +141,10 @@ public class PostBinaryIT extends ClientITBase {
      */
     private static Request getWithAccept(URI uri) {
         return new Request.Builder()
-                .get()
-                .url(uri.toString())
-                .addHeader("Accept", "*/*")
-                .build();
+            .get()
+            .url(uri.toString())
+            .addHeader("Accept", "*/*")
+            .build();
     }
 
 }

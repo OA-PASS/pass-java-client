@@ -15,37 +15,36 @@
  */
 package org.dataconservancy.pass.model;
 
-import java.io.InputStream;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
+import java.io.InputStream;
 import java.net.URI;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-
-import org.junit.Test;
-
 import org.json.JSONObject;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import org.junit.Test;
 
 /**
  * Model has been annotated with JSON tags. These tests do a simple check to ensure the
  * Jackson integration is functional and the equals / hashcode functions work
+ *
  * @author Karen Hanson
  */
 public class FunderModelTests {
-            
+
     /**
      * Simple verification that JSON file can be converted to Funder model
+     *
      * @throws Exception
      */
     @Test
     public void testFunderFromJsonConversion() throws Exception {
-        
+
         InputStream json = FunderModelTests.class.getResourceAsStream("/funder.json");
         ObjectMapper objectMapper = new ObjectMapper();
         Funder funder = objectMapper.readValue(json, Funder.class);
-        
+
         assertEquals(TestValues.FUNDER_ID_1, funder.getId().toString());
         assertEquals(TestValues.FUNDER_NAME, funder.getName());
         assertEquals(TestValues.FUNDER_URL, funder.getUrl().toString());
@@ -55,6 +54,7 @@ public class FunderModelTests {
 
     /**
      * Simple verification that Funder model can be converted to JSON
+     *
      * @throws Exception
      */
     @Test
@@ -66,18 +66,19 @@ public class FunderModelTests {
 
         JSONObject root = new JSONObject(jsonFunder);
 
-        assertEquals(root.getString("@id"),TestValues.FUNDER_ID_1);
-        assertEquals(root.getString("@type"),"Funder");
-        assertEquals(root.getString("name"),TestValues.FUNDER_NAME);
-        assertEquals(root.getString("url"),TestValues.FUNDER_URL);
-        assertEquals(root.getString("policy"),TestValues.POLICY_ID_1);
-        assertEquals(root.getString("localKey"),TestValues.FUNDER_LOCALKEY);
+        assertEquals(root.getString("@id"), TestValues.FUNDER_ID_1);
+        assertEquals(root.getString("@type"), "Funder");
+        assertEquals(root.getString("name"), TestValues.FUNDER_NAME);
+        assertEquals(root.getString("url"), TestValues.FUNDER_URL);
+        assertEquals(root.getString("policy"), TestValues.POLICY_ID_1);
+        assertEquals(root.getString("localKey"), TestValues.FUNDER_LOCALKEY);
     }
-    
+
     /**
-     * Creates two identical Funders and checks the equals and hashcodes match. 
-     * Modifies one field on one of the Funders and verifies they no longer are 
+     * Creates two identical Funders and checks the equals and hashcodes match.
+     * Modifies one field on one of the Funders and verifies they no longer are
      * equal or have matching hashcodes.
+     *
      * @throws Exception
      */
     @Test
@@ -86,16 +87,17 @@ public class FunderModelTests {
         Funder funder1 = createFunder();
         Funder funder2 = createFunder();
 
-        assertEquals(funder1,funder2);
-        assertEquals(funder1.hashCode(),funder2.hashCode());
+        assertEquals(funder1, funder2);
+        assertEquals(funder1.hashCode(), funder2.hashCode());
         funder1.setName("different");
         assertTrue(!funder1.equals(funder2));
-        assertTrue(funder1.hashCode()!=funder2.hashCode());
-        
+        assertTrue(funder1.hashCode() != funder2.hashCode());
+
     }
-    
+
     /**
      * Test copy constructor creates a valid duplicate that is not the same object
+     *
      * @throws Exception
      */
     @Test
@@ -103,7 +105,7 @@ public class FunderModelTests {
         Funder funder = createFunder();
         Funder funderCopy = new Funder(funder);
         assertEquals(funder, funderCopy);
-        
+
         String newLocalKey = "different:key";
         funderCopy.setLocalKey(newLocalKey);
         assertEquals(TestValues.FUNDER_LOCALKEY, funder.getLocalKey());
@@ -114,7 +116,7 @@ public class FunderModelTests {
         assertEquals(new URI(TestValues.FUNDER_URL), funder.getUrl());
         assertEquals(newUrl, funderCopy.getUrl());
     }
-    
+
     private Funder createFunder() throws Exception {
         Funder funder = new Funder();
         funder.setId(new URI(TestValues.FUNDER_ID_1));
@@ -124,5 +126,5 @@ public class FunderModelTests {
         funder.setLocalKey(TestValues.FUNDER_LOCALKEY);
         return funder;
     }
-    
+
 }

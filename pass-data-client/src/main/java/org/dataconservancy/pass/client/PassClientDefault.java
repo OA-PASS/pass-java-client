@@ -16,9 +16,7 @@
 package org.dataconservancy.pass.client;
 
 import java.io.InputStream;
-
 import java.net.URI;
-
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
@@ -32,30 +30,32 @@ import org.dataconservancy.pass.model.PassEntity;
 /**
  * Creates instances of objects needed to perform PassClient requirements, and redirects to appropriate
  * service (Index client or CRUD client)
+ *
  * @author Karen Hanson
  */
 public class PassClientDefault implements PassClient {
 
-    /** 
-     * Client that interacts with Fedora repo to carry out CRUD operations 
+    /**
+     * Client that interacts with Fedora repo to carry out CRUD operations
      */
     private FedoraPassCrudClient crudClient;
-    
-    /** 
-     * Client that interacts with Index repo to do lookups and searches 
+
+    /**
+     * Client that interacts with Index repo to do lookups and searches
      */
     private ElasticsearchPassClient indexClient;
-        
-    /** 
+
+    /**
      * Create a default pass client, with default configuration.
      */
     public PassClientDefault() {
         crudClient = new FedoraPassCrudClient();
         indexClient = new ElasticsearchPassClient();
     }
-    
+
     /**
      * Sets option to overwrite (PUT) when updating instead of the default PATCH.
+     *
      * @param overwriteOnUpdate - set to true to use PUT as update type
      * @return
      */
@@ -63,7 +63,7 @@ public class PassClientDefault implements PassClient {
         this.crudClient.overwriteOnUpdate(overwriteOnUpdate);
         return this;
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -144,7 +144,8 @@ public class PassClientDefault implements PassClient {
      * {@inheritDoc}
      */
     @Override
-    public <T extends PassEntity> Set<URI> findAllByAttribute(Class<T> modelClass, String attribute, Object value, int limit, int offset) {
+    public <T extends PassEntity> Set<URI> findAllByAttribute(Class<T> modelClass, String attribute, Object value,
+                                                              int limit, int offset) {
         return indexClient.findAllByAttribute(modelClass, attribute, value, limit, offset);
     }
 
@@ -152,7 +153,8 @@ public class PassClientDefault implements PassClient {
      * {@inheritDoc}
      */
     @Override
-    public <T extends PassEntity> Set<URI> findAllByAttributes(Class<T> modelClass, Map<String, Object> valueAttributesMap) {
+    public <T extends PassEntity> Set<URI> findAllByAttributes(Class<T> modelClass,
+                                                               Map<String, Object> valueAttributesMap) {
         return indexClient.findAllByAttributes(modelClass, valueAttributesMap);
     }
 
@@ -160,7 +162,9 @@ public class PassClientDefault implements PassClient {
      * {@inheritDoc}
      */
     @Override
-    public <T extends PassEntity> Set<URI> findAllByAttributes(Class<T> modelClass, Map<String, Object> valueAttributesMap, int limit, int offset) {
+    public <T extends PassEntity> Set<URI> findAllByAttributes(Class<T> modelClass,
+                                                               Map<String, Object> valueAttributesMap, int limit,
+                                                               int offset) {
         return indexClient.findAllByAttributes(modelClass, valueAttributesMap, limit, offset);
     }
 

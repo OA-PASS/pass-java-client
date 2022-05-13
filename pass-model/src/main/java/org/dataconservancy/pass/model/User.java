@@ -26,38 +26,39 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * User model for users logging into PASS
+ *
  * @author Karen Hanson
  */
 
 public class User extends PassEntity {
-    
-    /** 
-     * Unique login name used by user 
+
+    /**
+     * Unique login name used by user
      */
     private String username;
 
-    /** 
-     * First name(s) of User 
+    /**
+     * First name(s) of User
      */
     private String firstName;
 
-    /** 
-     * Middle name(s) of User 
+    /**
+     * Middle name(s) of User
      */
     private String middleName;
 
-    /** 
-     * Last name(s) of User 
+    /**
+     * Last name(s) of User
      */
     private String lastName;
-    
-    /** 
-     * Name for display. Separate names may not be available, but a person should always at least 
+
+    /**
+     * Name for display. Separate names may not be available, but a person should always at least
      * have a display name.
      */
-    private String displayName; 
-    
-    /** 
+    private String displayName;
+
+    /**
      * Contact email for User
      */
     private String email;
@@ -67,34 +68,36 @@ public class User extends PassEntity {
      * this is the affiliation relevant to that item
      */
     private Set<String> affiliation = new HashSet<>();
-    
-    /** 
-     * A list of ids associated with the user by various system that PASS interacts with. 
-     * The value of each entry would be in the form of : {@code domain:type:value}. 
-     * For example, @{code ["johnshopkins.edu:hopkinsid:DRA2D", "johnshopkins.edu:employeeid:12345", 
+
+    /**
+     * A list of ids associated with the user by various system that PASS interacts with.
+     * The value of each entry would be in the form of : {@code domain:type:value}.
+     * For example, @{code ["johnshopkins.edu:hopkinsid:DRA2D", "johnshopkins.edu:employeeid:12345",
      * "johnshopkins.edu:jhed:bostaur1"]}
      */
     private List<String> locatorIds = new ArrayList<String>();
-    
-    /** 
-     * ORCID ID for User 
+
+    /**
+     * ORCID ID for User
      */
     private String orcidId;
-    
-    /** 
+
+    /**
      * User's system roles in PASS
      */
     private List<Role> roles = new ArrayList<Role>();
 
-    
     /**
      * User constructor
      */
-    public User() {};
+    public User() {
+    }
 
-    
+    ;
+
     /**
      * Copy constructor, this will copy the values of the object provided into the new object
+     *
      * @param user the user to copy
      */
     public User(User user) {
@@ -110,51 +113,58 @@ public class User extends PassEntity {
         this.orcidId = user.orcidId;
         this.roles = new ArrayList<Role>(user.roles);
     }
-    
-    
-    /** 
-     * list of possible user Roles 
+
+    /**
+     * list of possible user Roles
      */
     public enum Role {
-        
-        /** Grant admin role */
+
+        /**
+         * Grant admin role
+         */
         @JsonProperty("admin")
         ADMIN("admin"),
-        
-        /** Submitter role */
+
+        /**
+         * Submitter role
+         */
         @JsonProperty("submitter")
         SUBMITTER("submitter");
 
-        private static final Map<String, Role> map = new HashMap<>(values().length, 1);  
+        private static final Map<String, Role> map = new HashMap<>(values().length, 1);
+
         static {
-          for (Role r : values()) map.put(r.value, r);
+            for (Role r : values()) {
+                map.put(r.value, r);
+            }
         }
-        
+
         private String value;
-        
-        private Role(String value){
+
+        private Role(String value) {
             this.value = value;
         }
-        
-        /** Parse the role.
-         * 
+
+        /**
+         * Parse the role.
+         *
          * @param role Serialized role
          * @return parsed role.
          */
         public static Role of(String role) {
             Role result = map.get(role);
             if (result == null) {
-              throw new IllegalArgumentException("Invalid Role: " + role);
+                throw new IllegalArgumentException("Invalid Role: " + role);
             }
             return result;
-          }
-        
+        }
+
         @Override
         public String toString() {
             return this.value;
         }
     }
-    
+
     /**
      * @return the username
      */
@@ -162,14 +172,13 @@ public class User extends PassEntity {
         return username;
     }
 
-    
     /**
      * @param username the username to set
      */
     public void setUsername(String username) {
         this.username = username;
     }
-    
+
     /**
      * @return the firstName
      */
@@ -177,7 +186,6 @@ public class User extends PassEntity {
         return firstName;
     }
 
-    
     /**
      * @param firstName the firstName to set
      */
@@ -185,7 +193,6 @@ public class User extends PassEntity {
         this.firstName = firstName;
     }
 
-    
     /**
      * @return the middleName
      */
@@ -193,7 +200,6 @@ public class User extends PassEntity {
         return middleName;
     }
 
-    
     /**
      * @param middleName the middleName to set
      */
@@ -201,7 +207,6 @@ public class User extends PassEntity {
         this.middleName = middleName;
     }
 
-    
     /**
      * @return the lastName
      */
@@ -209,7 +214,6 @@ public class User extends PassEntity {
         return lastName;
     }
 
-    
     /**
      * @param lastName the lastName to set
      */
@@ -217,7 +221,6 @@ public class User extends PassEntity {
         this.lastName = lastName;
     }
 
-    
     /**
      * @return the displayName
      */
@@ -225,7 +228,6 @@ public class User extends PassEntity {
         return displayName;
     }
 
-    
     /**
      * @param displayName the displayName to set
      */
@@ -233,7 +235,6 @@ public class User extends PassEntity {
         this.displayName = displayName;
     }
 
-    
     /**
      * @return the email
      */
@@ -241,7 +242,6 @@ public class User extends PassEntity {
         return email;
     }
 
-    
     /**
      * @param email the email to set
      */
@@ -249,7 +249,6 @@ public class User extends PassEntity {
         this.email = email;
     }
 
-    
     /**
      * @return the affiliation
      */
@@ -257,7 +256,6 @@ public class User extends PassEntity {
         return affiliation;
     }
 
-    
     /**
      * @param affiliation the affiliation to set
      */
@@ -265,7 +263,6 @@ public class User extends PassEntity {
         this.affiliation = affiliation;
     }
 
-    
     /**
      * @return the locatorIds
      */
@@ -273,7 +270,6 @@ public class User extends PassEntity {
         return locatorIds;
     }
 
-    
     /**
      * @param locatorIds List of locator IDs
      */
@@ -281,7 +277,6 @@ public class User extends PassEntity {
         this.locatorIds = locatorIds;
     }
 
-    
     /**
      * @return the orcidId
      */
@@ -289,7 +284,6 @@ public class User extends PassEntity {
         return orcidId;
     }
 
-    
     /**
      * @param orcidId the orcidId to set
      */
@@ -297,7 +291,6 @@ public class User extends PassEntity {
         this.orcidId = orcidId;
     }
 
-    
     /**
      * @return the list of roles
      */
@@ -305,7 +298,6 @@ public class User extends PassEntity {
         return roles;
     }
 
-    
     /**
      * @param roles the roles list to set
      */
@@ -313,29 +305,53 @@ public class User extends PassEntity {
         this.roles = roles;
     }
 
-    
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        if (!super.equals(o)) {
+            return false;
+        }
 
         User that = (User) o;
 
-        if (username != null ? !username.equals(that.username) : that.username != null) return false;
-        if (firstName != null ? !firstName.equals(that.firstName) : that.firstName != null) return false;
-        if (middleName != null ? !middleName.equals(that.middleName) : that.middleName != null) return false;
-        if (lastName != null ? !lastName.equals(that.lastName) : that.lastName != null) return false;
-        if (displayName != null ? !displayName.equals(that.displayName) : that.displayName != null) return false;
-        if (email != null ? !email.equals(that.email) : that.email != null) return false;
-        if (affiliation != null ? !affiliation.equals(that.affiliation) : that.affiliation != null) return false;
-        if (locatorIds != null ? !locatorIds.equals(that.locatorIds) : that.locatorIds != null) return false;
-        if (orcidId != null ? !orcidId.equals(that.orcidId) : that.orcidId != null) return false;
-        if (roles != null ? !roles.equals(that.roles) : that.roles != null) return false;
+        if (username != null ? !username.equals(that.username) : that.username != null) {
+            return false;
+        }
+        if (firstName != null ? !firstName.equals(that.firstName) : that.firstName != null) {
+            return false;
+        }
+        if (middleName != null ? !middleName.equals(that.middleName) : that.middleName != null) {
+            return false;
+        }
+        if (lastName != null ? !lastName.equals(that.lastName) : that.lastName != null) {
+            return false;
+        }
+        if (displayName != null ? !displayName.equals(that.displayName) : that.displayName != null) {
+            return false;
+        }
+        if (email != null ? !email.equals(that.email) : that.email != null) {
+            return false;
+        }
+        if (affiliation != null ? !affiliation.equals(that.affiliation) : that.affiliation != null) {
+            return false;
+        }
+        if (locatorIds != null ? !locatorIds.equals(that.locatorIds) : that.locatorIds != null) {
+            return false;
+        }
+        if (orcidId != null ? !orcidId.equals(that.orcidId) : that.orcidId != null) {
+            return false;
+        }
+        if (roles != null ? !roles.equals(that.roles) : that.roles != null) {
+            return false;
+        }
         return true;
     }
 
-    
     @Override
     public int hashCode() {
         int result = super.hashCode();
@@ -351,6 +367,5 @@ public class User extends PassEntity {
         result = 31 * result + (roles != null ? roles.hashCode() : 0);
         return result;
     }
-       
-    
+
 }

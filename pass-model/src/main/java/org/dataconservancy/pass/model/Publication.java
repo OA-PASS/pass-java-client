@@ -21,56 +21,59 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Publication model. Contains details of work being submitted, where it is being deposited to, related Grants etc.
+ *
  * @author Karen Hanson
  */
 
 public class Publication extends PassEntity {
 
-    /** 
-     * Title of publication 
+    /**
+     * Title of publication
      */
     private String title;
-    
-    /** 
-     * Abstract of the publication 
+
+    /**
+     * Abstract of the publication
      */
     @JsonProperty("abstract")
     private String publicationAbstract;
 
-    /** 
+    /**
      * DOI of the publication
      */
     private String doi;
 
-    /** 
+    /**
      * PMID of the publication
      */
     private String pmid;
-    
-    /** 
-     * URI of the journal the publication is part of (if article) 
+
+    /**
+     * URI of the journal the publication is part of (if article)
      */
     private URI journal;
 
-    /** 
-     * Volume of journal that contains the publication (if article) 
+    /**
+     * Volume of journal that contains the publication (if article)
      */
     private String volume;
 
-    /** 
-     * Issue of journal that contains the publication (if article) 
+    /**
+     * Issue of journal that contains the publication (if article)
      */
     private String issue;
 
-    
     /**
      * Publication constructor
      */
-    public Publication() {};
+    public Publication() {
+    }
 
-    
+    ;
+
     /**
      * Copy constructor, this will copy the values of the object provided into the new object
+     *
      * @param publication the publication to copy
      */
     public Publication(Publication publication) {
@@ -83,8 +86,7 @@ public class Publication extends PassEntity {
         this.volume = publication.volume;
         this.issue = publication.issue;
     }
-    
-        
+
     /**
      * @return the title
      */
@@ -92,7 +94,6 @@ public class Publication extends PassEntity {
         return title;
     }
 
-    
     /**
      * @param title the title to set
      */
@@ -100,7 +101,6 @@ public class Publication extends PassEntity {
         this.title = title;
     }
 
-    
     /**
      * @return the publication abstract
      */
@@ -108,7 +108,6 @@ public class Publication extends PassEntity {
         return publicationAbstract;
     }
 
-    
     /**
      * @param publicationAbstract the publicationAbstract to set
      */
@@ -116,7 +115,6 @@ public class Publication extends PassEntity {
         this.publicationAbstract = publicationAbstract;
     }
 
-    
     /**
      * @return the doi
      */
@@ -124,7 +122,6 @@ public class Publication extends PassEntity {
         return doi;
     }
 
-    
     /**
      * @param doi the doi to set
      */
@@ -132,7 +129,6 @@ public class Publication extends PassEntity {
         this.doi = doi;
     }
 
-    
     /**
      * @return the pmid
      */
@@ -140,7 +136,6 @@ public class Publication extends PassEntity {
         return pmid;
     }
 
-    
     /**
      * @param pmid the pmid to set
      */
@@ -148,7 +143,6 @@ public class Publication extends PassEntity {
         this.pmid = pmid;
     }
 
-    
     /**
      * @return the URI of the Journal
      */
@@ -156,7 +150,6 @@ public class Publication extends PassEntity {
         return journal;
     }
 
-    
     /**
      * @param journal the URI journal to set
      */
@@ -164,7 +157,6 @@ public class Publication extends PassEntity {
         this.journal = journal;
     }
 
-    
     /**
      * @return the volume
      */
@@ -172,7 +164,6 @@ public class Publication extends PassEntity {
         return volume;
     }
 
-    
     /**
      * @param volume the volume to set
      */
@@ -180,7 +171,6 @@ public class Publication extends PassEntity {
         this.volume = volume;
     }
 
-    
     /**
      * @return the issue
      */
@@ -188,7 +178,6 @@ public class Publication extends PassEntity {
         return issue;
     }
 
-    
     /**
      * @param issue the issue to set
      */
@@ -196,26 +185,45 @@ public class Publication extends PassEntity {
         this.issue = issue;
     }
 
-
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        if (!super.equals(o)) {
+            return false;
+        }
 
         Publication that = (Publication) o;
 
-        if (title != null ? !title.equals(that.title) : that.title != null) return false;
-        if (publicationAbstract != null ? !publicationAbstract.equals(that.publicationAbstract) : that.publicationAbstract != null) return false;
-        if (doi != null ? !doi.equals(that.doi) : that.doi != null) return false;
-        if (pmid != null ? !pmid.equals(that.pmid) : that.pmid != null) return false;
-        if (journal != null ? !journal.equals(that.journal) : that.journal != null) return false;
-        if (volume != null ? !volume.equals(that.volume) : that.volume != null) return false;
-        if (issue != null ? !issue.equals(that.issue) : that.issue != null) return false;
+        if (title != null ? !title.equals(that.title) : that.title != null) {
+            return false;
+        }
+        if (publicationAbstract != null ? !publicationAbstract.equals(
+            that.publicationAbstract) : that.publicationAbstract != null) {
+            return false;
+        }
+        if (doi != null ? !doi.equals(that.doi) : that.doi != null) {
+            return false;
+        }
+        if (pmid != null ? !pmid.equals(that.pmid) : that.pmid != null) {
+            return false;
+        }
+        if (journal != null ? !journal.equals(that.journal) : that.journal != null) {
+            return false;
+        }
+        if (volume != null ? !volume.equals(that.volume) : that.volume != null) {
+            return false;
+        }
+        if (issue != null ? !issue.equals(that.issue) : that.issue != null) {
+            return false;
+        }
         return true;
     }
 
-    
     @Override
     public int hashCode() {
         int result = super.hashCode();

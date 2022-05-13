@@ -46,7 +46,7 @@ public class UpdateConflictException extends RuntimeException {
     /**
      * Constructor with message and exception.
      *
-     * @param s Message
+     * @param s         Message
      * @param throwable Exception
      */
     public UpdateConflictException(String s, Throwable throwable) {

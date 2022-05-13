@@ -15,30 +15,30 @@
  */
 package org.dataconservancy.pass.model;
 
-
 /**
  * PMC route options. Full documentation here: https://publicaccess.nih.gov/submit_process.htm
+ *
  * @author Karen Hanson
  */
 public enum PmcParticipation {
-    /** 
-     * PMC deposit route A. Journals automatically post the paper to PMC 
+    /**
+     * PMC deposit route A. Journals automatically post the paper to PMC
      */
     A,
-    
-    /** 
-     * PMC deposit route B. Authors must make special arrangements for some journals and 
-     * publishers to post the paper directly to PMC 
+
+    /**
+     * PMC deposit route B. Authors must make special arrangements for some journals and
+     * publishers to post the paper directly to PMC
      */
     B,
-    
+
     /**
      * PMC deposit route C. Authors or their designee must submit manuscripts to NIHMS
      */
     C,
-    
+
     /**
      * PMC deposit route D. Some publishers will submit manuscripts to NIHMS
      */
-    D    
+    D
 }

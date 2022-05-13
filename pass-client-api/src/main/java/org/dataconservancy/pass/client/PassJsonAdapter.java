@@ -20,37 +20,40 @@ import java.io.InputStream;
 import org.dataconservancy.pass.model.PassEntity;
 
 /**
- *
  * @author Karen Hanson
  */
 public interface PassJsonAdapter {
-    
+
     /**
      * Pass in a PASS model object e.g. Deposit, use values to produce JSON
      * You can opt to include the context in the JSON if this is to be used with
      * a Linked Data Platform
-     * @param modelObject  The PASS entity.
+     *
+     * @param modelObject    The PASS entity.
      * @param includeContext true if the JSON-LD context should be included in the JSON
      * @return Serialized JSON.
      */
     public byte[] toJson(PassEntity modelObject, boolean includeContext);
-    
+
     /**
-     * Pass in the JSON data as a byte array and the model class to match it to e.g. Deposit.class, returns populated model
-     * @param jsonData Serialized JSON.
+     * Pass in the JSON data as a byte array and the model class to match it to e.g. Deposit.class, returns populated
+     * model
+     *
+     * @param jsonData  Serialized JSON.
      * @param valueType PASS entity class.
+     * @param <T>       The PASS entity type
      * @return The PASS entity.
-     * @param <T> The PASS entity type
      */
     public <T extends PassEntity> T toModel(byte[] jsonData, Class<T> valueType);
-    
-    
+
     /**
-     * Pass in the json data as an InputStream and the model class to match it to e.g. Deposit.class, returns populated model
-     * @param jsonData Serialized JSON.
+     * Pass in the json data as an InputStream and the model class to match it to e.g. Deposit.class, returns
+     * populated model
+     *
+     * @param jsonData  Serialized JSON.
      * @param valueType PASS class.
+     * @param <T>       The PASS entity type
      * @return The PASS entity.
-     * @param <T> The PASS entity type
      */
     public <T extends PassEntity> T toModel(InputStream jsonData, Class<T> valueType);
 

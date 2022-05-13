@@ -15,42 +15,40 @@
  */
 package org.dataconservancy.pass.model;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
 import java.io.InputStream;
-
 import java.net.URI;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-
-import org.junit.Test;
-
 import org.dataconservancy.pass.model.RepositoryCopy.CopyStatus;
 import org.json.JSONObject;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import org.junit.Test;
 
 /**
  * Model has been annotated with JSON tags. These tests do a simple check to ensure the
  * Jackson integration is functional and the equals / hashcode functions work
+ *
  * @author Karen Hanson
  */
 public class RepositoryCopyModelTests {
-            
+
     /**
      * Simple verification that JSON file can be converted to RepositoryCopy model
+     *
      * @throws Exception
      */
     @Test
     public void testRepositoryCopyFromJsonConversion() throws Exception {
-        
+
         InputStream json = RepositoryCopyModelTests.class.getResourceAsStream("/repositorycopy.json");
         ObjectMapper objectMapper = new ObjectMapper();
         RepositoryCopy repositoryCopy = objectMapper.readValue(json, RepositoryCopy.class);
-        
+
         assertEquals(TestValues.REPOSITORYCOPY_ID_1, repositoryCopy.getId().toString());
         assertEquals(CopyStatus.of(TestValues.REPOSITORYCOPY_STATUS), repositoryCopy.getCopyStatus());
         assertEquals(TestValues.REPOSITORYCOPY_EXTERNALID_1, repositoryCopy.getExternalIds().get(0));
@@ -58,11 +56,12 @@ public class RepositoryCopyModelTests {
         assertEquals(TestValues.REPOSITORYCOPY_ACCESSURL, repositoryCopy.getAccessUrl().toString());
         assertEquals(TestValues.PUBLICATION_ID_1, repositoryCopy.getPublication().toString());
         assertEquals(TestValues.REPOSITORY_ID_1, repositoryCopy.getRepository().toString());
-        
+
     }
 
     /**
      * Simple verification that RepositoryCopy model can be converted to JSON
+     *
      * @throws Exception
      */
     @Test
@@ -74,20 +73,21 @@ public class RepositoryCopyModelTests {
 
         JSONObject root = new JSONObject(jsonRepositoryCopy);
 
-        assertEquals(root.getString("@id"),TestValues.REPOSITORYCOPY_ID_1);
-        assertEquals(root.getString("@type"),"RepositoryCopy");
-        assertEquals(root.getJSONArray("externalIds").get(0),TestValues.REPOSITORYCOPY_EXTERNALID_1);
-        assertEquals(root.getJSONArray("externalIds").get(1),TestValues.REPOSITORYCOPY_EXTERNALID_2);
-        assertEquals(root.getString("copyStatus"),TestValues.REPOSITORYCOPY_STATUS);
-        assertEquals(root.getString("accessUrl"),TestValues.REPOSITORYCOPY_ACCESSURL);
-        assertEquals(root.getString("publication"),TestValues.PUBLICATION_ID_1); 
-        assertEquals(root.getString("repository"),TestValues.REPOSITORY_ID_1);
+        assertEquals(root.getString("@id"), TestValues.REPOSITORYCOPY_ID_1);
+        assertEquals(root.getString("@type"), "RepositoryCopy");
+        assertEquals(root.getJSONArray("externalIds").get(0), TestValues.REPOSITORYCOPY_EXTERNALID_1);
+        assertEquals(root.getJSONArray("externalIds").get(1), TestValues.REPOSITORYCOPY_EXTERNALID_2);
+        assertEquals(root.getString("copyStatus"), TestValues.REPOSITORYCOPY_STATUS);
+        assertEquals(root.getString("accessUrl"), TestValues.REPOSITORYCOPY_ACCESSURL);
+        assertEquals(root.getString("publication"), TestValues.PUBLICATION_ID_1);
+        assertEquals(root.getString("repository"), TestValues.REPOSITORY_ID_1);
     }
-    
+
     /**
-     * Creates two identical RepositoryCopys and checks the equals and hashcodes match. 
-     * Modifies one field on one of the RepositoryCopies and verifies they no longer are 
+     * Creates two identical RepositoryCopys and checks the equals and hashcodes match.
+     * Modifies one field on one of the RepositoryCopies and verifies they no longer are
      * equal or have matching hashcodes.
+     *
      * @throws Exception
      */
     @Test
@@ -95,40 +95,42 @@ public class RepositoryCopyModelTests {
 
         RepositoryCopy repoCopy1 = createRepositoryCopy();
         RepositoryCopy repoCopy2 = createRepositoryCopy();
-        
-        assertEquals(repoCopy1,repoCopy2);
+
+        assertEquals(repoCopy1, repoCopy2);
         repoCopy1.setRepository(new URI(TestValues.REPOSITORY_ID_2));
         assertTrue(!repoCopy1.equals(repoCopy2));
-        
-        assertTrue(repoCopy1.hashCode()!=repoCopy2.hashCode());
+
+        assertTrue(repoCopy1.hashCode() != repoCopy2.hashCode());
         repoCopy1 = repoCopy2;
-        assertEquals(repoCopy1.hashCode(),repoCopy2.hashCode());
-        
+        assertEquals(repoCopy1.hashCode(), repoCopy2.hashCode());
+
     }
-    
+
     /**
      * Test copy constructor creates a valid duplicate that is not the same object
+     *
      * @throws Exception
      */
     @Test
     public void testRepositoryCopyCopyConstructor() throws Exception {
         RepositoryCopy repositoryCopy = createRepositoryCopy();
-        List<String> externalIds = new ArrayList<String>(Arrays.asList(TestValues.REPOSITORYCOPY_EXTERNALID_1,TestValues.REPOSITORYCOPY_EXTERNALID_2));
+        List<String> externalIds = new ArrayList<String>(
+            Arrays.asList(TestValues.REPOSITORYCOPY_EXTERNALID_1, TestValues.REPOSITORYCOPY_EXTERNALID_2));
         repositoryCopy.setExternalIds(externalIds);
         RepositoryCopy repositoryCopyCopy = new RepositoryCopy(repositoryCopy);
         assertEquals(repositoryCopy, repositoryCopyCopy);
-        
+
         URI newPublication = new URI("different:publication");
         repositoryCopyCopy.setPublication(newPublication);
         assertEquals(new URI(TestValues.PUBLICATION_ID_1), repositoryCopy.getPublication());
         assertEquals(newPublication, repositoryCopyCopy.getPublication());
-        
+
         List<String> externalIdsNew = new ArrayList<String>(Arrays.asList(TestValues.REPOSITORYCOPY_EXTERNALID_2));
         repositoryCopyCopy.setExternalIds(externalIdsNew);
         assertEquals(externalIds, repositoryCopy.getExternalIds());
         assertEquals(externalIdsNew, repositoryCopyCopy.getExternalIds());
     }
-    
+
     private RepositoryCopy createRepositoryCopy() throws Exception {
         RepositoryCopy repositoryCopy = new RepositoryCopy();
         repositoryCopy.setId(new URI(TestValues.REPOSITORYCOPY_ID_1));
@@ -139,10 +141,10 @@ public class RepositoryCopyModelTests {
 
         List<String> externalIds = new ArrayList<String>();
         externalIds.add(TestValues.REPOSITORYCOPY_EXTERNALID_1);
-        externalIds.add(TestValues.REPOSITORYCOPY_EXTERNALID_2);        
+        externalIds.add(TestValues.REPOSITORYCOPY_EXTERNALID_2);
         repositoryCopy.setExternalIds(externalIds);
-        
+
         return repositoryCopy;
     }
-    
+
 }

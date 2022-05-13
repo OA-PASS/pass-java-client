@@ -31,7 +31,7 @@ public class Identifier {
     private String type;
     private String value;
 
-    public Identifier (String domain, String type, String value) {
+    public Identifier(String domain, String type, String value) {
         this.domain = domain;
         this.type = type;
         this.value = value;
@@ -44,7 +44,7 @@ public class Identifier {
         return null;
     }
 
-    public static Identifier deserialize (String serializedIdentifier) {
+    public static Identifier deserialize(String serializedIdentifier) {
         String[] parts = serializedIdentifier.split(":", 3);
         if (parts.length == 3) {
             return new Identifier(parts[0], parts[1], parts[2]);
@@ -78,14 +78,24 @@ public class Identifier {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
 
         Identifier that = (Identifier) o;
 
-        if (domain != null ? !domain.equals(that.domain) : that.domain != null) return false;
-        if (type != null ? !type.equals(that.type) : that.type != null) return false;
-        if (value != null ? !value.equals(that.value) : that.value != null) return false;
+        if (domain != null ? !domain.equals(that.domain) : that.domain != null) {
+            return false;
+        }
+        if (type != null ? !type.equals(that.type) : that.type != null) {
+            return false;
+        }
+        if (value != null ? !value.equals(that.value) : that.value != null) {
+            return false;
+        }
         return true;
     }
 
@@ -97,6 +107,5 @@ public class Identifier {
         result = 31 * result + (value != null ? value.hashCode() : 0);
         return result;
     }
-
 
 }

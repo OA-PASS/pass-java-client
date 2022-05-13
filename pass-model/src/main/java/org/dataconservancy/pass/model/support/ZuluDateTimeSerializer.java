@@ -20,17 +20,17 @@ import java.io.IOException;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
-
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.ISODateTimeFormat;
 
 /**
  * Serializes date into JSON as zulu date format
+ *
  * @author Karen Hanson
  */
 public class ZuluDateTimeSerializer extends JsonSerializer<DateTime> {
-    
+
     /**
      * {@inheritDoc}
      */
@@ -38,7 +38,7 @@ public class ZuluDateTimeSerializer extends JsonSerializer<DateTime> {
     public void serialize(DateTime value, JsonGenerator gen, SerializerProvider serializers) throws IOException {
         DateTimeFormatter dateFormatter = ISODateTimeFormat.dateTime().withZoneUTC();
         String dt = value.toString(dateFormatter);
-        gen.writeString(dt);        
+        gen.writeString(dt);
     }
 
 }

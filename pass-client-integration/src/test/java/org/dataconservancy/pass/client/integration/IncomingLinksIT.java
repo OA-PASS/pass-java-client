@@ -15,6 +15,16 @@
  */
 package org.dataconservancy.pass.client.integration;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
+import java.net.URI;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+
 import org.dataconservancy.pass.client.PassClient;
 import org.dataconservancy.pass.model.Deposit;
 import org.dataconservancy.pass.model.File;
@@ -23,16 +33,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.net.URI;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 
 /**
  * Insures that the {@link PassClient} can retrieve incoming links, and that callers can successfully sniff the types
@@ -88,7 +88,7 @@ public class IncomingLinksIT extends ClientITBase {
         depositTwo.setDepositStatusRef("http://reference/to/deposit/status/2");
         depositTwo.setSubmission(submission.getId());
         depositTwo = client.readResource(client.createResource(depositTwo), Deposit.class);
-        
+
         createdUris.put(depositTwo.getId(), Deposit.class);
 
     }
@@ -103,11 +103,11 @@ public class IncomingLinksIT extends ClientITBase {
         Map<String, Collection<URI>> incomingLinks = client.getIncoming(submission.getId());
         assertNotNull("Returned map must never be null.", incomingLinks);
         assertTrue("Map expected to contain predicate '" + expectedPredicate + "'",
-                incomingLinks.containsKey(expectedPredicate));
+                   incomingLinks.containsKey(expectedPredicate));
 
         Collection<URI> incomingSubmissionLinks = incomingLinks.get("submission");
         assertEquals("Map expected to contain three incoming URIs for predicate '" + expectedPredicate + "'",
-                3, incomingSubmissionLinks.size());
+                     3, incomingSubmissionLinks.size());
         assertTrue(incomingSubmissionLinks.contains(file.getId()));
         assertTrue(incomingSubmissionLinks.contains(depositOne.getId()));
         assertTrue(incomingSubmissionLinks.contains(depositTwo.getId()));

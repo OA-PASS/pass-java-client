@@ -28,17 +28,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.util.EntityUtils;
 import org.dataconservancy.pass.client.PassClient;
 import org.dataconservancy.pass.client.PassClientFactory;
 import org.dataconservancy.pass.client.fedora.FedoraConfig;
 import org.dataconservancy.pass.client.fedora.RepositoryCrawler;
 import org.dataconservancy.pass.model.PassEntity;
 import org.dataconservancy.pass.model.Submission;
-
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.util.EntityUtils;
 import org.junit.Test;
 
 /**
@@ -54,10 +53,10 @@ public class RepositoryCrawlerIT extends ClientITBase {
         final RepositoryCrawler crawler = new RepositoryCrawler();
 
         final int initialCount = crawler.visit(URI.create(FedoraConfig.getBaseUrl()),
-                u -> {
-                },
-                IGNORE_CONTAINERS,
-                depth(2).or(SKIP_ACLS));
+            u -> {
+            },
+            IGNORE_CONTAINERS,
+            depth(2).or(SKIP_ACLS));
 
         final PassClient client = PassClientFactory.getPassClient();
 
@@ -71,7 +70,7 @@ public class RepositoryCrawlerIT extends ClientITBase {
 
         final List<URI> found = new ArrayList<>();
         final int afterCount = crawler.visit(URI.create(FedoraConfig.getBaseUrl()), found::add, IGNORE_CONTAINERS,
-                depth(2).or(SKIP_ACLS));
+                                             depth(2).or(SKIP_ACLS));
         assertEquals(1, afterCount - initialCount);
         assertTrue(found.contains(submission));
     }
@@ -86,9 +85,9 @@ public class RepositoryCrawlerIT extends ClientITBase {
         client.processAllEntities(preExisting::add);
 
         final List<URI> created = PASS_TYPES.stream()
-                .map(cls -> random(cls, 2))
-                .map(e -> add(e, client))
-                .collect(Collectors.toList());
+                                            .map(cls -> random(cls, 2))
+                                            .map(e -> add(e, client))
+                                            .collect(Collectors.toList());
 
         final List<URI> visited = new ArrayList<>();
         assertEquals(created.size(), client.processAllEntities(visited::add) - preExisting.size());
@@ -107,9 +106,9 @@ public class RepositoryCrawlerIT extends ClientITBase {
         client.processAllEntities(preExisting::add, Submission.class);
 
         PASS_TYPES.stream()
-                .map(cls -> random(cls, 2))
-                .map(e -> add(e, client))
-                .collect(Collectors.toList());
+                  .map(cls -> random(cls, 2))
+                  .map(e -> add(e, client))
+                  .collect(Collectors.toList());
 
         final List<URI> visited = new ArrayList<>();
         assertEquals(1, client.processAllEntities(visited::add, Submission.class) - preExisting.size());

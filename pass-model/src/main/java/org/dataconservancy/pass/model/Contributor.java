@@ -16,7 +16,6 @@
 package org.dataconservancy.pass.model;
 
 import java.net.URI;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -27,41 +26,42 @@ import java.util.Set;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * A Contributor is a person who contributed to a Publication. The contributor model captures the person 
+ * A Contributor is a person who contributed to a Publication. The contributor model captures the person
  * information as well as the roles they played in creating the publication (e.g. author).
+ *
  * @author Karen Hanson
  */
 
 public class Contributor extends PassEntity {
-    
-    /** 
-     * First name(s) of person 
+
+    /**
+     * First name(s) of person
      */
     private String firstName;
 
-    /** 
-     * Middle name(s) of person 
+    /**
+     * Middle name(s) of person
      */
     private String middleName;
 
-    /** 
-     * Last name(s) of person 
+    /**
+     * Last name(s) of person
      */
     private String lastName;
-    
-    /** 
-     * Name for display. Separate names may not be available, but a person should always at least 
+
+    /**
+     * Name for display. Separate names may not be available, but a person should always at least
      * have a display name.
      */
-    private String displayName; 
-    
-    /** 
-     * Contact email for person 
+    private String displayName;
+
+    /**
+     * Contact email for person
      */
     private String email;
-    
-    /** 
-     * ORCID ID for person 
+
+    /**
+     * ORCID ID for person
      */
     private String orcidId;
 
@@ -70,31 +70,31 @@ public class Contributor extends PassEntity {
      * this is the affiliation relevant to that item
      */
     private Set<String> affiliation = new HashSet<>();
-    
-    /** 
+
+    /**
      * One or more roles that this Contributor performed for the associated Publication
      */
     private List<Role> roles = new ArrayList<Role>();
-    
+
     /**
-     * URI of the publication that this contributor is associated with 
+     * URI of the publication that this contributor is associated with
      */
     private URI publication;
-    
+
     /**
      * URI of the user that represents the same person as this Contributor, where relevant
      */
     private URI user;
 
-    
     /**
      * Contributor constructor
      */
-    public Contributor() {};
+    public Contributor() {
+    }
 
-    
     /**
      * Copy constructor, this will copy the values of the object provided into the new object
+     *
      * @param contributor the contributor to copy
      */
     public Contributor(Contributor contributor) {
@@ -110,60 +110,70 @@ public class Contributor extends PassEntity {
         this.publication = contributor.publication;
         this.user = contributor.user;
     }
-    
 
-    /** 
-     * list of possible contributor Roles 
+    /**
+     * list of possible contributor Roles
      */
     public enum Role {
-        
-        /** Author role */
+
+        /**
+         * Author role
+         */
         @JsonProperty("author")
         AUTHOR("author"),
-        
-        /** First author role */
+
+        /**
+         * First author role
+         */
         @JsonProperty("first-author")
         FIRST_AUTHOR("first-author"),
-        
-        /** Last author role */
+
+        /**
+         * Last author role
+         */
         @JsonProperty("last-author")
         LAST_AUTHOR("last-author"),
-        
-        /** Corresponding author role */
+
+        /**
+         * Corresponding author role
+         */
         @JsonProperty("corresponding-author")
         CORRESPONDING_AUTHOR("corresponding-author");
 
-        private static final Map<String, Role> map = new HashMap<>(values().length, 1);  
+        private static final Map<String, Role> map = new HashMap<>(values().length, 1);
+
         static {
-          for (Role r : values()) map.put(r.value, r);
+            for (Role r : values()) {
+                map.put(r.value, r);
+            }
         }
-        
+
         private String value;
-        
-        private Role(String value){
+
+        private Role(String value) {
             this.value = value;
         }
-        
-        /** 
+
+        /**
          * Parse the role.
-         * 
+         *
          * @param role Serialized role string
          * @return The parsed value.
          */
         public static Role of(String role) {
             Role result = map.get(role);
             if (result == null) {
-              throw new IllegalArgumentException("Invalid Role: " + role);
+                throw new IllegalArgumentException("Invalid Role: " + role);
             }
             return result;
         }
-        
+
         @Override
         public String toString() {
             return this.value;
         }
     }
-    
+
     /**
      * @return the firstName
      */
@@ -171,7 +181,6 @@ public class Contributor extends PassEntity {
         return firstName;
     }
 
-    
     /**
      * @param firstName the firstName to set
      */
@@ -179,7 +188,6 @@ public class Contributor extends PassEntity {
         this.firstName = firstName;
     }
 
-    
     /**
      * @return the middleName
      */
@@ -187,7 +195,6 @@ public class Contributor extends PassEntity {
         return middleName;
     }
 
-    
     /**
      * @param middleName the middleName to set
      */
@@ -195,7 +202,6 @@ public class Contributor extends PassEntity {
         this.middleName = middleName;
     }
 
-    
     /**
      * @return the lastName
      */
@@ -203,7 +209,6 @@ public class Contributor extends PassEntity {
         return lastName;
     }
 
-    
     /**
      * @param lastName the lastName to set
      */
@@ -211,7 +216,6 @@ public class Contributor extends PassEntity {
         this.lastName = lastName;
     }
 
-    
     /**
      * @return the displayName
      */
@@ -219,7 +223,6 @@ public class Contributor extends PassEntity {
         return displayName;
     }
 
-    
     /**
      * @param displayName the displayName to set
      */
@@ -227,7 +230,6 @@ public class Contributor extends PassEntity {
         this.displayName = displayName;
     }
 
-    
     /**
      * @return the email
      */
@@ -235,7 +237,6 @@ public class Contributor extends PassEntity {
         return email;
     }
 
-    
     /**
      * @param email the email to set
      */
@@ -243,7 +244,6 @@ public class Contributor extends PassEntity {
         this.email = email;
     }
 
-    
     /**
      * @return the affiliation
      */
@@ -251,7 +251,6 @@ public class Contributor extends PassEntity {
         return affiliation;
     }
 
-    
     /**
      * @param affiliation the affiliation to set
      */
@@ -259,7 +258,6 @@ public class Contributor extends PassEntity {
         this.affiliation = affiliation;
     }
 
-    
     /**
      * @return the orcidId
      */
@@ -267,7 +265,6 @@ public class Contributor extends PassEntity {
         return orcidId;
     }
 
-    
     /**
      * @param orcidId the orcidId to set
      */
@@ -275,15 +272,13 @@ public class Contributor extends PassEntity {
         this.orcidId = orcidId;
     }
 
-    
     /**
-     * @return the list of roles 
+     * @return the list of roles
      */
     public List<Role> getRoles() {
         return roles;
     }
 
-    
     /**
      * @param roles the roles list to set
      */
@@ -291,7 +286,6 @@ public class Contributor extends PassEntity {
         this.roles = roles;
     }
 
-    
     /**
      * @return the publication
      */
@@ -299,7 +293,6 @@ public class Contributor extends PassEntity {
         return publication;
     }
 
-    
     /**
      * @param publication the publication to set
      */
@@ -307,7 +300,6 @@ public class Contributor extends PassEntity {
         this.publication = publication;
     }
 
-    
     /**
      * @return the user
      */
@@ -315,37 +307,60 @@ public class Contributor extends PassEntity {
         return user;
     }
 
-    
     /**
      * @param user the user to set
      */
     public void setUser(URI user) {
         this.user = user;
     }
-    
-    
+
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        if (!super.equals(o)) {
+            return false;
+        }
 
         Contributor that = (Contributor) o;
 
-        if (firstName != null ? !firstName.equals(that.firstName) : that.firstName != null) return false;
-        if (middleName != null ? !middleName.equals(that.middleName) : that.middleName != null) return false;
-        if (lastName != null ? !lastName.equals(that.lastName) : that.lastName != null) return false;
-        if (displayName != null ? !displayName.equals(that.displayName) : that.displayName != null) return false;
-        if (email != null ? !email.equals(that.email) : that.email != null) return false;
-        if (orcidId != null ? !orcidId.equals(that.orcidId) : that.orcidId != null) return false;
-        if (affiliation != null ? !affiliation.equals(that.affiliation) : that.affiliation != null) return false;
-        if (roles != null ? !roles.equals(that.roles) : that.roles != null) return false;
-        if (publication != null ? !publication.equals(that.publication) : that.publication != null) return false;
-        if (user != null ? !user.equals(that.user) : that.user != null) return false;
+        if (firstName != null ? !firstName.equals(that.firstName) : that.firstName != null) {
+            return false;
+        }
+        if (middleName != null ? !middleName.equals(that.middleName) : that.middleName != null) {
+            return false;
+        }
+        if (lastName != null ? !lastName.equals(that.lastName) : that.lastName != null) {
+            return false;
+        }
+        if (displayName != null ? !displayName.equals(that.displayName) : that.displayName != null) {
+            return false;
+        }
+        if (email != null ? !email.equals(that.email) : that.email != null) {
+            return false;
+        }
+        if (orcidId != null ? !orcidId.equals(that.orcidId) : that.orcidId != null) {
+            return false;
+        }
+        if (affiliation != null ? !affiliation.equals(that.affiliation) : that.affiliation != null) {
+            return false;
+        }
+        if (roles != null ? !roles.equals(that.roles) : that.roles != null) {
+            return false;
+        }
+        if (publication != null ? !publication.equals(that.publication) : that.publication != null) {
+            return false;
+        }
+        if (user != null ? !user.equals(that.user) : that.user != null) {
+            return false;
+        }
         return true;
     }
 
-    
     @Override
     public int hashCode() {
         int result = super.hashCode();
@@ -361,5 +376,5 @@ public class Contributor extends PassEntity {
         result = 31 * result + (user != null ? user.hashCode() : 0);
         return result;
     }
-       
+
 }

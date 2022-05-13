@@ -15,12 +15,10 @@
  */
 package org.dataconservancy.pass.client.integration;
 
+import static org.junit.Assert.assertEquals;
+
 import java.net.URI;
-
 import java.util.Arrays;
-
-import org.junit.Before;
-import org.junit.Test;
 
 import org.dataconservancy.pass.client.SubmissionStatusService;
 import org.dataconservancy.pass.model.Deposit;
@@ -33,39 +31,39 @@ import org.dataconservancy.pass.model.Submission.SubmissionStatus;
 import org.dataconservancy.pass.model.SubmissionEvent;
 import org.dataconservancy.pass.model.SubmissionEvent.EventType;
 import org.joda.time.DateTime;
-
-import static org.junit.Assert.assertEquals;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * Integration tests for Submission Status Service.
+ *
  * @author Karen Hanson
  */
 public class SubmissionStatusServiceIT extends ClientITBase {
 
-    //some test URIs 
+    //some test URIs
     private URI repo1Id;
     private URI repo2Id;
-    
+
     @Before
     public void createDefaultTestData() throws Exception {
 
         repo1Id = new URI("repository:1");
         repo2Id = new URI("repository:2");
-        
+
     }
-    
-    
+
     /**
      * Make sure that if the status is null when the calculateAndUpdateSubmissionStatus is run,
      * null gets replaced with a value.
      */
     @Test
     public void testSetPreSubmissionStatusWhenNull() {
-        
+
         Publication publication = random(Publication.class, 1);
         URI publicationId = client.createResource(publication);
-        this.createdUris.put(publicationId, Publication.class); 
-        
+        this.createdUris.put(publicationId, Publication.class);
+
         // create a random Submission, but add important values for this test
         Submission submission = random(Submission.class, 1);
         submission.setSubmitted(false);
@@ -74,7 +72,7 @@ public class SubmissionStatusServiceIT extends ClientITBase {
         submission.setSubmissionStatus(null);
         URI submissionId = client.createResource(submission);
         this.createdUris.put(submissionId, Submission.class);
-        
+
         // add a couple of events that will be used to calculate status
         SubmissionEvent subEvent1 = random(SubmissionEvent.class, 1);
         subEvent1.setEventType(EventType.APPROVAL_REQUESTED);
@@ -82,7 +80,7 @@ public class SubmissionStatusServiceIT extends ClientITBase {
         subEvent1.setSubmission(submissionId);
         URI subEvent1Id = client.createResource(subEvent1);
         this.createdUris.put(subEvent1Id, SubmissionEvent.class);
-        
+
         SubmissionEvent subEvent2 = random(SubmissionEvent.class, 1);
         subEvent2.setEventType(EventType.CANCELLED);
         subEvent2.setPerformedDate(new DateTime(2018, 2, 1, 14, 1, 0, 0));
@@ -94,11 +92,11 @@ public class SubmissionStatusServiceIT extends ClientITBase {
         SubmissionStatus newStatus = service.calculateAndUpdateSubmissionStatus(submissionId);
         //check correct value returned
         assertEquals(SubmissionStatus.CANCELLED, newStatus);
-        
+
         //also check database updated
         submission = client.readResource(submissionId, Submission.class);
         assertEquals(SubmissionStatus.CANCELLED, submission.getSubmissionStatus());
-        
+
     }
 
     /**
@@ -110,7 +108,7 @@ public class SubmissionStatusServiceIT extends ClientITBase {
         Publication publication = random(Publication.class, 1);
         URI publicationId = client.createResource(publication);
         this.createdUris.put(publicationId, Publication.class);
-        
+
         // create a random Submission, but add important values for this test
         Submission submission = random(Submission.class, 1);
         submission.setSubmitted(false);
@@ -119,7 +117,7 @@ public class SubmissionStatusServiceIT extends ClientITBase {
         submission.setSubmissionStatus(SubmissionStatus.APPROVAL_REQUESTED);
         URI submissionId = client.createResource(submission);
         this.createdUris.put(submissionId, Submission.class);
-        
+
         // add a couple of events that will be used to calculate status
         SubmissionEvent subEvent1 = random(SubmissionEvent.class, 1);
         subEvent1.setEventType(EventType.APPROVAL_REQUESTED);
@@ -127,7 +125,7 @@ public class SubmissionStatusServiceIT extends ClientITBase {
         subEvent1.setSubmission(submissionId);
         URI subEvent1Id = client.createResource(subEvent1);
         this.createdUris.put(subEvent1Id, SubmissionEvent.class);
-        
+
         SubmissionEvent subEvent2 = random(SubmissionEvent.class, 1);
         subEvent2.setEventType(EventType.CANCELLED);
         subEvent2.setPerformedDate(new DateTime(2018, 2, 1, 14, 1, 0, 0));
@@ -139,14 +137,13 @@ public class SubmissionStatusServiceIT extends ClientITBase {
         SubmissionStatus newStatus = service.calculateAndUpdateSubmissionStatus(submissionId);
         //check correct value returned
         assertEquals(SubmissionStatus.APPROVAL_REQUESTED, newStatus);
-        
+
         //also check database updated
         submission = client.readResource(submissionId, Submission.class);
         assertEquals(SubmissionStatus.APPROVAL_REQUESTED, submission.getSubmissionStatus());
-        
+
     }
 
-    
     /**
      * Make sure that if the status is pre-submission and has a value it will override the value
      * if the user set override to true
@@ -157,7 +154,7 @@ public class SubmissionStatusServiceIT extends ClientITBase {
         Publication publication = random(Publication.class, 1);
         URI publicationId = client.createResource(publication);
         this.createdUris.put(publicationId, Publication.class);
-        
+
         // create a random Submission, but add important values for this test
         Submission submission = random(Submission.class, 1);
         submission.setSubmitted(false);
@@ -166,7 +163,7 @@ public class SubmissionStatusServiceIT extends ClientITBase {
         submission.setSubmissionStatus(SubmissionStatus.APPROVAL_REQUESTED);
         URI submissionId = client.createResource(submission);
         this.createdUris.put(submissionId, Submission.class);
-        
+
         // add a couple of events that will be used to calculate status
         SubmissionEvent subEvent1 = random(SubmissionEvent.class, 1);
         subEvent1.setEventType(EventType.APPROVAL_REQUESTED);
@@ -174,27 +171,26 @@ public class SubmissionStatusServiceIT extends ClientITBase {
         subEvent1.setSubmission(submissionId);
         URI subEvent1Id = client.createResource(subEvent1);
         this.createdUris.put(subEvent1Id, SubmissionEvent.class);
-        
+
         SubmissionEvent subEvent2 = random(SubmissionEvent.class, 1);
         subEvent2.setEventType(EventType.CHANGES_REQUESTED);
         subEvent2.setPerformedDate(new DateTime(2018, 2, 1, 14, 1, 0, 0));
         subEvent2.setSubmission(submissionId);
         URI subEvent2Id = client.createResource(subEvent2);
         this.createdUris.put(subEvent2Id, SubmissionEvent.class);
-        
+
         SubmissionStatusService service = new SubmissionStatusService();
         //this time we set override to true
         SubmissionStatus newStatus = service.calculateAndUpdateSubmissionStatus(submissionId, true);
         //check correct value returned
         assertEquals(SubmissionStatus.CHANGES_REQUESTED, newStatus);
-        
+
         //also check database updated
         submission = client.readResource(submissionId, Submission.class);
         assertEquals(SubmissionStatus.CHANGES_REQUESTED, submission.getSubmissionStatus());
-        
+
     }
-    
-    
+
     /**
      * Make sure Deposits used in post-submission status calc
      */
@@ -204,7 +200,7 @@ public class SubmissionStatusServiceIT extends ClientITBase {
         Publication publication = random(Publication.class, 1);
         URI publicationId = client.createResource(publication);
         this.createdUris.put(publicationId, Publication.class);
-        
+
         // create a random Submission, but add important values for this test
         Submission submission = random(Submission.class, 1);
         submission.setSubmitted(true);
@@ -213,7 +209,7 @@ public class SubmissionStatusServiceIT extends ClientITBase {
         submission.setSubmissionStatus(SubmissionStatus.APPROVAL_REQUESTED);
         URI submissionId = client.createResource(submission);
         this.createdUris.put(submissionId, Submission.class);
-        
+
         // add a couple of deposits that will be used to calculate status
         Deposit deposit1 = random(Deposit.class, 1);
         deposit1.setDepositStatus(DepositStatus.ACCEPTED);
@@ -221,27 +217,26 @@ public class SubmissionStatusServiceIT extends ClientITBase {
         deposit1.setSubmission(submissionId);
         URI deposit1Id = client.createResource(deposit1);
         this.createdUris.put(deposit1Id, Deposit.class);
-        
+
         Deposit deposit2 = random(Deposit.class, 1);
         deposit2.setDepositStatus(DepositStatus.FAILED);
         deposit2.setRepository(repo2Id);
         deposit2.setSubmission(submissionId);
         URI deposit2Id = client.createResource(deposit1);
         this.createdUris.put(deposit2Id, Deposit.class);
-        
+
         SubmissionStatusService service = new SubmissionStatusService();
         //this time we set override to true
         SubmissionStatus newStatus = service.calculateAndUpdateSubmissionStatus(submissionId);
         //check correct value returned
         assertEquals(SubmissionStatus.SUBMITTED, newStatus);
-        
+
         //also check database updated
         submission = client.readResource(submissionId, Submission.class);
         assertEquals(SubmissionStatus.SUBMITTED, submission.getSubmissionStatus());
-        
+
     }
 
-    
     /**
      * Make sure RepositoryCopies used in post-submission status calc
      */
@@ -251,7 +246,7 @@ public class SubmissionStatusServiceIT extends ClientITBase {
         Publication publication = random(Publication.class, 1);
         URI publicationId = client.createResource(publication);
         this.createdUris.put(publicationId, Publication.class);
-        
+
         // create a random Submission, but add important values for this test
         Submission submission = random(Submission.class, 1);
         submission.setSubmitted(true);
@@ -260,7 +255,7 @@ public class SubmissionStatusServiceIT extends ClientITBase {
         submission.setSubmissionStatus(SubmissionStatus.SUBMITTED);
         URI submissionId = client.createResource(submission);
         this.createdUris.put(submissionId, Submission.class);
-        
+
         // add a couple of deposits that will be used to calculate status
         Deposit deposit1 = random(Deposit.class, 1);
         deposit1.setDepositStatus(DepositStatus.ACCEPTED);
@@ -268,7 +263,7 @@ public class SubmissionStatusServiceIT extends ClientITBase {
         deposit1.setSubmission(submissionId);
         URI deposit1Id = client.createResource(deposit1);
         this.createdUris.put(deposit1Id, Deposit.class);
-        
+
         //using rejected status, going to override this with the repocopy
         Deposit deposit2 = random(Deposit.class, 1);
         deposit2.setDepositStatus(DepositStatus.REJECTED);
@@ -276,7 +271,7 @@ public class SubmissionStatusServiceIT extends ClientITBase {
         deposit2.setSubmission(submissionId);
         URI deposit2Id = client.createResource(deposit1);
         this.createdUris.put(deposit2Id, Deposit.class);
-        
+
         // completed repocopy for repo1
         RepositoryCopy repoCopy1 = random(RepositoryCopy.class, 1);
         repoCopy1.setPublication(publicationId);
@@ -292,19 +287,18 @@ public class SubmissionStatusServiceIT extends ClientITBase {
         repoCopy2.setCopyStatus(CopyStatus.COMPLETE);
         URI repoCopy2Id = client.createResource(repoCopy2);
         this.createdUris.put(repoCopy2Id, RepositoryCopy.class);
-        
+
         SubmissionStatusService service = new SubmissionStatusService();
         //this time we won't update Submission record, just return the value
         SubmissionStatus newStatus = service.calculateSubmissionStatus(submissionId);
         assertEquals(SubmissionStatus.COMPLETE, newStatus);
-        
+
         //also check database was not updated with the new value
         submission = client.readResource(submissionId, Submission.class);
         assertEquals(SubmissionStatus.SUBMITTED, submission.getSubmissionStatus());
-        
+
     }
 
-    
     /**
      * Make sure both Deposits and RepositoryCopies are used in post-submission status calc.
      * This time, we want to make sure that the item NEEDS ATTENTION if one Deposit fails
@@ -312,11 +306,11 @@ public class SubmissionStatusServiceIT extends ClientITBase {
      */
     @Test
     public void testPostSubmissionStatusFromDepositsAndRepoCopies() {
-        
+
         Publication publication = random(Publication.class, 1);
         URI publicationId = client.createResource(publication);
         this.createdUris.put(publicationId, Publication.class);
-        
+
         // create a random Submission, but add important values for this test
         Submission submission = random(Submission.class, 1);
         submission.setSubmitted(true);
@@ -325,7 +319,7 @@ public class SubmissionStatusServiceIT extends ClientITBase {
         submission.setSubmissionStatus(SubmissionStatus.SUBMITTED);
         URI submissionId = client.createResource(submission);
         this.createdUris.put(submissionId, Submission.class);
-        
+
         // add a couple of deposits that will be used to calculate status
         Deposit deposit1 = random(Deposit.class, 1);
         deposit1.setDepositStatus(DepositStatus.ACCEPTED);
@@ -333,7 +327,7 @@ public class SubmissionStatusServiceIT extends ClientITBase {
         deposit1.setSubmission(submissionId);
         URI deposit1Id = client.createResource(deposit1);
         this.createdUris.put(deposit1Id, Deposit.class);
-        
+
         //using rejected status, going to override this with the repocopy
         Deposit deposit2 = random(Deposit.class, 1);
         deposit2.setDepositStatus(DepositStatus.REJECTED);
@@ -353,10 +347,10 @@ public class SubmissionStatusServiceIT extends ClientITBase {
         SubmissionStatusService service = new SubmissionStatusService();
         SubmissionStatus newStatus = service.calculateAndUpdateSubmissionStatus(submissionId);
         assertEquals(SubmissionStatus.NEEDS_ATTENTION, newStatus);
-        
+
         //also check database was not updated with the new value
         submission = client.readResource(submissionId, Submission.class);
         assertEquals(SubmissionStatus.NEEDS_ATTENTION, submission.getSubmissionStatus());
-        
+
     }
 }

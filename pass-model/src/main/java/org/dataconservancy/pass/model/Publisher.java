@@ -17,31 +17,34 @@ package org.dataconservancy.pass.model;
 
 /**
  * Describes a Publisher and its related Journals, also the path of it's participation in PubMedCentral
+ *
  * @author Karen Hanson
  */
 
 public class Publisher extends PassEntity {
-    
-    /** 
-     * Name of publisher 
+
+    /**
+     * Name of publisher
      */
     private String name;
-    
-    /** 
-     * This field indicates whether a journal participates in the NIH Public Access Program by sending final 
-     * published article to PMC. If so, whether it requires additional processing fee.  
+
+    /**
+     * This field indicates whether a journal participates in the NIH Public Access Program by sending final
+     * published article to PMC. If so, whether it requires additional processing fee.
      */
     private PmcParticipation pmcParticipation;
 
-    
     /**
      * Publisher constructor
      */
-    public Publisher() {};
+    public Publisher() {
+    }
 
-    
+    ;
+
     /**
      * Copy constructor, this will copy the values of the object provided into the new object
+     *
      * @param publisher the publisher to copy
      */
     public Publisher(Publisher publisher) {
@@ -49,8 +52,7 @@ public class Publisher extends PassEntity {
         this.name = publisher.name;
         this.pmcParticipation = publisher.pmcParticipation;
     }
-    
-    
+
     /**
      * @return the name
      */
@@ -58,7 +60,6 @@ public class Publisher extends PassEntity {
         return name;
     }
 
-    
     /**
      * @param name the name to set
      */
@@ -66,7 +67,6 @@ public class Publisher extends PassEntity {
         this.name = name;
     }
 
-    
     /**
      * @return the pmcParticipation
      */
@@ -74,7 +74,6 @@ public class Publisher extends PassEntity {
         return pmcParticipation;
     }
 
-    
     /**
      * @param pmcParticipation the pmcParticipation to set
      */
@@ -82,21 +81,30 @@ public class Publisher extends PassEntity {
         this.pmcParticipation = pmcParticipation;
     }
 
-    
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        if (!super.equals(o)) {
+            return false;
+        }
 
         Publisher that = (Publisher) o;
 
-        if (name != null ? !name.equals(that.name) : that.name != null) return false;
-        if (pmcParticipation != null ? !pmcParticipation.equals(that.pmcParticipation) : that.pmcParticipation != null) return false;
+        if (name != null ? !name.equals(that.name) : that.name != null) {
+            return false;
+        }
+        if (pmcParticipation != null ? !pmcParticipation.equals(
+            that.pmcParticipation) : that.pmcParticipation != null) {
+            return false;
+        }
         return true;
     }
 
-    
     @Override
     public int hashCode() {
         int result = super.hashCode();
@@ -104,6 +112,5 @@ public class Publisher extends PassEntity {
         result = 31 * result + (pmcParticipation != null ? pmcParticipation.hashCode() : 0);
         return result;
     }
-       
 
 }

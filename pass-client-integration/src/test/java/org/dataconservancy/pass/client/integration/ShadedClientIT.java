@@ -16,14 +16,11 @@
 
 package org.dataconservancy.pass.client.integration;
 
-import static org.junit.Assert.assertEquals;
-
 import java.net.URI;
 
 import org.dataconservancy.pass.client.PassClient;
 import org.dataconservancy.pass.client.PassClientFactory;
 import org.dataconservancy.pass.model.Submission;
-
 import org.junit.Test;
 
 /**
@@ -37,7 +34,7 @@ public class ShadedClientIT extends ClientITBase {
     public void conversionTest() {
         final PassClient newClient = PassClientFactory.getPassClient();
         final org.dataconservancy.pass.v2_3.client.PassClient oldClient =
-                org.dataconservancy.pass.v2_3.client.PassClientFactory.getPassClient();
+            org.dataconservancy.pass.v2_3.client.PassClientFactory.getPassClient();
 
         org.dataconservancy.pass.v2_3.model.Submission older = new org.dataconservancy.pass.v2_3.model.Submission();
 

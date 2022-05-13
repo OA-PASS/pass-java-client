@@ -16,54 +16,57 @@
 package org.dataconservancy.pass.model;
 
 import java.net.URI;
-
 import java.util.HashMap;
 import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * A Submission can have multiple Deposits, each to a different Repository. This describes a single deposit to a Repository and captures 
+ * A Submission can have multiple Deposits, each to a different Repository. This describes a single deposit to a
+ * Repository and captures
  * its current status.
+ *
  * @author Karen Hanson
  */
 
 public class Deposit extends PassEntity {
-    
-    /** 
-     * A URL or some kind of reference that can be dereferenced, entity body parsed, and used to determine the status of Deposit
+
+    /**
+     * A URL or some kind of reference that can be dereferenced, entity body parsed, and used to determine the status
+     * of Deposit
      */
     private String depositStatusRef;
-    
-    /** 
-     * Status of deposit 
+
+    /**
+     * Status of deposit
      */
     private DepositStatus depositStatus;
-    
+
     /**
      * URI of the Submission that this Deposit is a part of
      */
     private URI submission;
-   
-    /** 
-     * URI of Repository being deposited to 
+
+    /**
+     * URI of Repository being deposited to
      */
     private URI repository;
-    
+
     /**
-     * URI of the Repository Copy representing the copy that is reltaed to this Deposit. The value is null if there is no copy
+     * URI of the Repository Copy representing the copy that is reltaed to this Deposit. The value is null if there
+     * is no copy
      */
     private URI repositoryCopy;
 
-    
     /**
      * Deposit constructor
      */
-    public Deposit() {};
+    public Deposit() {
+    }
 
-    
     /**
      * Copy constructor, this will copy the values of the object provided into the new object
+     *
      * @param deposit the deposit to copy
      */
     public Deposit(Deposit deposit) {
@@ -74,7 +77,7 @@ public class Deposit extends PassEntity {
         this.repository = deposit.repository;
         this.repositoryCopy = deposit.repositoryCopy;
     }
-    
+
     /**
      * Possible deposit statuses. Note that some repositories may not go through every status.
      */
@@ -84,15 +87,16 @@ public class Deposit extends PassEntity {
          */
         @JsonProperty("submitted")
         SUBMITTED("submitted"),
-         /**
+        /**
          * The target Repository has rejected the Deposit
          */
         @JsonProperty("accepted")
         ACCEPTED("accepted"),
         /**
-        * The target Repository has accepted the files into the repository. More steps may be performed by the Repository, but the 
-        * requirements of the Deposit have been satisfied
-        */
+         * The target Repository has accepted the files into the repository. More steps may be performed by the
+         * Repository, but the
+         * requirements of the Deposit have been satisfied
+         */
         @JsonProperty("rejected")
         REJECTED("rejected"),
         /**
@@ -101,37 +105,41 @@ public class Deposit extends PassEntity {
         @JsonProperty("failed")
         FAILED("failed");
 
-        private static final Map<String, DepositStatus> map = new HashMap<>(values().length, 1);  
+        private static final Map<String, DepositStatus> map = new HashMap<>(values().length, 1);
+
         static {
-          for (DepositStatus d : values()) map.put(d.value, d);
+            for (DepositStatus d : values()) {
+                map.put(d.value, d);
+            }
         }
-        
+
         private String value;
-        private DepositStatus(String value){
+
+        private DepositStatus(String value) {
             this.value = value;
         }
-        
-        /** 
+
+        /**
          * Parse deposit status
-         * 
+         *
          * @param status status string
          * @return parsed status
          */
         public static DepositStatus of(String status) {
             DepositStatus result = map.get(status);
             if (result == null) {
-              throw new IllegalArgumentException("Invalid Deposit Status: " + status);
+                throw new IllegalArgumentException("Invalid Deposit Status: " + status);
             }
             return result;
         }
-        
+
         @Override
         public String toString() {
             return this.value;
         }
-        
+
     }
-    
+
     /**
      * @return the deposit status
      */
@@ -139,7 +147,6 @@ public class Deposit extends PassEntity {
         return depositStatus;
     }
 
-    
     /**
      * @param depositStatus status the deposit status to set
      */
@@ -147,7 +154,6 @@ public class Deposit extends PassEntity {
         this.depositStatus = depositStatus;
     }
 
-    
     /**
      * @return the URI of the repository
      */
@@ -155,15 +161,13 @@ public class Deposit extends PassEntity {
         return repository;
     }
 
-    
     /**
      * @param repository the URI of the repository to set
      */
     public void setRepository(URI repository) {
         this.repository = repository;
     }
-    
-    
+
     /**
      * @return the depositStatusRef
      */
@@ -171,7 +175,6 @@ public class Deposit extends PassEntity {
         return depositStatusRef;
     }
 
-    
     /**
      * @param depositStatusRef the depositStatusRef to set
      */
@@ -179,14 +182,12 @@ public class Deposit extends PassEntity {
         this.depositStatusRef = depositStatusRef;
     }
 
-    
     /**
      * @return the submission
      */
     public URI getSubmission() {
         return submission;
     }
-
 
     /**
      * @param submission the submission to set
@@ -195,7 +196,6 @@ public class Deposit extends PassEntity {
         this.submission = submission;
     }
 
-    
     /**
      * @return the repositoryCopy
      */
@@ -203,31 +203,45 @@ public class Deposit extends PassEntity {
         return repositoryCopy;
     }
 
-
     /**
      * @param repositoryCopy the repositoryCopy to set
      */
     public void setRepositoryCopy(URI repositoryCopy) {
         this.repositoryCopy = repositoryCopy;
     }
-    
-    
+
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        if (!super.equals(o)) {
+            return false;
+        }
 
         Deposit that = (Deposit) o;
 
-        if (depositStatusRef != null ? !depositStatusRef.equals(that.depositStatusRef) : that.depositStatusRef != null) return false;
-        if (depositStatus != null ? !depositStatus.equals(that.depositStatus) : that.depositStatus != null) return false;
-        if (submission != null ? !submission.equals(that.submission) : that.submission != null) return false;
-        if (repository != null ? !repository.equals(that.repository) : that.repository != null) return false;
-        if (repositoryCopy != null ? !repositoryCopy.equals(that.repositoryCopy) : that.repositoryCopy != null) return false;
+        if (depositStatusRef != null ? !depositStatusRef.equals(
+            that.depositStatusRef) : that.depositStatusRef != null) {
+            return false;
+        }
+        if (depositStatus != null ? !depositStatus.equals(that.depositStatus) : that.depositStatus != null) {
+            return false;
+        }
+        if (submission != null ? !submission.equals(that.submission) : that.submission != null) {
+            return false;
+        }
+        if (repository != null ? !repository.equals(that.repository) : that.repository != null) {
+            return false;
+        }
+        if (repositoryCopy != null ? !repositoryCopy.equals(that.repositoryCopy) : that.repositoryCopy != null) {
+            return false;
+        }
         return true;
     }
-    
 
     @Override
     public int hashCode() {
@@ -239,5 +253,5 @@ public class Deposit extends PassEntity {
         result = 31 * result + (repositoryCopy != null ? repositoryCopy.hashCode() : 0);
         return result;
     }
-    
+
 }
