@@ -16,6 +16,8 @@
 
 package org.dataconservancy.pass.client.integration;
 
+import static org.junit.Assert.assertEquals;
+
 import java.net.URI;
 
 import org.dataconservancy.pass.client.PassClient;

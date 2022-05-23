@@ -53,10 +53,10 @@ public class RepositoryCrawlerIT extends ClientITBase {
         final RepositoryCrawler crawler = new RepositoryCrawler();
 
         final int initialCount = crawler.visit(URI.create(FedoraConfig.getBaseUrl()),
-            u -> {
-            },
-            IGNORE_CONTAINERS,
-            depth(2).or(SKIP_ACLS));
+                                               u -> {
+                                               },
+                                               IGNORE_CONTAINERS,
+                                               depth(2).or(SKIP_ACLS));
 
         final PassClient client = PassClientFactory.getPassClient();
 

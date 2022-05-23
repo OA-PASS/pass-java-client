@@ -202,8 +202,8 @@ public class RepositoryCrawler {
         public static final Predicate<State> IGNORE_CONTAINERS = s -> s.id.toString().matches(
             endWithSlash(
                 FedoraConfig.getBaseUrl()) + "\\.{0,1}[a-zA-Z]+/*$") ||
-                RepositoryCrawler.endWithSlash(s.id.toString())
-                                 .equals(RepositoryCrawler.endWithSlash(FedoraConfig.getBaseUrl()));
+                    RepositoryCrawler.endWithSlash(s.id.toString()).equals(RepositoryCrawler
+                       .endWithSlash(FedoraConfig.getBaseUrl()));
     }
 
     static String endWithSlash(String uri) {
