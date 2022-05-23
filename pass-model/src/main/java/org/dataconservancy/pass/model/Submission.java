@@ -16,7 +16,6 @@
 package org.dataconservancy.pass.model;
 
 import java.net.URI;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -25,59 +24,59 @@ import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-
 import org.dataconservancy.pass.model.support.ZuluDateTimeDeserializer;
 import org.dataconservancy.pass.model.support.ZuluDateTimeSerializer;
 import org.joda.time.DateTime;
 
 /**
  * Submission model. Contains details of work being submitted, where it is being deposited to, related Grants etc.
+ *
  * @author Karen Hanson
  */
 
 public class Submission extends PassEntity {
 
-    /** 
+    /**
      * Stringified JSON representation of metadata captured by the relevant repository forms
      */
     private String metadata;
-    
-    /** 
-     * Source of Submission record 
+
+    /**
+     * Source of Submission record
      */
     private Source source;
-    
-    /** 
-     * When true, this value signals that the Submission will no longer be edited by the User. 
-     * It indicates to Deposit services that it can generate Deposits for any Repositories that need one. 
+
+    /**
+     * When true, this value signals that the Submission will no longer be edited by the User.
+     * It indicates to Deposit services that it can generate Deposits for any Repositories that need one.
      */
     private Boolean submitted;
 
-    /** 
-     * Date the record was submitted by the User through PASS 
+    /**
+     * Date the record was submitted by the User through PASS
      */
     @JsonSerialize(using = ZuluDateTimeSerializer.class)
     @JsonDeserialize(using = ZuluDateTimeDeserializer.class)
     private DateTime submittedDate;
-    
-    /** 
+
+    /**
      * Status of Submission. Focused on informing User of current state of Submission.
      */
     private SubmissionStatus submissionStatus;
 
-    /** 
+    /**
      * Overall status of Submission's Deposits
      */
     private AggregatedDepositStatus aggregatedDepositStatus;
-    
+
     /**
      * URI of Publication associated with the Submission
      */
     private URI publication;
-    
-    /** 
+
+    /**
      * List of repositories that the submission will be deposited to
-     * Note that the order of the list does not carry any particular significance 
+     * Note that the order of the list does not carry any particular significance
      */
     private List<URI> repositories = new ArrayList<>();
 
@@ -85,7 +84,7 @@ public class Submission extends PassEntity {
      * URI of the User (`User.id`) responsible for managing and submitting the Submission.
      */
     private URI submitter;
-    
+
     /**
      * Name of the submitter. Used with submitterEmail as a temporary store for user information
      * in the absence of a User record
@@ -93,21 +92,21 @@ public class Submission extends PassEntity {
     private String submitterName;
 
     /**
-     * Email of the submitter as URI e.g. "mailto:j.smith@example.com". Used with submitterName 
+     * Email of the submitter as URI e.g. "mailto:j.smith@example.com". Used with submitterName
      * as a temporary store of user information in the absence of a User record
      */
     private URI submitterEmail;
 
     /**
      * URI of the User(s) who prepared, or who could contribute to the preparation of, the Submission.
-     * Prepares can edit the content of the Submission (describe the Publication, add Grants, add Files, 
+     * Prepares can edit the content of the Submission (describe the Publication, add Grants, add Files,
      * select Repositories) but cannot approve any Repository agreements or submit the Publication.
      * Note that the order of the list does not carry any particular significance
      */
     private List<URI> preparers = new ArrayList<>();
-    
-    /** 
-     * List of URIs for grants associated with the submission 
+
+    /**
+     * List of URIs for grants associated with the submission
      * Note that the order of the list does not carry any particular significance
      */
     private List<URI> grants = new ArrayList<>();
@@ -117,15 +116,17 @@ public class Submission extends PassEntity {
      */
     private List<URI> effectivePolicies = new ArrayList<>();
 
-    
     /**
      * Submission constructor
      */
-    public Submission() {};
+    public Submission() {
+    }
 
-    
+    ;
+
     /**
      * Copy constructor, this will copy the values of the object provided into the new object
+     *
      * @param submission the submission to copy
      */
     public Submission(Submission submission) {
@@ -145,62 +146,61 @@ public class Submission extends PassEntity {
         this.grants = new ArrayList<URI>(submission.grants);
         this.effectivePolicies = new ArrayList<>(submission.effectivePolicies);
     }
-    
-    
-    /** 
-     *  The possible values for the Submission.submissionStatus field. 
-     *  Note that not all Submissions will go through every status.
+
+    /**
+     * The possible values for the Submission.submissionStatus field.
+     * Note that not all Submissions will go through every status.
      */
     public enum SubmissionStatus {
         /**
-         * When the PASS system identifies a need for a User to submit a Publication to a particular Repository, 
-         * it will create a new Submission record with this status in order to prompt the User to provide the 
+         * When the PASS system identifies a need for a User to submit a Publication to a particular Repository,
+         * it will create a new Submission record with this status in order to prompt the User to provide the
          * document and complete the Submission.
          */
         @JsonProperty("manuscript-required")
         MANUSCRIPT_REQUIRED("manuscript-required", false),
-        
+
         /**
-         * A Submission was prepared by a preparer but now needs the submitter to approve and submit it or provide 
+         * A Submission was prepared by a preparer but now needs the submitter to approve and submit it or provide
          * feedback.
-         */        
+         */
         @JsonProperty("approval-requested")
         APPROVAL_REQUESTED("approval-requested", false),
-        
+
         /**
-         * A Submission was prepared by a preparer, but on review by the submitter, a change was requested. 
+         * A Submission was prepared by a preparer, but on review by the submitter, a change was requested.
          * The Submission has been handed back to the preparer for editing.
          */
         @JsonProperty("changes-requested")
         CHANGES_REQUESTED("changes-requested", false),
 
         /**
-         * A Submission was prepared and then cancelled by the submitter or preparer without being submitted. 
+         * A Submission was prepared and then cancelled by the submitter or preparer without being submitted.
          * No further edits can be made to the Submission.
          */
         @JsonProperty("cancelled")
         CANCELLED("cancelled", false),
 
         /**
-         * The submit button has been pressed through the UI. From this status forward, the Submission 
-         * becomes read-only to both the submitter and preparers. This status indicates that either 
-         * (a) the Submission is still being processed, or (b) PASS has finished the Deposit process, 
-         * but there is not yet confirmation from the Repository that indicates the Submission was valid. 
-         * Some Submissions may remain in a submitted state indefinitely depending on PASS's capacity to 
+         * The submit button has been pressed through the UI. From this status forward, the Submission
+         * becomes read-only to both the submitter and preparers. This status indicates that either
+         * (a) the Submission is still being processed, or (b) PASS has finished the Deposit process,
+         * but there is not yet confirmation from the Repository that indicates the Submission was valid.
+         * Some Submissions may remain in a submitted state indefinitely depending on PASS's capacity to
          * verify completion of the process in the target Repository.
          */
         @JsonProperty("submitted")
         SUBMITTED("submitted", true),
 
         /**
-         * Indicates that a User action may be required outside of PASS. The Submission is stalled or 
+         * Indicates that a User action may be required outside of PASS. The Submission is stalled or
          * has been rejected by one or more Repository
          */
         @JsonProperty("needs-attention")
         NEEDS_ATTENTION("needs-attention", true),
 
         /**
-         * The target repositories have all received a copy of the Submission, and have indicated that 
+         * The target repositories have all received a copy of the Submission, and have indicated that
          * the Submission was successful.
          */
         @JsonProperty("complete")
@@ -211,53 +211,56 @@ public class Submission extends PassEntity {
          * been submitted.
          */
         @JsonProperty("draft")
-        DRAFT("draft",false);
+        DRAFT("draft", false);
 
-        private static final Map<String, SubmissionStatus> map = new HashMap<>(values().length, 1);  
+        private static final Map<String, SubmissionStatus> map = new HashMap<>(values().length, 1);
+
         static {
-          for (SubmissionStatus s : values()) map.put(s.value, s);
+            for (SubmissionStatus s : values()) {
+                map.put(s.value, s);
+            }
         }
-        
+
         private String value;
-        
+
         private boolean submitted;
-        
-        private SubmissionStatus(String value, boolean submitted){
+
+        private SubmissionStatus(String value, boolean submitted) {
             this.value = value;
             this.submitted = submitted;
         }
-        
-        
-        /** Parse the submission status.
-         * 
+
+        /**
+         * Parse the submission status.
+         *
          * @param status Serialized submission status string
          * @return The submission status
          */
         public static SubmissionStatus of(String status) {
             SubmissionStatus result = map.get(status);
             if (result == null) {
-              throw new IllegalArgumentException("Invalid Submission Status: " + status);
+                throw new IllegalArgumentException("Invalid Submission Status: " + status);
             }
             return result;
-          }
+        }
 
-        /** Determine if submitted.
-         * 
+        /**
+         * Determine if submitted.
+         *
          * @return True if submitted.
          */
         public boolean isSubmitted() {
             return submitted;
         }
-        
+
         @Override
         public String toString() {
             return this.value;
         }
-        
+
     }
 
-    
-    /** 
+    /**
      * Possible aggregatedDepositStatus of a submission, this is dependent on information from the server and
      * is calculated using the status of associated Deposits
      */
@@ -267,97 +270,103 @@ public class Submission extends PassEntity {
          */
         @JsonProperty("not-started")
         NOT_STARTED("not-started"),
-        
+
         /**
-         * One or more Deposits for the Submission have been initiated, and at least one 
+         * One or more Deposits for the Submission have been initiated, and at least one
          * has not reached the status of "accepted"
          */
         @JsonProperty("in-progress")
         IN_PROGRESS("in-progress"),
-        
+
         /**
          * One or more Deposits for the Submission has a status of "failed"
          */
         @JsonProperty("failed")
-        FAILED("failed"), 
-        
+        FAILED("failed"),
+
         /**
          * All related Deposits have a status of "accepted"
          */
         @JsonProperty("accepted")
-        ACCEPTED("accepted"), 
-        
+        ACCEPTED("accepted"),
+
         /**
          * One or more Deposits for the Submission has a status of "rejected"
          */
         @JsonProperty("rejected")
         REJECTED("rejected");
 
-        private static final Map<String, AggregatedDepositStatus> map = new HashMap<>(values().length, 1);  
+        private static final Map<String, AggregatedDepositStatus> map = new HashMap<>(values().length, 1);
+
         static {
-          for (AggregatedDepositStatus s : values()) map.put(s.value, s);
+            for (AggregatedDepositStatus s : values()) {
+                map.put(s.value, s);
+            }
         }
-        
+
         private String value;
-        
-        private AggregatedDepositStatus(String value){
+
+        private AggregatedDepositStatus(String value) {
             this.value = value;
         }
-        
-        /** 
+
+        /**
          * Parse the aggregated deposit status.
-         * 
+         *
          * @param status Serialized status
          * @return parsed deposit status.
          */
         public static AggregatedDepositStatus of(String status) {
             AggregatedDepositStatus result = map.get(status);
             if (result == null) {
-              throw new IllegalArgumentException("Invalid Aggregated Deposit Status: " + status);
+                throw new IllegalArgumentException("Invalid Aggregated Deposit Status: " + status);
             }
             return result;
-          }
+        }
 
         @Override
         public String toString() {
             return this.value;
         }
-        
-    }
-    
 
-    /** 
-     * Source of the Submission, from a PASS user or imported from another source*/
+    }
+
+    /**
+     * Source of the Submission, from a PASS user or imported from another source
+     */
     public enum Source {
-        
-        /** PASS source */
+
+        /**
+         * PASS source
+         */
         @JsonProperty("pass")
         PASS("pass"),
-        
-        /** Other source */
+
+        /**
+         * Other source
+         */
         @JsonProperty("other")
         OTHER("other");
-        
+
         private String value;
-        
-        private Source(String value){
+
+        private Source(String value) {
             this.value = value;
         }
-        
+
         @Override
         public String toString() {
             return this.value;
         }
     }
-    
+
     /**
-    * @return the metadata
-    */
+     * @return the metadata
+     */
     public String getMetadata() {
         return metadata;
     }
 
-    
     /**
      * @param metadata the metadata to set
      */
@@ -365,7 +374,6 @@ public class Submission extends PassEntity {
         this.metadata = metadata;
     }
 
-    
     /**
      * @return the source
      */
@@ -373,7 +381,6 @@ public class Submission extends PassEntity {
         return source;
     }
 
-    
     /**
      * @param source the source to set
      */
@@ -381,7 +388,6 @@ public class Submission extends PassEntity {
         this.source = source;
     }
 
-    
     /**
      * @return the submitted
      */
@@ -389,7 +395,6 @@ public class Submission extends PassEntity {
         return submitted;
     }
 
-    
     /**
      * @return Boolean indicating submitted
      */
@@ -397,8 +402,6 @@ public class Submission extends PassEntity {
         return submitted;
     }
 
-
-    
     /**
      * @param submitted the submitted to set
      */
@@ -406,7 +409,6 @@ public class Submission extends PassEntity {
         this.submitted = submitted;
     }
 
-    
     /**
      * @return the submittedDate
      */
@@ -414,7 +416,6 @@ public class Submission extends PassEntity {
         return submittedDate;
     }
 
-    
     /**
      * @param submittedDate the submittedDate to set
      */
@@ -422,7 +423,6 @@ public class Submission extends PassEntity {
         this.submittedDate = submittedDate;
     }
 
-    
     /**
      * @return the submissionStatus
      */
@@ -430,7 +430,6 @@ public class Submission extends PassEntity {
         return submissionStatus;
     }
 
-    
     /**
      * @return the aggregatedDepositStatus
      */
@@ -438,7 +437,6 @@ public class Submission extends PassEntity {
         return aggregatedDepositStatus;
     }
 
-    
     /**
      * @param aggregatedDepositStatus the aggregatedDepositStatus to set
      */
@@ -446,7 +444,6 @@ public class Submission extends PassEntity {
         this.aggregatedDepositStatus = aggregatedDepositStatus;
     }
 
-    
     /**
      * @param submissionStatus the submissionStatus to set
      */
@@ -454,7 +451,6 @@ public class Submission extends PassEntity {
         this.submissionStatus = submissionStatus;
     }
 
-    
     /**
      * @return the publication
      */
@@ -462,7 +458,6 @@ public class Submission extends PassEntity {
         return publication;
     }
 
-    
     /**
      * @param publication the publication to set
      */
@@ -470,7 +465,6 @@ public class Submission extends PassEntity {
         this.publication = publication;
     }
 
-    
     /**
      * @return the repositories
      */
@@ -478,15 +472,13 @@ public class Submission extends PassEntity {
         return repositories;
     }
 
-    
     /**
      * @param repositories the repositories to set
      */
     public void setRepositories(List<URI> repositories) {
         this.repositories = repositories;
     }
-    
-    
+
     /**
      * @return the submitter
      */
@@ -494,9 +486,9 @@ public class Submission extends PassEntity {
         return submitter;
     }
 
-    
-    /** 
+    /**
      * Set the submitter
+     *
      * @param submitter the submitter to set
      */
     public void setSubmitter(URI submitter) {
@@ -507,44 +499,43 @@ public class Submission extends PassEntity {
      * @return the submitter name
      */
     public String getSubmitterName() {
-		return submitterName;
-	}
+        return submitterName;
+    }
 
-    
     /**
      * Set the submitter name
+     *
      * @param submitterName the submitter name to set
      */
-	public void setSubmitterName(String submitterName) {
-		this.submitterName = submitterName;
-	}
+    public void setSubmitterName(String submitterName) {
+        this.submitterName = submitterName;
+    }
 
+    /**
+     * @return the submitter email
+     */
+    public URI getSubmitterEmail() {
+        return submitterEmail;
+    }
 
-	/**
-	 * @return the submitter email
-	 */
-	public URI getSubmitterEmail() {
-		return submitterEmail;
-	}
+    /**
+     * Set the submitter email
+     *
+     * @param submitterEmail the submitter email to set
+     */
+    public void setSubmitterEmail(URI submitterEmail) {
+        this.submitterEmail = submitterEmail;
+    }
 
-
-	/**
-	 * Set the submitter email
-	 * @param submitterEmail the submitter email to set
-	 */
-	public void setSubmitterEmail(URI submitterEmail) {
-		this.submitterEmail = submitterEmail;
-	}
-
-
-	/** Gets the list of preparers
+    /**
+     * Gets the list of preparers
+     *
      * @return the preparers
      */
     public List<URI> getPreparers() {
         return preparers;
     }
 
-    
     /**
      * @param preparers the preparers to set
      */
@@ -552,7 +543,6 @@ public class Submission extends PassEntity {
         this.preparers = preparers;
     }
 
-    
     /**
      * @return the grants
      */
@@ -560,7 +550,6 @@ public class Submission extends PassEntity {
         return grants;
     }
 
-    
     /**
      * @param grants the grants to set
      */
@@ -569,7 +558,6 @@ public class Submission extends PassEntity {
     }
 
     /**
-     *
      * @return the policies being satisfied upon submission
      */
     public List<URI> getEffectivePolicies() {
@@ -577,7 +565,6 @@ public class Submission extends PassEntity {
     }
 
     /**
-     *
      * @param effectivePolicies the policies being satisfied upon submission
      */
     public void setEffectivePolicies(List<URI> effectivePolicies) {
@@ -586,30 +573,66 @@ public class Submission extends PassEntity {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        if (!super.equals(o)) {
+            return false;
+        }
 
         Submission that = (Submission) o;
 
-        if (metadata != null ? !metadata.equals(that.metadata) : that.metadata != null) return false;
-        if (source != null ? !source.equals(that.source) : that.source != null) return false;
-        if (submitted != null ? !submitted.equals(that.submitted) : that.submitted != null) return false;
-        if (submittedDate != null ? !submittedDate.equals(that.submittedDate) : that.submittedDate != null) return false;        
-        if (submissionStatus != null ? !submissionStatus.equals(that.submissionStatus) : that.submissionStatus != null) return false;
-        if (aggregatedDepositStatus != null ? !aggregatedDepositStatus.equals(that.aggregatedDepositStatus) : that.aggregatedDepositStatus != null) return false;
-        if (publication != null ? !publication.equals(that.publication) : that.publication != null) return false;
-        if (repositories != null ? !repositories.equals(that.repositories) : that.repositories != null) return false;
-        if (effectivePolicies != null ? !effectivePolicies.equals(that.effectivePolicies) : that.effectivePolicies != null) return false;
-        if (submitter != null ? !submitter.equals(that.submitter) : that.submitter != null) return false;
-        if (submitterName != null ? !submitterName.equals(that.submitterName) : that.submitterName != null) return false;
-        if (submitterEmail != null ? !submitterEmail.equals(that.submitterEmail) : that.submitterEmail != null) return false;
-        if (preparers != null ? !preparers.equals(that.preparers) : that.preparers != null) return false;
-        if (grants != null ? !grants.equals(that.grants) : that.grants != null) return false;
+        if (metadata != null ? !metadata.equals(that.metadata) : that.metadata != null) {
+            return false;
+        }
+        if (source != null ? !source.equals(that.source) : that.source != null) {
+            return false;
+        }
+        if (submitted != null ? !submitted.equals(that.submitted) : that.submitted != null) {
+            return false;
+        }
+        if (submittedDate != null ? !submittedDate.equals(that.submittedDate) : that.submittedDate != null) {
+            return false;
+        }
+        if (submissionStatus != null ? !submissionStatus.equals(
+            that.submissionStatus) : that.submissionStatus != null) {
+            return false;
+        }
+        if (aggregatedDepositStatus != null ? !aggregatedDepositStatus.equals(
+            that.aggregatedDepositStatus) : that.aggregatedDepositStatus != null) {
+            return false;
+        }
+        if (publication != null ? !publication.equals(that.publication) : that.publication != null) {
+            return false;
+        }
+        if (repositories != null ? !repositories.equals(that.repositories) : that.repositories != null) {
+            return false;
+        }
+        if (effectivePolicies != null ? !effectivePolicies.equals(
+            that.effectivePolicies) : that.effectivePolicies != null) {
+            return false;
+        }
+        if (submitter != null ? !submitter.equals(that.submitter) : that.submitter != null) {
+            return false;
+        }
+        if (submitterName != null ? !submitterName.equals(that.submitterName) : that.submitterName != null) {
+            return false;
+        }
+        if (submitterEmail != null ? !submitterEmail.equals(that.submitterEmail) : that.submitterEmail != null) {
+            return false;
+        }
+        if (preparers != null ? !preparers.equals(that.preparers) : that.preparers != null) {
+            return false;
+        }
+        if (grants != null ? !grants.equals(that.grants) : that.grants != null) {
+            return false;
+        }
         return true;
     }
 
-    
     @Override
     public int hashCode() {
         int result = super.hashCode();

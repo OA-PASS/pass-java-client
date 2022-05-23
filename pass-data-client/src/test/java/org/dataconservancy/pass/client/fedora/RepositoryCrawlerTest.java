@@ -19,13 +19,13 @@ package org.dataconservancy.pass.client.fedora;
 import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
 import static org.dataconservancy.pass.client.fedora.FedoraConfig.getBaseUrl;
-import static org.dataconservancy.pass.client.fedora.RepositoryCrawler.endWithSlash;
 import static org.dataconservancy.pass.client.fedora.RepositoryCrawler.Ignore.IGNORE_CONTAINERS;
 import static org.dataconservancy.pass.client.fedora.RepositoryCrawler.Ignore.IGNORE_NONE;
 import static org.dataconservancy.pass.client.fedora.RepositoryCrawler.Ignore.IGNORE_ROOT;
 import static org.dataconservancy.pass.client.fedora.RepositoryCrawler.Skip.SKIP_ACLS;
 import static org.dataconservancy.pass.client.fedora.RepositoryCrawler.Skip.SKIP_NONE;
 import static org.dataconservancy.pass.client.fedora.RepositoryCrawler.Skip.depth;
+import static org.dataconservancy.pass.client.fedora.RepositoryCrawler.endWithSlash;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -45,7 +45,6 @@ import java.util.Set;
 import java.util.UUID;
 
 import org.dataconservancy.pass.client.fedora.RepositoryCrawler.State;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -168,7 +167,7 @@ public class RepositoryCrawlerTest {
         final List<URI> visited = new ArrayList<>();
 
         assertEquals(l2_submissions.size(), toTest.visit(l1_submissions_container, visited::add,
-                IGNORE_ROOT, depth(1)));
+                                                         IGNORE_ROOT, depth(1)));
         assertEquals(l2_submissions.size(), visited.size());
         assertTrue(visited.containsAll(l2_submissions));
         assertFalse(visited.contains(l1_submissions_container));
@@ -185,8 +184,8 @@ public class RepositoryCrawlerTest {
         final Collection<URI> allExceptContainers = union(l2_all, l3_all);
 
         assertEquals(allExceptContainers.size(), toTest.visit(root, visited::add,
-                IGNORE_CONTAINERS,
-                SKIP_NONE));
+                                                              IGNORE_CONTAINERS,
+                                                              SKIP_NONE));
         assertEquals(allExceptContainers.size(), visited.size());
         assertTrue(visited.containsAll(allExceptContainers));
     }
@@ -198,7 +197,7 @@ public class RepositoryCrawlerTest {
         final Collection<URI> allExceptAclsAndContainers = union(l2_cows, l2_submissions, l3_aubmissions);
 
         assertEquals(allExceptAclsAndContainers.size(), toTest.visit(root, visited::add, IGNORE_CONTAINERS,
-                SKIP_ACLS));
+                                                                     SKIP_ACLS));
         assertEquals(allExceptAclsAndContainers.size(), visited.size());
         assertTrue(visited.containsAll(allExceptAclsAndContainers));
     }
@@ -235,7 +234,7 @@ public class RepositoryCrawlerTest {
         final Collection<URI> depth1ExceptAclsAndContainers = union(l2_cows, l2_submissions);
 
         assertEquals(depth1ExceptAclsAndContainers.size(), toTest.visit(root, visited::add, IGNORE_CONTAINERS,
-                depth(2).or(SKIP_ACLS)));
+                                                                        depth(2).or(SKIP_ACLS)));
         assertEquals(depth1ExceptAclsAndContainers.size(), visited.size());
         assertTrue(visited.containsAll(depth1ExceptAclsAndContainers));
     }

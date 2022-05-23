@@ -58,25 +58,27 @@ public class RepositoryCrawler {
      * </ul>
      *
      * @param resource URI of a resource to visit. If the value ends in <code>/*</code>, the crawler will <em>not</em>
-     *        consume the provided container itself, but <em>will</em> consume its children.
-     * @param visitor For every resource visited, it will invoke the consumer with the URI of the current resource.
-     * @param ignore Predicate which, when true, will cause a given resource to be ignored; it will not be sent to the
-     *        visitor, but recursion will still continue to its children. A primary use case is ignoring a container
-     *        resource, but processing its children. See also {@link Ignore}. To ignore none, use
-     *        {@link Ignore#IGNORE_NONE}. If combining multiple predicates, use "or" (i.e. "if one says ignore,
-     *        ignore").
-     * @param skip Predicate which, when true, tells the crawler to stop crawling at that resource, and not visit its
-     *        children. To process every resource without stopping at any, use {@link Skip#SKIP_NONE}. See also
-     *        {@link Skip}. If combining multiple predicates, use "or" (i.e. "if one says stop, stop").
+     *                 consume the provided container itself, but <em>will</em> consume its children.
+     * @param visitor  For every resource visited, it will invoke the consumer with the URI of the current resource.
+     * @param ignore   Predicate which, when true, will cause a given resource to be ignored; it will not be sent to the
+     *                 visitor, but recursion will still continue to its children. A primary use case is ignoring a
+     *                 container
+     *                 resource, but processing its children. See also {@link Ignore}. To ignore none, use
+     *                 {@link Ignore#IGNORE_NONE}. If combining multiple predicates, use "or" (i.e. "if one says ignore,
+     *                 ignore").
+     * @param skip     Predicate which, when true, tells the crawler to stop crawling at that resource, and not visit
+     *                 its
+     *                 children. To process every resource without stopping at any, use {@link Skip#SKIP_NONE}. See also
+     *                 {@link Skip}. If combining multiple predicates, use "or" (i.e. "if one says stop, stop").
      * @return the number of resources visited.
      */
     public int visit(final URI resource, final Consumer<URI> visitor, Predicate<State> ignore,
-            Predicate<State> skip) {
+                     Predicate<State> skip) {
         return _visit(resource, visitor, new State(0, null, resource), ignore, skip);
     }
 
     private int _visit(final URI resource, final Consumer<URI> visitor, State state, Predicate<State> ignore,
-            Predicate<State> terminal) {
+                       Predicate<State> terminal) {
         int count = 0;
 
         final Collection<URI> children;
@@ -118,21 +120,27 @@ public class RepositoryCrawler {
      */
     public static class State {
 
-        /** The depth of recursion */
+        /**
+         * The depth of recursion
+         */
         public final int depth;
 
-        /** The parent resource, null for the root of a tree */
+        /**
+         * The parent resource, null for the root of a tree
+         */
         public final URI parent;
 
-        /** URI of the current resource. */
+        /**
+         * URI of the current resource.
+         */
         public final URI id;
 
         /**
          * Create an immutible crawling state.
          *
-         * @param depth The depth of recursion
+         * @param depth  The depth of recursion
          * @param parent The parent resource, null for the root of a tree
-         * @param id URI of the current resource.
+         * @param id     URI of the current resource.
          */
         public State(int depth, URI parent, URI id) {
             this.depth = depth;
@@ -148,18 +156,22 @@ public class RepositoryCrawler {
      */
     public static interface Skip {
 
-        /** Do not skip any resources */
+        /**
+         * Do not skip any resources
+         */
         public static final Predicate<State> SKIP_NONE = s -> false;
 
-        /** Skip ACLs */
+        /**
+         * Skip ACLs
+         */
         public static final Predicate<State> SKIP_ACLS = s -> RepositoryCrawler.ACL_PATTERN.matcher(s.id.toString())
-                .matches();
+                                                                                           .matches();
 
         /**
          * Limit recursion to a given depth.
          *
          * @param limit Recursion limit. 0 = no recursion, 1 = descent to children, 2 = descend to the children's
-         *        children, etc.
+         *              children, etc.
          * @return predicate for matching depth
          */
         public static Predicate<State> depth(int limit) {
@@ -174,17 +186,24 @@ public class RepositoryCrawler {
      */
     public static interface Ignore {
 
-        /** Do not ignore any resources */
+        /**
+         * Do not ignore any resources
+         */
         public static final Predicate<State> IGNORE_NONE = s -> false;
 
-        /** Ignore the given container (root of a tree being traversed) */
+        /**
+         * Ignore the given container (root of a tree being traversed)
+         */
         public static final Predicate<State> IGNORE_ROOT = s -> s.parent == null;
 
-        /** Ignore all "top level" containers for PASS entities, such as /submissions, etc */
+        /**
+         * Ignore all "top level" containers for PASS entities, such as /submissions, etc
+         */
         public static final Predicate<State> IGNORE_CONTAINERS = s -> s.id.toString().matches(
-                endWithSlash(FedoraConfig.getBaseUrl()) + "\\.{0,1}[a-zA-Z]+/*$") ||
-                RepositoryCrawler.endWithSlash(s.id.toString()).equals(
-                        RepositoryCrawler.endWithSlash(FedoraConfig.getBaseUrl()));
+            endWithSlash(
+                FedoraConfig.getBaseUrl()) + "\\.{0,1}[a-zA-Z]+/*$") ||
+                    RepositoryCrawler.endWithSlash(s.id.toString()).equals(RepositoryCrawler
+                       .endWithSlash(FedoraConfig.getBaseUrl()));
     }
 
     static String endWithSlash(String uri) {

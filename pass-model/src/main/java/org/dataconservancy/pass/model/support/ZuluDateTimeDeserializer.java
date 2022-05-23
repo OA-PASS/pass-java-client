@@ -21,13 +21,13 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
-
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.ISODateTimeFormat;
 
 /**
  * Used to deserialize zulu string date to Joda DateTime
+ *
  * @author Karen Hanson
  */
 public class ZuluDateTimeDeserializer extends JsonDeserializer<DateTime> {
@@ -37,11 +37,11 @@ public class ZuluDateTimeDeserializer extends JsonDeserializer<DateTime> {
      */
     @Override
     public DateTime deserialize(JsonParser jsonParser, DeserializationContext deserializationContext)
-            throws IOException, JsonProcessingException {
-        
+        throws IOException, JsonProcessingException {
+
         DateTimeFormatter dateFormatter = ISODateTimeFormat.dateTime().withZoneUTC();
         DateTime dt = dateFormatter.parseDateTime(jsonParser.getText());
         return dt;
     }
-     
+
 }

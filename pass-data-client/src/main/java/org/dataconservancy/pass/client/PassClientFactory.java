@@ -23,12 +23,15 @@ package org.dataconservancy.pass.client;
  */
 public class PassClientFactory {
 
+    private PassClientFactory() {
+    }
+
     /**
      * Provide an instance a PassClient.
      * <p>
      * Defaults to overwriteOnUpdate = false.
      * </p>
-     * 
+     *
      * @return PASS client
      */
     public static PassClient getPassClient() {
@@ -43,9 +46,9 @@ public class PassClientFactory {
      * This new option supports the scenario where you actually do want to completely overwrite a record with model
      * changes and all - to do this, you would pass in "overwriteOnUpdate=true".
      * </p>
-     * 
+     *
      * @param overwriteOnUpdate - true if you would like updates to completely overwrite the record, false if you
-     *        would like only fields that have changed to be updated
+     *                          would like only fields that have changed to be updated
      * @return PASS client
      */
     public static PassClient getPassClient(boolean overwriteOnUpdate) {

@@ -22,9 +22,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.node.TextNode;
-
 import org.apache.commons.io.IOUtils;
-
 import org.dataconservancy.pass.client.PassJsonAdapter;
 import org.dataconservancy.pass.client.util.ConfigUtil;
 import org.dataconservancy.pass.model.PassEntity;
@@ -33,39 +31,41 @@ import org.slf4j.LoggerFactory;
 
 /**
  * JSON Adapter converts a PassEntity object into JSON (with or without context) and back
+ *
  * @author Karen Hanson
  */
 public class PassJsonAdapterBasic implements PassJsonAdapter {
 
     private static final Logger LOG = LoggerFactory.getLogger(PassJsonAdapterBasic.class);
-    
+
     private final static String CONTEXT_PROPKEY = "pass.jsonld.context";
-    private final static String DEFAULT_CONTEXT = "https://oa-pass.github.io/pass-data-model/src/main/resources/context-3.5.jsonld";
-    
+    private final static String DEFAULT_CONTEXT = "https://oa-pass.github.io/pass-data-model/src/main/resources" +
+                                                  "/context-3.5.jsonld";
+
     /**
      * {@inheritDoc}
      */
-    public byte[] toJson(PassEntity passObj, boolean includePassContext) { 
+    public byte[] toJson(PassEntity passObj, boolean includePassContext) {
         if (passObj == null) {
             throw new IllegalArgumentException("passObject cannot be null");
         }
         if (includePassContext) {
             //Assign pass context
             LOG.debug("Converting {} to JSON with context", passObj.getClass().getSimpleName());
-            passObj.setContext(getPassJsonLdContext());                
+            passObj.setContext(getPassJsonLdContext());
         } else {
             //scrub context if there is one
             LOG.debug("Converting {} to JSON without context", passObj.getClass().getSimpleName());
             passObj.setContext(null);
         }
 
-        byte [] jsonld = null;        
-        
+        byte[] jsonld = null;
+
         //convert to json
         ObjectMapper objectMapper = new ObjectMapper();
         try {
             ObjectNode jsonObj = (ObjectNode) objectMapper.valueToTree(passObj);
-            
+
             // This is because new objects (without an ID) should have the null relative URI
             if (jsonObj.get("@id") == null) {
                 jsonObj.set("@id", new TextNode(""));
@@ -74,7 +74,7 @@ public class PassJsonAdapterBasic implements PassJsonAdapter {
         } catch (JsonProcessingException e) {
             throw new RuntimeException("Could not model convert to JSON", e);
         }
-     
+
         return jsonld;
     }
 
@@ -86,20 +86,20 @@ public class PassJsonAdapterBasic implements PassJsonAdapter {
             throw new IllegalArgumentException("json cannot be empty");
         }
         if (valueType == null) {
-            throw new IllegalArgumentException("valueType cannot be empty");            
+            throw new IllegalArgumentException("valueType cannot be empty");
         }
-        
+
         try {
             ObjectMapper objectMapper = new ObjectMapper();
             ObjectNode parsed = (ObjectNode) objectMapper.readTree(json);
             parsed.remove("@context");
             LOG.debug("JSON converting to model {}", valueType.getSimpleName());
-            
+
             return objectMapper.treeToValue(parsed, valueType);
-            
+
         } catch (IOException e) {
-            throw new RuntimeException("Could not map JSON to " + valueType.getSimpleName(), e);    
-        } 
+            throw new RuntimeException("Could not map JSON to " + valueType.getSimpleName(), e);
+        }
     }
 
     /**
@@ -112,9 +112,10 @@ public class PassJsonAdapterBasic implements PassJsonAdapter {
             throw new RuntimeException("Could not map JSON to " + valueType.getSimpleName(), e);
         }
     }
-    
+
     /**
      * Retrieve the context path to add to the JSON for conversion to JSON-LD
+     *
      * @return
      */
     private static String getPassJsonLdContext() {
@@ -122,5 +123,5 @@ public class PassJsonAdapterBasic implements PassJsonAdapter {
         LOG.debug("Using JSONLD Context: {}", context);
         return context;
     }
-    
+
 }

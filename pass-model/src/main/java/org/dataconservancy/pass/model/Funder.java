@@ -19,41 +19,42 @@ import java.net.URI;
 
 /**
  * The funder or sponsor of Grant or award.
+ *
  * @author Karen Hanson
  */
 
 public class Funder extends PassEntity {
 
-    /** 
-     * Funder name 
+    /**
+     * Funder name
      */
     private String name;
-    
-    /** 
-     * Funder URL 
+
+    /**
+     * Funder URL
      */
     private URI url;
-    
-    /** 
+
+    /**
      * URI of the Policy associated with funder
      */
     private URI policy;
 
-    /** 
-     * Local key assigned to the funder within the researcher's institution to support matching between 
+    /**
+     * Local key assigned to the funder within the researcher's institution to support matching between
      * PASS and a local system. In the case of JHU this is the key assigned in COEUS
      */
     private String localKey;
 
-    
     /**
      * Funder constructor
      */
-    public Funder() {};
+    public Funder() {
+    }
 
-    
     /**
      * Copy constructor, this will copy the values of the object provided into the new object
+     *
      * @param funder the funder to copy
      */
     public Funder(Funder funder) {
@@ -64,7 +65,6 @@ public class Funder extends PassEntity {
         this.localKey = funder.localKey;
     }
 
-    
     /**
      * @return the name
      */
@@ -72,7 +72,6 @@ public class Funder extends PassEntity {
         return name;
     }
 
-    
     /**
      * @param name the name to set
      */
@@ -80,7 +79,6 @@ public class Funder extends PassEntity {
         this.name = name;
     }
 
-    
     /**
      * @return the url
      */
@@ -88,7 +86,6 @@ public class Funder extends PassEntity {
         return url;
     }
 
-    
     /**
      * @param url the url to set
      */
@@ -96,7 +93,6 @@ public class Funder extends PassEntity {
         this.url = url;
     }
 
-    
     /**
      * @return the URI of the policy
      */
@@ -104,7 +100,6 @@ public class Funder extends PassEntity {
         return policy;
     }
 
-    
     /**
      * @param policy the URI of the policy to set
      */
@@ -112,7 +107,6 @@ public class Funder extends PassEntity {
         this.policy = policy;
     }
 
-    
     /**
      * @return the localKey
      */
@@ -120,7 +114,6 @@ public class Funder extends PassEntity {
         return localKey;
     }
 
-    
     /**
      * @param localKey the localKey to set
      */
@@ -128,24 +121,35 @@ public class Funder extends PassEntity {
         this.localKey = localKey;
     }
 
-    
-
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        if (!super.equals(o)) {
+            return false;
+        }
 
         Funder that = (Funder) o;
 
-        if (name != null ? !name.equals(that.name) : that.name != null) return false;
-        if (url != null ? !url.equals(that.url) : that.url != null) return false;
-        if (policy != null ? !policy.equals(that.policy) : that.policy != null) return false;
-        if (localKey != null ? !localKey.equals(that.localKey) : that.localKey != null) return false;
+        if (name != null ? !name.equals(that.name) : that.name != null) {
+            return false;
+        }
+        if (url != null ? !url.equals(that.url) : that.url != null) {
+            return false;
+        }
+        if (policy != null ? !policy.equals(that.policy) : that.policy != null) {
+            return false;
+        }
+        if (localKey != null ? !localKey.equals(that.localKey) : that.localKey != null) {
+            return false;
+        }
         return true;
     }
 
-    
     @Override
     public int hashCode() {
         int result = super.hashCode();
@@ -155,6 +159,5 @@ public class Funder extends PassEntity {
         result = 31 * result + (localKey != null ? localKey.hashCode() : 0);
         return result;
     }
-    
 
 }

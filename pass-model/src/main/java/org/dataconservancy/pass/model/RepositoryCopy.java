@@ -16,7 +16,6 @@
 package org.dataconservancy.pass.model;
 
 import java.net.URI;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -25,46 +24,49 @@ import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * A Repository Copy represents a copy of a Publication that exists in a target Repository. 
+ * A Repository Copy represents a copy of a Publication that exists in a target Repository.
+ *
  * @author Karen Hanson
  */
 
 public class RepositoryCopy extends PassEntity {
-    
-    /** 
-     * IDs assigned by the repository 
+
+    /**
+     * IDs assigned by the repository
      */
     private List<String> externalIds = new ArrayList<String>();
-        
-    /** 
-     * Status of deposit 
+
+    /**
+     * Status of deposit
      */
     private CopyStatus copyStatus;
-    
-    /** 
-     * URL to access the item in the repository 
+
+    /**
+     * URL to access the item in the repository
      */
     private URI accessUrl;
-    
+
     /**
-     * URI of the Publication that this Repository Copy is a copy of 
+     * URI of the Publication that this Repository Copy is a copy of
      */
     private URI publication;
-    
-    /** 
+
+    /**
      * URI of Repository the Copy is in
      */
     private URI repository;
 
-    
     /**
      * RepositoryCopy constructor
      */
-    public RepositoryCopy() {};
+    public RepositoryCopy() {
+    }
 
-    
+    ;
+
     /**
      * Copy constructor, this will copy the values of the object provided into the new object
+     *
      * @param repositoryCopy the repositoryCopy to copy
      */
     public RepositoryCopy(RepositoryCopy repositoryCopy) {
@@ -75,15 +77,14 @@ public class RepositoryCopy extends PassEntity {
         this.publication = repositoryCopy.publication;
         this.repository = repositoryCopy.repository;
     }
-    
-    
+
     /**
      * Possible repository copy statuses. Note that some repositories may not go through every status.
      */
     public enum CopyStatus {
         /**
-        * The target Repository has rejected the Deposit
-        */
+         * The target Repository has rejected the Deposit
+         */
         @JsonProperty("accepted")
         ACCEPTED("accepted"),
         /**
@@ -92,13 +93,13 @@ public class RepositoryCopy extends PassEntity {
         @JsonProperty("in-progress")
         IN_PROGRESS("in-progress"),
         /**
-        * The target [Repository](Repository.md) has detected a problem that has caused the progress to stall.
-        */
+         * The target [Repository](Repository.md) has detected a problem that has caused the progress to stall.
+         */
         @JsonProperty("stalled")
         STALLED("stalled"),
         /**
-        * The target Repository has rejected the Deposit
-        */
+         * The target Repository has rejected the Deposit
+         */
         @JsonProperty("complete")
         COMPLETE("complete"),
 
@@ -108,26 +109,30 @@ public class RepositoryCopy extends PassEntity {
         @JsonProperty("rejected")
         REJECTED("rejected");
 
-        private static final Map<String, CopyStatus> map = new HashMap<>(values().length, 1);  
+        private static final Map<String, CopyStatus> map = new HashMap<>(values().length, 1);
+
         static {
-          for (CopyStatus c : values()) map.put(c.value, c);
+            for (CopyStatus c : values()) {
+                map.put(c.value, c);
+            }
         }
-        
+
         private String value;
-        
-        private CopyStatus(String value){
+
+        private CopyStatus(String value) {
             this.value = value;
         }
-        
-        /** Parse the copy status.
-         * 
+
+        /**
+         * Parse the copy status.
+         *
          * @param status Serialized status.
          * @return Parsed status.
          */
         public static CopyStatus of(String status) {
             CopyStatus result = map.get(status);
             if (result == null) {
-              throw new IllegalArgumentException("Invalid Copy Status: " + status);
+                throw new IllegalArgumentException("Invalid Copy Status: " + status);
             }
             return result;
         }
@@ -136,9 +141,9 @@ public class RepositoryCopy extends PassEntity {
         public String toString() {
             return this.value;
         }
-        
+
     }
-    
+
     /**
      * @return the externalIds
      */
@@ -146,7 +151,6 @@ public class RepositoryCopy extends PassEntity {
         return externalIds;
     }
 
-    
     /**
      * @param externalIds the externalIds to set
      */
@@ -154,15 +158,13 @@ public class RepositoryCopy extends PassEntity {
         this.externalIds = externalIds;
     }
 
-    
     /**
      * @return the repository copy status
      */
     public CopyStatus getCopyStatus() {
         return copyStatus;
     }
-    
-    
+
     /**
      * @return the accessUrl
      */
@@ -170,7 +172,6 @@ public class RepositoryCopy extends PassEntity {
         return accessUrl;
     }
 
-    
     /**
      * @param accessUrl the accessUrl to set
      */
@@ -178,7 +179,6 @@ public class RepositoryCopy extends PassEntity {
         this.accessUrl = accessUrl;
     }
 
-    
     /**
      * @param copyStatus The repository's status to set
      */
@@ -186,7 +186,6 @@ public class RepositoryCopy extends PassEntity {
         this.copyStatus = copyStatus;
     }
 
-    
     /**
      * @return the publication
      */
@@ -194,15 +193,13 @@ public class RepositoryCopy extends PassEntity {
         return publication;
     }
 
-
     /**
      * @param publication the publication to set
      */
     public void setPublication(URI publication) {
         this.publication = publication;
     }
-    
-    
+
     /**
      * @return the URI of the repository
      */
@@ -210,7 +207,6 @@ public class RepositoryCopy extends PassEntity {
         return repository;
     }
 
-    
     /**
      * @param repository the URI of the repository to set
      */
@@ -218,23 +214,37 @@ public class RepositoryCopy extends PassEntity {
         this.repository = repository;
     }
 
-    
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        if (!super.equals(o)) {
+            return false;
+        }
 
         RepositoryCopy that = (RepositoryCopy) o;
 
-        if (externalIds != null ? !externalIds.equals(that.externalIds) : that.externalIds != null) return false;
-        if (copyStatus != null ? !copyStatus.equals(that.copyStatus) : that.copyStatus != null) return false;
-        if (accessUrl != null ? !accessUrl.equals(that.accessUrl) : that.accessUrl != null) return false;
-        if (publication != null ? !publication.equals(that.publication) : that.publication != null) return false;
-        if (repository != null ? !repository.equals(that.repository) : that.repository != null) return false;
+        if (externalIds != null ? !externalIds.equals(that.externalIds) : that.externalIds != null) {
+            return false;
+        }
+        if (copyStatus != null ? !copyStatus.equals(that.copyStatus) : that.copyStatus != null) {
+            return false;
+        }
+        if (accessUrl != null ? !accessUrl.equals(that.accessUrl) : that.accessUrl != null) {
+            return false;
+        }
+        if (publication != null ? !publication.equals(that.publication) : that.publication != null) {
+            return false;
+        }
+        if (repository != null ? !repository.equals(that.repository) : that.repository != null) {
+            return false;
+        }
         return true;
     }
-    
 
     @Override
     public int hashCode() {
@@ -246,5 +256,5 @@ public class RepositoryCopy extends PassEntity {
         result = 31 * result + (repository != null ? repository.hashCode() : 0);
         return result;
     }
-    
+
 }

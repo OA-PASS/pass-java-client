@@ -16,46 +16,43 @@
 package org.dataconservancy.pass.client.integration;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import org.dataconservancy.pass.model.PassEntity;
 import org.dataconservancy.pass.model.PassEntityType;
 
 /**
  * This is a cut down copy of the User model. It is used to verify that by using PATCH for updates
  * we do not lose data when using a cut down model
- * 
+ *
  * @author Karen Hanson
  */
 public class User extends PassEntity {
 
-    /** 
+    /**
      * This will pretend it is a "User" object for testing.
      */
     @JsonProperty("@type")
     private String type = PassEntityType.USER.getName();
-    
-    /** 
-     * Unique login name used by user 
+
+    /**
+     * Unique login name used by user
      */
     private String username;
 
-    /** 
-     * Name for display. Separate names may not be available, but a person should always at least 
+    /**
+     * Name for display. Separate names may not be available, but a person should always at least
      * have a display name.
      */
-    private String displayName; 
-    
-    /** 
+    private String displayName;
+
+    /**
      * Contact email for User
      */
     private String email;
-    
-    
+
     public String getType() {
         return type;
     }
 
-    
     /**
      * @return the username
      */
@@ -63,14 +60,13 @@ public class User extends PassEntity {
         return username;
     }
 
-    
     /**
      * @param username the username to set
      */
     public void setUsername(String username) {
         this.username = username;
     }
-    
+
     /**
      * @return the displayName
      */
@@ -78,7 +74,6 @@ public class User extends PassEntity {
         return displayName;
     }
 
-    
     /**
      * @param displayName the displayName to set
      */
@@ -86,7 +81,6 @@ public class User extends PassEntity {
         this.displayName = displayName;
     }
 
-    
     /**
      * @return the email
      */
@@ -94,7 +88,6 @@ public class User extends PassEntity {
         return email;
     }
 
-    
     /**
      * @param email the email to set
      */
@@ -102,24 +95,35 @@ public class User extends PassEntity {
         this.email = email;
     }
 
-
-    
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        if (!super.equals(o)) {
+            return false;
+        }
 
         User that = (User) o;
 
-        if (type != null ? !type.equals(that.type) : that.type != null) return false;
-        if (username != null ? !username.equals(that.username) : that.username != null) return false;
-        if (displayName != null ? !displayName.equals(that.displayName) : that.displayName != null) return false;
-        if (email != null ? !email.equals(that.email) : that.email != null) return false;
+        if (type != null ? !type.equals(that.type) : that.type != null) {
+            return false;
+        }
+        if (username != null ? !username.equals(that.username) : that.username != null) {
+            return false;
+        }
+        if (displayName != null ? !displayName.equals(that.displayName) : that.displayName != null) {
+            return false;
+        }
+        if (email != null ? !email.equals(that.email) : that.email != null) {
+            return false;
+        }
         return true;
     }
 
-    
     @Override
     public int hashCode() {
         int result = super.hashCode();
@@ -129,6 +133,5 @@ public class User extends PassEntity {
         result = 31 * result + (email != null ? email.hashCode() : 0);
         return result;
     }
-    
 
 }

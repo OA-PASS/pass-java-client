@@ -16,73 +16,74 @@
 package org.dataconservancy.pass.model;
 
 import java.net.URI;
-
 import java.util.HashMap;
 import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-
 import org.dataconservancy.pass.model.support.ZuluDateTimeDeserializer;
 import org.dataconservancy.pass.model.support.ZuluDateTimeSerializer;
 import org.joda.time.DateTime;
 
 /**
- * The SubmissionEvent model captures significant events that are performed by an agent and occur against a Submission. 
+ * The SubmissionEvent model captures significant events that are performed by an agent and occur against a Submission.
+ *
  * @author Karen Hanson
  */
 
 public class SubmissionEvent extends PassEntity {
 
-    /** 
+    /**
      * The type of event
      */
     private EventType eventType;
 
-    /** 
+    /**
      * Date the event was performed by the User
      */
     @JsonSerialize(using = ZuluDateTimeSerializer.class)
     @JsonDeserialize(using = ZuluDateTimeDeserializer.class)
     private DateTime performedDate;
-    
+
     /**
      * URI of the User responsible for performing the event
      */
     private URI performedBy;
 
-    /** 
+    /**
      * Role of the person performing the event
      */
     private PerformerRole performerRole;
-    
-    /** 
-     * List of repositories that the submission will be deposited to 
+
+    /**
+     * List of repositories that the submission will be deposited to
      */
     private URI submission;
 
     /**
-     * A comment relevant to the SubmissionEvent. For example, when a `changes-requested` event occurs, 
+     * A comment relevant to the SubmissionEvent. For example, when a `changes-requested` event occurs,
      * this might be added by the User through the UI to communicate what changes should be made
      */
     private String comment;
 
-    /** 
-     * A resource relevant to the SubmissionEvent. For example, when a `changes-requested` event occurs, 
+    /**
+     * A resource relevant to the SubmissionEvent. For example, when a `changes-requested` event occurs,
      * this may contain an Ember application URL to the affected Submission.
      */
     private URI link;
 
-    
     /**
      * SubmissionEvent constructor
      */
-    public SubmissionEvent() {};
+    public SubmissionEvent() {
+    }
 
-    
+    ;
+
     /**
      * Copy constructor, this will copy the values of the object provided into the new object
+     *
      * @param submissionEvent the submissionEvent to copy
      */
     public SubmissionEvent(SubmissionEvent submissionEvent) {
@@ -95,75 +96,76 @@ public class SubmissionEvent extends PassEntity {
         this.comment = submissionEvent.comment;
         this.link = submissionEvent.link;
     }
-    
-    
-    /** 
+
+    /**
      * The types of events that might be recorded as SubmissionEvents
      */
     public enum EventType {
         /**
-         * A Submission was prepared by a preparer on behalf of a person who does not yet have a User 
-         * record in PASS. The preparer is requesting that the submitter join PASS and then approve and 
+         * A Submission was prepared by a preparer on behalf of a person who does not yet have a User
+         * record in PASS. The preparer is requesting that the submitter join PASS and then approve and
          * submit it or provide feedback.
          */
         @JsonProperty("approval-requested-newuser")
         APPROVAL_REQUESTED_NEWUSER("approval-requested-newuser"),
-        
+
         /**
-         * A Submission was prepared by a preparer who is now requesting that the submitter approve and 
+         * A Submission was prepared by a preparer who is now requesting that the submitter approve and
          * submit it or provide feedback
          */
         @JsonProperty("approval-requested")
         APPROVAL_REQUESTED("approval-requested"),
-        
+
         /**
-         * A Submission was prepared by a preparer, but on review by the submitter, a change was requested. 
+         * A Submission was prepared by a preparer, but on review by the submitter, a change was requested.
          * The Submission has been handed back to the preparer for editing.
          */
         @JsonProperty("changes-requested")
         CHANGES_REQUESTED("changes-requested"),
 
         /**
-         *  A Submission was prepared and then cancelled by the submitter or preparer without being submitted. 
-         *  No further edits can be made to the Submission.
+         * A Submission was prepared and then cancelled by the submitter or preparer without being submitted.
+         * No further edits can be made to the Submission.
          */
         @JsonProperty("cancelled")
         CANCELLED("cancelled"),
-        
+
         /**
          * The submit button has been pressed through the UI.
          */
         @JsonProperty("submitted")
         SUBMITTED("submitted");
 
-        private static final Map<String, EventType> map = new HashMap<>(values().length, 1);  
+        private static final Map<String, EventType> map = new HashMap<>(values().length, 1);
+
         static {
-          for (EventType s : values()) map.put(s.value, s);
+            for (EventType s : values()) {
+                map.put(s.value, s);
+            }
         }
-        
+
         private String value;
-        
-        private EventType(String value){
+
+        private EventType(String value) {
             this.value = value;
         }
-        
+
         public static EventType of(String eventType) {
             EventType result = map.get(eventType);
             if (result == null) {
-              throw new IllegalArgumentException("Invalid Event Type: " + eventType);
+                throw new IllegalArgumentException("Invalid Event Type: " + eventType);
             }
             return result;
-          }
+        }
 
         @Override
         public String toString() {
             return this.value;
         }
-        
+
     }
 
-
-    /** 
+    /**
      * Roles of agents who might perform a SubmissionEvent
      */
     public enum PerformerRole {
@@ -171,20 +173,19 @@ public class SubmissionEvent extends PassEntity {
         PREPARER("preparer"),
         @JsonProperty("submitter")
         SUBMITTER("submitter");
-        
+
         private String value;
-        
-        private PerformerRole(String value){
+
+        private PerformerRole(String value) {
             this.value = value;
         }
-        
+
         @Override
         public String toString() {
             return this.value;
         }
     }
-    
-    
+
     /**
      * @return the eventType
      */
@@ -192,7 +193,6 @@ public class SubmissionEvent extends PassEntity {
         return eventType;
     }
 
-    
     /**
      * @param eventType the eventType to set
      */
@@ -200,7 +200,6 @@ public class SubmissionEvent extends PassEntity {
         this.eventType = eventType;
     }
 
-    
     /**
      * @return the performedDate
      */
@@ -208,7 +207,6 @@ public class SubmissionEvent extends PassEntity {
         return performedDate;
     }
 
-    
     /**
      * @param performedDate the performedDate to set
      */
@@ -216,7 +214,6 @@ public class SubmissionEvent extends PassEntity {
         this.performedDate = performedDate;
     }
 
-    
     /**
      * @return the performedBy
      */
@@ -224,7 +221,6 @@ public class SubmissionEvent extends PassEntity {
         return performedBy;
     }
 
-    
     /**
      * @param performedBy the performedBy to set
      */
@@ -232,7 +228,6 @@ public class SubmissionEvent extends PassEntity {
         this.performedBy = performedBy;
     }
 
-    
     /**
      * @return the performerRole
      */
@@ -240,7 +235,6 @@ public class SubmissionEvent extends PassEntity {
         return performerRole;
     }
 
-    
     /**
      * @param performerRole the performerRole to set
      */
@@ -248,7 +242,6 @@ public class SubmissionEvent extends PassEntity {
         this.performerRole = performerRole;
     }
 
-    
     /**
      * @return the submission
      */
@@ -256,7 +249,6 @@ public class SubmissionEvent extends PassEntity {
         return submission;
     }
 
-    
     /**
      * @param submission the submission to set
      */
@@ -264,7 +256,6 @@ public class SubmissionEvent extends PassEntity {
         this.submission = submission;
     }
 
-    
     /**
      * @return the comment
      */
@@ -272,7 +263,6 @@ public class SubmissionEvent extends PassEntity {
         return comment;
     }
 
-    
     /**
      * @param comment the comment to set
      */
@@ -280,7 +270,6 @@ public class SubmissionEvent extends PassEntity {
         this.comment = comment;
     }
 
-    
     /**
      * @return the link
      */
@@ -288,7 +277,6 @@ public class SubmissionEvent extends PassEntity {
         return link;
     }
 
-    
     /**
      * @param link the link to set
      */
@@ -296,26 +284,44 @@ public class SubmissionEvent extends PassEntity {
         this.link = link;
     }
 
-
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        if (!super.equals(o)) {
+            return false;
+        }
 
         SubmissionEvent that = (SubmissionEvent) o;
 
-        if (eventType != null ? !eventType.equals(that.eventType) : that.eventType != null) return false;
-        if (performedDate != null ? !performedDate.equals(that.performedDate) : that.performedDate != null) return false;
-        if (performedBy != null ? !performedBy.equals(that.performedBy) : that.performedBy != null) return false;
-        if (performerRole != null ? !performerRole.equals(that.performerRole) : that.performerRole != null) return false;
-        if (submission != null ? !submission.equals(that.submission) : that.submission != null) return false;    
-        if (comment != null ? !comment.equals(that.comment) : that.comment != null) return false;            
-        if (link != null ? !link.equals(that.link) : that.link != null) return false;
+        if (eventType != null ? !eventType.equals(that.eventType) : that.eventType != null) {
+            return false;
+        }
+        if (performedDate != null ? !performedDate.equals(that.performedDate) : that.performedDate != null) {
+            return false;
+        }
+        if (performedBy != null ? !performedBy.equals(that.performedBy) : that.performedBy != null) {
+            return false;
+        }
+        if (performerRole != null ? !performerRole.equals(that.performerRole) : that.performerRole != null) {
+            return false;
+        }
+        if (submission != null ? !submission.equals(that.submission) : that.submission != null) {
+            return false;
+        }
+        if (comment != null ? !comment.equals(that.comment) : that.comment != null) {
+            return false;
+        }
+        if (link != null ? !link.equals(that.link) : that.link != null) {
+            return false;
+        }
         return true;
     }
 
-    
     @Override
     public int hashCode() {
         int result = super.hashCode();

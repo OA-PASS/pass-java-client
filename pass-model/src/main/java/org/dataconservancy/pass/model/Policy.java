@@ -16,51 +16,53 @@
 package org.dataconservancy.pass.model;
 
 import java.net.URI;
-
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Describes a Policy. Policies determine the rules that need to be followed by a Submission.
+ *
  * @author Karen Hanson
  */
 
 public class Policy extends PassEntity {
-    
-    /** 
-     * Title of policy e.g. "NIH Public Access Policy" 
+
+    /**
+     * Title of policy e.g. "NIH Public Access Policy"
      */
     private String title;
-    
-    /** 
-     * Several sentence description of policy 
+
+    /**
+     * Several sentence description of policy
      */
     private String description;
-    
-    /** 
+
+    /**
      * A link to the actual policy on the policy-owner's page
      */
     private URI policyUrl;
-    
-    /** 
-     * List of URIs for repositories that can satisfying this policy 
+
+    /**
+     * List of URIs for repositories that can satisfying this policy
      */
     private List<URI> repositories = new ArrayList<>();
-    
-    /** 
+
+    /**
      * URI of the Institution whose Policy this is (note: if institution has a value, funder should be null)
      */
     private URI institution;
 
-    
     /**
      * Policy constructor
      */
-    public Policy() {};
+    public Policy() {
+    }
 
-    
+    ;
+
     /**
      * Copy constructor, this will copy the values of the object provided into the new object
+     *
      * @param policy the policy to copy
      */
     public Policy(Policy policy) {
@@ -71,8 +73,7 @@ public class Policy extends PassEntity {
         this.repositories = new ArrayList<URI>(policy.repositories);
         this.institution = policy.institution;
     }
-    
-    
+
     /**
      * @return the title
      */
@@ -80,7 +81,6 @@ public class Policy extends PassEntity {
         return title;
     }
 
-    
     /**
      * @param title the title to set
      */
@@ -88,7 +88,6 @@ public class Policy extends PassEntity {
         this.title = title;
     }
 
-    
     /**
      * @return the description
      */
@@ -96,7 +95,6 @@ public class Policy extends PassEntity {
         return description;
     }
 
-    
     /**
      * @param description the description to set
      */
@@ -104,7 +102,6 @@ public class Policy extends PassEntity {
         this.description = description;
     }
 
-    
     /**
      * @return the policy URL
      */
@@ -112,7 +109,6 @@ public class Policy extends PassEntity {
         return policyUrl;
     }
 
-    
     /**
      * @param policyUrl the policyUrl to set
      */
@@ -120,7 +116,6 @@ public class Policy extends PassEntity {
         this.policyUrl = policyUrl;
     }
 
-    
     /**
      * @return the institution
      */
@@ -128,7 +123,6 @@ public class Policy extends PassEntity {
         return institution;
     }
 
-    
     /**
      * @param institution the institution to set
      */
@@ -136,7 +130,6 @@ public class Policy extends PassEntity {
         this.institution = institution;
     }
 
-    
     /**
      * @return the list of URIs of repositories
      */
@@ -144,7 +137,6 @@ public class Policy extends PassEntity {
         return repositories;
     }
 
-    
     /**
      * @param repositories list of URIs of repositories to set
      */
@@ -152,24 +144,38 @@ public class Policy extends PassEntity {
         this.repositories = repositories;
     }
 
-    
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        if (!super.equals(o)) {
+            return false;
+        }
 
         Policy that = (Policy) o;
 
-        if (title != null ? !title.equals(that.title) : that.title != null) return false;
-        if (description != null ? !description.equals(that.description) : that.description != null) return false;
-        if (policyUrl != null ? !policyUrl.equals(that.policyUrl) : that.policyUrl != null) return false;
-        if (repositories != null ? !repositories.equals(that.repositories) : that.repositories != null) return false;
-        if (institution != null ? !institution.equals(that.institution) : that.institution != null) return false;
+        if (title != null ? !title.equals(that.title) : that.title != null) {
+            return false;
+        }
+        if (description != null ? !description.equals(that.description) : that.description != null) {
+            return false;
+        }
+        if (policyUrl != null ? !policyUrl.equals(that.policyUrl) : that.policyUrl != null) {
+            return false;
+        }
+        if (repositories != null ? !repositories.equals(that.repositories) : that.repositories != null) {
+            return false;
+        }
+        if (institution != null ? !institution.equals(that.institution) : that.institution != null) {
+            return false;
+        }
         return true;
     }
 
-    
     @Override
     public int hashCode() {
         int result = super.hashCode();
@@ -180,5 +186,5 @@ public class Policy extends PassEntity {
         result = 31 * result + (institution != null ? institution.hashCode() : 0);
         return result;
     }
-       
+
 }

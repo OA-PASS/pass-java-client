@@ -22,8 +22,8 @@ before_install:
 
 install: mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
 
-script: if [ "$TRAVIS_PULL_REQUEST" == "false" ] ; then mvn -s ./settings.xml deploy 
-  -Dexternal -DtrimStackTrace=false; else mvn verify -DtrimStackTrace=false 
+script: if [ "$TRAVIS_PULL_REQUEST" == "false" ] ; then mvn -s ./settings.xml deploy
+  -Dexternal -DtrimStackTrace=false; else mvn verify -DtrimStackTrace=false
   -Ddocker.keepRunning; fi
 
 after_failure:

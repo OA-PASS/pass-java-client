@@ -17,6 +17,7 @@
 package org.dataconservancy.pass.client.integration;
 
 import static org.unitils.reflectionassert.ReflectionAssert.assertReflectionEquals;
+
 import java.net.URI;
 
 import org.dataconservancy.pass.model.PassEntity;
@@ -36,8 +37,8 @@ public class CreateReadResourceRoundTripIT extends ClientITBase {
     public void roundTripWithFullListsTest() {
 
         PASS_TYPES.stream()
-                .map(cls -> random(cls, 2))
-                .forEach(this::roundTrip);
+                  .map(cls -> random(cls, 2))
+                  .forEach(this::roundTrip);
     }
 
     /* Roundtrip with all lists containing ONE entry.. an edge case */
@@ -45,8 +46,8 @@ public class CreateReadResourceRoundTripIT extends ClientITBase {
     public void roundTripWithSingleListsTest() {
 
         PASS_TYPES.stream()
-                .map(cls -> random(cls, 1))
-                .forEach(this::roundTrip);
+                  .map(cls -> random(cls, 1))
+                  .forEach(this::roundTrip);
     }
 
     /* Roundtrip with all lists empty - for completeness */
@@ -54,16 +55,16 @@ public class CreateReadResourceRoundTripIT extends ClientITBase {
     public void roundTripWithEmptyListsTest() {
 
         PASS_TYPES.stream()
-                .map(cls -> random(cls, 0))
-                .forEach(this::roundTrip);
+                  .map(cls -> random(cls, 0))
+                  .forEach(this::roundTrip);
     }
 
     /* Sparse roundtrip - empty objects */
     @Test
     public void roundTripSparseTest() {
         PASS_TYPES.stream()
-                .map(ClientITBase::empty)
-                .forEach(this::roundTrip);
+                  .map(ClientITBase::empty)
+                  .forEach(this::roundTrip);
     }
 
     /* Roundtrip with all lists containing multiple values */
@@ -71,8 +72,8 @@ public class CreateReadResourceRoundTripIT extends ClientITBase {
     public void roundTripCreateAndReadWithFullListsTest() {
 
         PASS_TYPES.stream()
-                .map(cls -> random(cls, 2))
-                .forEach(this::roundTripCreateAndRead);
+                  .map(cls -> random(cls, 2))
+                  .forEach(this::roundTripCreateAndRead);
     }
 
     /* Roundtrip with all lists containing ONE entry.. an edge case */
@@ -80,8 +81,8 @@ public class CreateReadResourceRoundTripIT extends ClientITBase {
     public void roundTripCreateAndReadWithSingleListsTest() {
 
         PASS_TYPES.stream()
-                .map(cls -> random(cls, 1))
-                .forEach(this::roundTripCreateAndRead);
+                  .map(cls -> random(cls, 1))
+                  .forEach(this::roundTripCreateAndRead);
     }
 
     /* Roundtrip with all lists empty - for completeness */
@@ -89,21 +90,20 @@ public class CreateReadResourceRoundTripIT extends ClientITBase {
     public void roundTripCreateAndReadWithEmptyListsTest() {
 
         PASS_TYPES.stream()
-                .map(cls -> random(cls, 0))
-                .forEach(this::roundTripCreateAndRead);
+                  .map(cls -> random(cls, 0))
+                  .forEach(this::roundTripCreateAndRead);
     }
 
     /* Sparse roundtrip - empty objects */
     @Test
     public void roundTripCreateAndReadSparseTest() {
         PASS_TYPES.stream()
-                .map(ClientITBase::empty)
-                .forEach(this::roundTripCreateAndRead);
+                  .map(ClientITBase::empty)
+                  .forEach(this::roundTripCreateAndRead);
     }
 
-
     void roundTrip(PassEntity asDeposited) {
-        final URI entityUri = client.createResource(asDeposited);   
+        final URI entityUri = client.createResource(asDeposited);
         final PassEntity retrieved = client.readResource(entityUri, asDeposited.getClass());
         assertReflectionEquals(normalized(asDeposited), normalized(retrieved),
                                ReflectionComparatorMode.LENIENT_ORDER);
@@ -114,7 +114,7 @@ public class CreateReadResourceRoundTripIT extends ClientITBase {
     <T extends PassEntity> void roundTripCreateAndRead(T asDeposited) {
         final PassEntity retrieved = client.createAndReadResource(asDeposited, (Class<T>) asDeposited.getClass());
         assertReflectionEquals(normalized(asDeposited), normalized(retrieved),
-                ReflectionComparatorMode.LENIENT_ORDER);
+                               ReflectionComparatorMode.LENIENT_ORDER);
         createdUris.put(retrieved.getId(), asDeposited.getClass());
     }
 

@@ -15,37 +15,36 @@
  */
 package org.dataconservancy.pass.model;
 
-import java.io.InputStream;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
+import java.io.InputStream;
 import java.net.URI;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-
-import org.junit.Test;
-
 import org.json.JSONObject;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import org.junit.Test;
 
 /**
  * Model has been annotated with JSON tags. These tests do a simple check to ensure the
  * Jackson integration is functional and the equals / hashcode functions work
+ *
  * @author Karen Hanson
  */
 public class ContributorModelTests {
-            
+
     /**
      * Simple verification that JSON file can be converted to Contributor model
+     *
      * @throws Exception
      */
     @Test
     public void testContributorFromJsonConversion() throws Exception {
-        
+
         InputStream json = ContributorModelTests.class.getResourceAsStream("/contributor.json");
         ObjectMapper objectMapper = new ObjectMapper();
         Contributor contributor = objectMapper.readValue(json, Contributor.class);
-        
+
         assertEquals(TestValues.CONTRIBUTOR_ID_1, contributor.getId().toString());
         assertEquals(TestValues.USER_FIRST_NAME, contributor.getFirstName());
         assertEquals(TestValues.USER_MIDDLE_NAME, contributor.getMiddleName());
@@ -57,38 +56,40 @@ public class ContributorModelTests {
         assertEquals(TestValues.PUBLICATION_ID_1, contributor.getPublication().toString());
         assertEquals(TestValues.USER_ID_1, contributor.getUser().toString());
         assertEquals(TestValues.CONTRIBUTOR_ROLE_1, Contributor.Role.FIRST_AUTHOR.toString());
-        assertEquals(TestValues.CONTRIBUTOR_ROLE_2, Contributor.Role.AUTHOR.toString()); 
-        
+        assertEquals(TestValues.CONTRIBUTOR_ROLE_2, Contributor.Role.AUTHOR.toString());
+
     }
 
     /**
      * Simple verification that Contributor model can be converted to JSON
+     *
      * @throws Exception
      */
     @Test
     public void testContributorToJsonConversion() throws Exception {
 
-        Contributor contributor= createContributor();
+        Contributor contributor = createContributor();
         ObjectMapper objectMapper = new ObjectMapper();
         String jsonContributor = objectMapper.writeValueAsString(contributor);
 
         JSONObject root = new JSONObject(jsonContributor);
 
-        assertEquals(root.getString("@id"),TestValues.CONTRIBUTOR_ID_1);
+        assertEquals(root.getString("@id"), TestValues.CONTRIBUTOR_ID_1);
         assertEquals(root.getString("@type"), PassEntityType.CONTRIBUTOR.getName());
-        assertEquals(root.getString("firstName"),TestValues.USER_FIRST_NAME);
-        assertEquals(root.getString("middleName"),TestValues.USER_MIDDLE_NAME);
-        assertEquals(root.getString("lastName"),TestValues.USER_LAST_NAME);
-        assertEquals(root.getString("displayName"),TestValues.USER_DISPLAY_NAME);
-        assertEquals(root.getString("email"),TestValues.USER_EMAIL);            
-        assertEquals(root.getString("orcidId"),TestValues.USER_ORCID_ID);                
-        assertEquals(root.getJSONArray("affiliation").get(0),TestValues.USER_AFFILIATION.iterator().next());
+        assertEquals(root.getString("firstName"), TestValues.USER_FIRST_NAME);
+        assertEquals(root.getString("middleName"), TestValues.USER_MIDDLE_NAME);
+        assertEquals(root.getString("lastName"), TestValues.USER_LAST_NAME);
+        assertEquals(root.getString("displayName"), TestValues.USER_DISPLAY_NAME);
+        assertEquals(root.getString("email"), TestValues.USER_EMAIL);
+        assertEquals(root.getString("orcidId"), TestValues.USER_ORCID_ID);
+        assertEquals(root.getJSONArray("affiliation").get(0), TestValues.USER_AFFILIATION.iterator().next());
     }
-    
+
     /**
-     * Creates two identical Contributors and checks the equals and hashcodes match. 
-     * Modifies one field on one of the Contributors and verifies they no longer are 
+     * Creates two identical Contributors and checks the equals and hashcodes match.
+     * Modifies one field on one of the Contributors and verifies they no longer are
      * equal or have matching hashcodes.
+     *
      * @throws Exception
      */
     @Test
@@ -96,19 +97,20 @@ public class ContributorModelTests {
 
         Contributor contributor1 = createContributor();
         Contributor contributor2 = createContributor();
-        
-        assertEquals(contributor1,contributor2);
+
+        assertEquals(contributor1, contributor2);
         contributor1.setFirstName("different");
         assertTrue(!contributor1.equals(contributor2));
-        
-        assertTrue(contributor1.hashCode()!=contributor2.hashCode());
+
+        assertTrue(contributor1.hashCode() != contributor2.hashCode());
         contributor1 = contributor2;
-        assertEquals(contributor1.hashCode(),contributor2.hashCode());
-        
+        assertEquals(contributor1.hashCode(), contributor2.hashCode());
+
     }
-    
+
     /**
      * Test copy constructor creates a valid duplicate that is not the same object
+     *
      * @throws Exception
      */
     @Test
@@ -116,17 +118,17 @@ public class ContributorModelTests {
         Contributor contributor = createContributor();
         Contributor contributorCopy = new Contributor(contributor);
         assertEquals(contributor, contributorCopy);
-        
+
         String newEmail = "differentemail@differentemail.com";
         contributorCopy.setEmail(newEmail);
         assertEquals(TestValues.USER_EMAIL, contributor.getEmail());
         assertEquals(newEmail, contributorCopy.getEmail());
-        
+
         contributorCopy.setUser(new URI(TestValues.USER_ID_2));
         assertEquals(TestValues.USER_ID_1, contributor.getUser().toString());
         assertEquals(TestValues.USER_ID_2, contributorCopy.getUser().toString());
     }
-    
+
     private Contributor createContributor() throws Exception {
         Contributor contributor = new Contributor();
         contributor.setId(new URI(TestValues.CONTRIBUTOR_ID_1));
@@ -139,8 +141,8 @@ public class ContributorModelTests {
         contributor.setAffiliation(TestValues.USER_AFFILIATION);
         contributor.setUser(new URI(TestValues.USER_ID_1));
         contributor.setPublication(new URI(TestValues.PUBLICATION_ID_1));
-        
+
         return contributor;
     }
-    
+
 }

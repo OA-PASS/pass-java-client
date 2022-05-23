@@ -16,52 +16,52 @@
 package org.dataconservancy.pass.model;
 
 import java.net.URI;
-
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Describes a Journal and the path of it's participation in PubMedCentral
+ *
  * @author Karen Hanson
  */
 
 public class Journal extends PassEntity {
-    
-    /** 
-     * Name of journal 
+
+    /**
+     * Name of journal
      */
     private String journalName;
-    
-    /** 
-     * Array of ISSN(s) for Journal 
+
+    /**
+     * Array of ISSN(s) for Journal
      */
     private List<String> issns = new ArrayList<>();
-    
-    /** 
-     * ID of publisher 
+
+    /**
+     * ID of publisher
      */
     private URI publisher;
-    
-    /** 
+
+    /**
      * National Library of Medicine Title Abbreviation
      */
     private String nlmta;
 
-    /** 
-     * This field indicates whether a journal participates in the NIH Public Access Program by sending final 
-     * published article to PMC. If so, whether it requires additional processing fee.  
+    /**
+     * This field indicates whether a journal participates in the NIH Public Access Program by sending final
+     * published article to PMC. If so, whether it requires additional processing fee.
      */
     private PmcParticipation pmcParticipation;
 
-    
     /**
      * Journal constructor
      */
-    public Journal() {};
+    public Journal() {
+    }
 
-    
     /**
      * Copy constructor, this will copy the values of the object provided into the new object
+     *
      * @param journal the journal to copy
      */
     public Journal(Journal journal) {
@@ -72,8 +72,7 @@ public class Journal extends PassEntity {
         this.nlmta = journal.nlmta;
         this.pmcParticipation = journal.pmcParticipation;
     }
-    
-    
+
     /**
      * @return the journalName
      */
@@ -81,7 +80,6 @@ public class Journal extends PassEntity {
         return journalName;
     }
 
-    
     /**
      * @param journalName the journalName to set
      */
@@ -89,7 +87,6 @@ public class Journal extends PassEntity {
         this.journalName = journalName;
     }
 
-    
     /**
      * @return the issns
      */
@@ -97,7 +94,6 @@ public class Journal extends PassEntity {
         return issns;
     }
 
-    
     /**
      * @param issn the issn list to set
      */
@@ -105,7 +101,6 @@ public class Journal extends PassEntity {
         this.issns = issn;
     }
 
-    
     /**
      * @return the publisher ID
      */
@@ -113,7 +108,6 @@ public class Journal extends PassEntity {
         return publisher;
     }
 
-    
     /**
      * @param publisher the publisher to set
      */
@@ -121,7 +115,6 @@ public class Journal extends PassEntity {
         this.publisher = publisher;
     }
 
-    
     /**
      * @return the nlmta
      */
@@ -129,14 +122,13 @@ public class Journal extends PassEntity {
         return nlmta;
     }
 
-    
     /**
      * @param nlmta the nlmta to set
      */
     public void setNlmta(String nlmta) {
         this.nlmta = nlmta;
     }
-    
+
     /**
      * @return the pmcParticipation
      */
@@ -144,7 +136,6 @@ public class Journal extends PassEntity {
         return pmcParticipation;
     }
 
-    
     /**
      * @param pmcParticipation the pmcParticipation to set
      */
@@ -152,24 +143,39 @@ public class Journal extends PassEntity {
         this.pmcParticipation = pmcParticipation;
     }
 
-
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        if (!super.equals(o)) {
+            return false;
+        }
 
         Journal that = (Journal) o;
 
-        if (journalName != null ? !journalName.equals(that.journalName) : that.journalName != null) return false;
-        if (issns != null ? !issns.equals(that.issns) : that.issns != null) return false;
-        if (publisher != null ? !publisher.equals(that.publisher) : that.publisher != null) return false;
-        if (nlmta != null ? !nlmta.equals(that.nlmta) : that.nlmta != null) return false;
-        if (pmcParticipation != null ? !pmcParticipation.equals(that.pmcParticipation) : that.pmcParticipation != null) return false;
+        if (journalName != null ? !journalName.equals(that.journalName) : that.journalName != null) {
+            return false;
+        }
+        if (issns != null ? !issns.equals(that.issns) : that.issns != null) {
+            return false;
+        }
+        if (publisher != null ? !publisher.equals(that.publisher) : that.publisher != null) {
+            return false;
+        }
+        if (nlmta != null ? !nlmta.equals(that.nlmta) : that.nlmta != null) {
+            return false;
+        }
+        if (pmcParticipation != null ? !pmcParticipation.equals(
+            that.pmcParticipation) : that.pmcParticipation != null) {
+            return false;
+        }
         return true;
     }
 
-    
     @Override
     public int hashCode() {
         int result = super.hashCode();
@@ -180,6 +186,5 @@ public class Journal extends PassEntity {
         result = 31 * result + (pmcParticipation != null ? pmcParticipation.hashCode() : 0);
         return result;
     }
-    
-    
+
 }

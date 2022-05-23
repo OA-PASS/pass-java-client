@@ -22,7 +22,6 @@ import static org.unitils.reflectionassert.ReflectionAssert.assertReflectionEqua
 import java.lang.reflect.Constructor;
 
 import org.dataconservancy.pass.model.PassEntity;
-
 import org.junit.Test;
 import org.unitils.reflectionassert.ReflectionComparatorMode;
 

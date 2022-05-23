@@ -39,12 +39,12 @@ public class DeleteResourceIT extends ClientITBase {
     @Test
     public void deleteTest() {
         PASS_TYPES.stream()
-                .map(cls -> client.createResource(random(cls, 2)))
-                .forEach(uri -> {
-                    assertStatus(uri, HttpStatus.SC_OK);
-                    client.deleteResource(uri);
-                    assertStatus(uri, HttpStatus.SC_GONE);
-                });
+                  .map(cls -> client.createResource(random(cls, 2)))
+                  .forEach(uri -> {
+                      assertStatus(uri, HttpStatus.SC_OK);
+                      client.deleteResource(uri);
+                      assertStatus(uri, HttpStatus.SC_GONE);
+                  });
     }
 
     public void assertStatus(URI uri, int status) {

@@ -15,38 +15,37 @@
  */
 package org.dataconservancy.pass.model;
 
-import java.io.InputStream;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
+import java.io.InputStream;
 import java.net.URI;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-
-import org.junit.Test;
-
 import org.dataconservancy.pass.model.File.FileRole;
 import org.json.JSONObject;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import org.junit.Test;
 
 /**
  * Model has been annotated with JSON tags. These tests do a simple check to ensure the
  * Jackson integration is functional and the equals / hashcode functions work
+ *
  * @author Karen Hanson
  */
 public class FileModelTests {
-            
+
     /**
      * Simple verification that JSON file can be converted to File model
+     *
      * @throws Exception
      */
     @Test
     public void testFileFromJsonConversion() throws Exception {
-        
+
         InputStream json = FileModelTests.class.getResourceAsStream("/file.json");
         ObjectMapper objectMapper = new ObjectMapper();
         File file = objectMapper.readValue(json, File.class);
-        
+
         assertEquals(TestValues.FILE_ID_1, file.getId().toString());
         assertEquals(TestValues.FILE_NAME, file.getName());
         assertEquals(TestValues.FILE_URI, file.getUri().toString());
@@ -58,31 +57,33 @@ public class FileModelTests {
 
     /**
      * Simple verification that File model can be converted to JSON
+     *
      * @throws Exception
      */
     @Test
     public void testFileToJsonConversion() throws Exception {
 
-        File file= createFile();
+        File file = createFile();
         ObjectMapper objectMapper = new ObjectMapper();
         String jsonFile = objectMapper.writeValueAsString(file);
 
         JSONObject root = new JSONObject(jsonFile);
 
-        assertEquals(root.getString("@id"),TestValues.FILE_ID_1);
+        assertEquals(root.getString("@id"), TestValues.FILE_ID_1);
         assertEquals(root.getString("@type"), PassEntityType.FILE.getName());
-        assertEquals(root.getString("name"),TestValues.FILE_NAME);
-        assertEquals(root.getString("uri"),TestValues.FILE_URI);
-        assertEquals(root.getString("description"),TestValues.FILE_DESCRIPTION);
-        assertEquals(root.getString("fileRole"),TestValues.FILE_ROLE);
-        assertEquals(root.getString("mimeType"),TestValues.FILE_MIMETYPE);            
-        assertEquals(root.getString("submission"),TestValues.SUBMISSION_ID_1);            
+        assertEquals(root.getString("name"), TestValues.FILE_NAME);
+        assertEquals(root.getString("uri"), TestValues.FILE_URI);
+        assertEquals(root.getString("description"), TestValues.FILE_DESCRIPTION);
+        assertEquals(root.getString("fileRole"), TestValues.FILE_ROLE);
+        assertEquals(root.getString("mimeType"), TestValues.FILE_MIMETYPE);
+        assertEquals(root.getString("submission"), TestValues.SUBMISSION_ID_1);
     }
-    
+
     /**
-     * Creates two identical Files and checks the equals and hashcodes match. 
-     * Modifies one field on one of the Files and verifies they no longer are 
+     * Creates two identical Files and checks the equals and hashcodes match.
+     * Modifies one field on one of the Files and verifies they no longer are
      * equal or have matching hashcodes.
+     *
      * @throws Exception
      */
     @Test
@@ -90,19 +91,20 @@ public class FileModelTests {
 
         File file1 = createFile();
         File file2 = createFile();
-        
-        assertEquals(file1,file2);
+
+        assertEquals(file1, file2);
         file1.setDescription("different");
         assertTrue(!file1.equals(file2));
-        
-        assertTrue(file1.hashCode()!=file2.hashCode());
+
+        assertTrue(file1.hashCode() != file2.hashCode());
         file1 = file2;
-        assertEquals(file1.hashCode(),file2.hashCode());
-        
+        assertEquals(file1.hashCode(), file2.hashCode());
+
     }
-    
+
     /**
      * Test copy constructor creates a valid duplicate that is not the same object
+     *
      * @throws Exception
      */
     @Test
@@ -110,17 +112,17 @@ public class FileModelTests {
         File file = createFile();
         File fileCopy = new File(file);
         assertEquals(file, fileCopy);
-        
+
         fileCopy.setFileRole(FileRole.SUPPLEMENTAL);
         assertEquals(FileRole.of(TestValues.FILE_ROLE), file.getFileRole());
         assertEquals(FileRole.SUPPLEMENTAL, fileCopy.getFileRole());
-        
+
         String newMimeType = "text/html";
         fileCopy.setMimeType(newMimeType);
         assertEquals(TestValues.FILE_MIMETYPE, file.getMimeType());
         assertEquals(newMimeType, fileCopy.getMimeType());
     }
-    
+
     private File createFile() throws Exception {
         File file = new File();
         file.setId(new URI(TestValues.FILE_ID_1));
@@ -130,8 +132,8 @@ public class FileModelTests {
         file.setFileRole(FileRole.of(TestValues.FILE_ROLE));
         file.setMimeType(TestValues.FILE_MIMETYPE);
         file.setSubmission(new URI(TestValues.SUBMISSION_ID_1));
-        
+
         return file;
     }
-    
+
 }

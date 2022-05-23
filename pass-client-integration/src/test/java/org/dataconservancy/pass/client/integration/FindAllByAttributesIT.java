@@ -15,16 +15,18 @@
  */
 package org.dataconservancy.pass.client.integration;
 
-import java.net.URI;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import org.junit.Test;
 
 import org.dataconservancy.pass.model.Deposit;
 import org.dataconservancy.pass.model.Deposit.DepositStatus;
@@ -34,20 +36,17 @@ import org.dataconservancy.pass.model.PassEntity;
 import org.dataconservancy.pass.model.Submission;
 import org.dataconservancy.pass.model.Submission.SubmissionStatus;
 import org.dataconservancy.pass.model.User;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import org.junit.Test;
 
 /**
  * Tests for PassClient.findAllByAttributes
+ *
  * @author Karen Hanson
  */
 public class FindAllByAttributesIT extends ClientITBase {
-    
+
     /**
-     * Ensures that index search can handle special characters including umlauts, double quotes, 
+     * Ensures that index search can handle special characters including umlauts, double quotes,
      * dashes, and ampersands
      */
     @Test
@@ -58,28 +57,28 @@ public class FindAllByAttributesIT extends ClientITBase {
         user.setDisplayName("Mary \"The Shark\" Schäfer");
         user.setAffiliation(Collections.singleton("Lamar & Schäfer Laboratory, Nürnberg"));
         URI userId1 = client.createResource(user);
-        createdUris.put(userId1, User.class);  
+        createdUris.put(userId1, User.class);
         URI userId2 = client.createResource(user);
         createdUris.put(userId2, User.class);
-        
+
         //thow in another record that should not match
         URI userId3 = client.createResource(random(User.class, 1));
         createdUris.put(userId3, User.class);
-        
+
         //make sure records are in the indexer before continuing
         attempt(RETRIES, () -> {
             final URI uri = client.findByAttribute(User.class, "@id", userId1);
             assertEquals(userId1, uri);
-        });        
+        });
         attempt(RETRIES, () -> {
             final URI uri = client.findByAttribute(User.class, "@id", userId2);
             assertEquals(userId2, uri);
-        });           
+        });
         attempt(RETRIES, () -> {
             final URI uri = client.findByAttribute(User.class, "@id", userId3);
             assertEquals(userId3, uri);
-        });    
-        
+        });
+
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("firstName", user.getFirstName());
         map.put("lastName", user.getLastName());
@@ -90,7 +89,7 @@ public class FindAllByAttributesIT extends ClientITBase {
         assertEquals(2, uris.size());
         assertTrue(uris.contains(userId1));
         assertTrue(uris.contains(userId2));
-        
+
     }
 
     @Test
@@ -123,20 +122,20 @@ public class FindAllByAttributesIT extends ClientITBase {
 
         attempt(30, () -> {
             assertEquals(expectedUri1.getPath(),
-                    client.findByAttribute(Submission.class, "@id", expectedUri1).getPath());
+                         client.findByAttribute(Submission.class, "@id", expectedUri1).getPath());
             assertEquals(expectedUri2.getPath(),
-                    client.findByAttribute(Submission.class, "@id", expectedUri2).getPath());
+                         client.findByAttribute(Submission.class, "@id", expectedUri2).getPath());
             assertEquals(expectedUri3.getPath(),
-                    client.findByAttribute(Submission.class, "@id", expectedUri3).getPath());
+                         client.findByAttribute(Submission.class, "@id", expectedUri3).getPath());
             assertEquals(expectedUri4.getPath(),
-                    client.findByAttribute(Deposit.class, "@id", expectedUri4).getPath());
+                         client.findByAttribute(Deposit.class, "@id", expectedUri4).getPath());
         });
 
         Set<URI> uris = client.findAllByAttributes(Submission.class, new HashMap<String, Object>() {{
-            put("metadata", "foo");
-            put("source", null);
-            put("submitter", user);
-        }});
+                put("metadata", "foo");
+                put("source", null);
+                put("submitter", user);
+            }});
 
         // Only the two Submissions with null sources should be found.  The other Submission has a non-null source,
         // and the other resource is a Deposit.
@@ -145,8 +144,8 @@ public class FindAllByAttributesIT extends ClientITBase {
         assertTrue(uris.stream().anyMatch(uri -> uri.getPath().equals(expectedUri2.getPath())));
 
         uris = client.findAllByAttributes(Submission.class, new HashMap<String, Object>() {{
-            put("source", null);
-        }});
+                put("source", null);
+            }});
 
         // Only two Submissions with null sources should be found. The other Submission has a non-null source, and
         // the other resource is a Deposit.
@@ -154,34 +153,35 @@ public class FindAllByAttributesIT extends ClientITBase {
         assertTrue(uris.stream().anyMatch(uri -> uri.getPath().equals(expectedUri1.getPath())));
         assertTrue(uris.stream().anyMatch(uri -> uri.getPath().equals(expectedUri2.getPath())));
     }
-    
+
     /**
      * Adds 10 records, then retrieves them in chunks using limit and offet to verify they are working
+     *
      * @throws Exception
      */
     @Test
     public void testLimitAndOffset() throws Exception {
         URI repoUri = new URI("fake:repo");
-        
+
         Map<String, Object> attribs = new HashMap<String, Object>();
         attribs.put("depositStatus", DepositStatus.ACCEPTED);
         attribs.put("repository", repoUri);
-        
+
         URI uri = null;
-        for(int i = 0; i < 10; i++){
+        for (int i = 0; i < 10; i++) {
             Deposit deposit = random(Deposit.class, 2);
             deposit.setDepositStatus(DepositStatus.ACCEPTED);
             deposit.setRepository(repoUri);
             uri = client.createResource(deposit);
             createdUris.put(uri, Deposit.class);
         }
-        
+
         final URI searchUri = uri;
-        
+
         attempt(RETRIES, () -> { //make sure last one is in the index
             final URI matchedUri = client.findByAttribute(Deposit.class, "@id", searchUri);
             assertEquals(searchUri, matchedUri);
-        }); 
+        });
         Set<URI> matches = client.findAllByAttributes(Deposit.class, attribs, 4, 0);
         assertEquals(4, matches.size());
         matches = client.findAllByAttributes(Deposit.class, attribs, 4, 4);
@@ -190,8 +190,7 @@ public class FindAllByAttributesIT extends ClientITBase {
         assertEquals(2, matches.size());
 
     }
-    
-    
+
     /**
      * Ensures no match found returns empty Set instead of exception
      */
@@ -200,28 +199,27 @@ public class FindAllByAttributesIT extends ClientITBase {
         Grant grant = random(Grant.class, 1);
         URI grantId = client.createResource(grant); //create something so it's not empty index
         createdUris.put(grantId, Grant.class);
-        
+
         attempt(RETRIES, () -> {
             URI uri = client.findByAttribute(Grant.class, "@id", grantId);
             assertEquals(grantId, uri);
-        });        
-                
-        Map<String,Object> flds = new HashMap<String,Object>();
+        });
+
+        Map<String, Object> flds = new HashMap<String, Object>();
         flds.put("awardNumber", "no match");
         flds.put("awardStatus", AwardStatus.PRE_AWARD.toString());
         Set<URI> matchedIds = client.findAllByAttributes(Grant.class, flds);
         assertNotNull(matchedIds);
         assertEquals(0, matchedIds.size());
-            
+
     }
 
-    
     /**
      * Check findAllByAttributes doesn't accept PassEntity as a class param
      */
-    @Test(expected=IllegalArgumentException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void testBadClassParam() {
-        Map<String,Object> map = new HashMap<String,Object>();
+        Map<String, Object> map = new HashMap<String, Object>();
         map.put("fake", "fake");
         try {
             client.findAllByAttributes(PassEntity.class, map);
@@ -230,16 +228,16 @@ public class FindAllByAttributesIT extends ClientITBase {
             assertTrue(ex instanceof IllegalArgumentException);
             throw ex;
         }
-        fail ("Test should have thrown exception");        
+        fail("Test should have thrown exception");
     }
 
     /**
      * Check findAllByAttributes reject null modelClass as a param
      */
-    @Test(expected=IllegalArgumentException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void testNullClassParam() {
         try {
-            Map<String,Object> map = new HashMap<String,Object>();
+            Map<String, Object> map = new HashMap<String, Object>();
             map.put("fake", "fake");
             client.findAllByAttributes(null, map);
         } catch (Exception ex) {
@@ -247,29 +245,29 @@ public class FindAllByAttributesIT extends ClientITBase {
             assertTrue(ex instanceof IllegalArgumentException);
             throw ex;
         }
-        fail ("Test should have thrown exception");
+        fail("Test should have thrown exception");
     }
 
     /**
      * Check findAllByAttributes rejects empty map
      */
-    @Test(expected=IllegalArgumentException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void testEmptyMapClassParam() {
         try {
-            Map<String,Object> map = new HashMap<String,Object>();
+            Map<String, Object> map = new HashMap<String, Object>();
             client.findAllByAttributes(Deposit.class, map);
         } catch (Exception ex) {
             assertTrue(ex.getMessage().contains("cannot be empty"));
             assertTrue(ex instanceof IllegalArgumentException);
             throw ex;
         }
-        fail ("Test should have thrown exception");
+        fail("Test should have thrown exception");
     }
 
     /**
      * Check findAllByAttributes rejects null map
      */
-    @Test(expected=IllegalArgumentException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void testNullMapClassParam() {
         try {
             client.findAllByAttributes(Deposit.class, null);
@@ -278,17 +276,17 @@ public class FindAllByAttributesIT extends ClientITBase {
             assertTrue(ex instanceof IllegalArgumentException);
             throw ex;
         }
-        fail ("Test should have thrown exception");
+        fail("Test should have thrown exception");
     }
 
     /**
      * Check findAllByAttributes rejects a value that is a collection
      */
-    @Test(expected=IllegalArgumentException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void testValueParamAsCollection() {
         try {
-            Map<String,Object> map = new HashMap<String,Object>();
-            List<URI> coll = new ArrayList<URI>(); 
+            Map<String, Object> map = new HashMap<String, Object>();
+            List<URI> coll = new ArrayList<URI>();
             map.put("repositories", coll);
             map.put("SubmissionStatus", SubmissionStatus.SUBMITTED);
             client.findAllByAttributes(Submission.class, map);
@@ -297,9 +295,7 @@ public class FindAllByAttributesIT extends ClientITBase {
             assertTrue(ex instanceof RuntimeException);
             throw ex;
         }
-        fail ("Test should have thrown exception");
+        fail("Test should have thrown exception");
     }
-    
-    
-    
+
 }

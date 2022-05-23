@@ -43,19 +43,19 @@ import org.fcrepo.client.FcrepoResponse;
 class FcrepoLister implements Lister {
 
     FcrepoClient client = new FcrepoClientBuilder().credentials(FedoraConfig.getUserName(), FedoraConfig
-            .getPassword()).build();
+        .getPassword()).build();
 
     static final URI PREFER_CONTAINMENT = URI.create("http://www.w3.org/ns/ldp#PreferContainment");
 
     static final Pattern childPattern = Pattern.compile(
-            ".+?\\s+<http://www.w3.org/ns/ldp#contains>\\s+<(.+?)>.+?");
+        ".+?\\s+<http://www.w3.org/ns/ldp#contains>\\s+<(.+?)>.+?");
 
     @Override
     public List<URI> getChildren(URI resource) {
         try (final FcrepoResponse response = client.get(resource)
-                .accept("application/n-triples")
-                .preferRepresentation(asList(PREFER_CONTAINMENT),
-                        emptyList()).perform()) {
+                                                   .accept("application/n-triples")
+                                                   .preferRepresentation(asList(PREFER_CONTAINMENT),
+                                                                         emptyList()).perform()) {
 
             try (BufferedReader reader = new BufferedReader(new InputStreamReader(response.getBody(), UTF_8))) {
 

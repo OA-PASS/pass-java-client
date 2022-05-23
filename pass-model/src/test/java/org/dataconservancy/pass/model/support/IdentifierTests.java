@@ -16,11 +16,11 @@
 
 package org.dataconservancy.pass.model.support;
 
-import org.junit.Test;
-
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+
+import org.junit.Test;
 
 public class IdentifierTests {
 
@@ -34,7 +34,7 @@ public class IdentifierTests {
 
         assertEquals(identifier.getDomain(), domain);
         assertEquals(identifier.getType(), type);
-        assertEquals(identifier.getValue(),value);
+        assertEquals(identifier.getValue(), value);
 
         identifier.setValue("008");
 
@@ -45,7 +45,7 @@ public class IdentifierTests {
     public void testSerializer() {
         Identifier identifier = new Identifier(domain, type, value);
         String ser = identifier.serialize();
-        assertEquals(String.join(":", domain,type,value), ser);
+        assertEquals(String.join(":", domain, type, value), ser);
     }
 
     @Test
@@ -63,7 +63,7 @@ public class IdentifierTests {
 
     @Test
     public void testDeserialize() {
-        Identifier expected =  new Identifier(domain, type, value);
+        Identifier expected = new Identifier(domain, type, value);
         String ser = String.join(":", domain, type, value);
 
         assertTrue(expected.equals(Identifier.deserialize(ser)));

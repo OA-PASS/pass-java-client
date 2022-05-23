@@ -21,6 +21,9 @@ package org.dataconservancy.pass.client.util;
  */
 public class ConfigUtil {
 
+    private ConfigUtil() {
+    }
+
     /**
      * Retrieve property from a system property or renvironment variable or set to default
      * <p>
@@ -33,7 +36,7 @@ public class ConfigUtil {
      * <li>Use the default of none others match</li>
      * </ol>
      *
-     * @param key - property/variable name in property-normal form (period separators, ideally all lowercas)
+     * @param key          - property/variable name in property-normal form (period separators, ideally all lowercas)
      * @param defaultValue Default value
      * @return The value.
      */

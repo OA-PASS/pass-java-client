@@ -15,18 +15,17 @@
  */
 package org.dataconservancy.pass.model;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
 import java.io.InputStream;
-
 import java.net.URI;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-
-import org.junit.Test;
-
 import org.dataconservancy.pass.model.Submission.AggregatedDepositStatus;
 import org.dataconservancy.pass.model.Submission.Source;
 import org.dataconservancy.pass.model.Submission.SubmissionStatus;
@@ -34,24 +33,23 @@ import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.ISODateTimeFormat;
 import org.json.JSONObject;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import org.junit.Test;
 
 /**
  * Model has been annotated with JSON tags. These tests do a simple check to ensure the
  * Jackson integration is functional and the equals / hashcode functions work.
  * Note that in these tests every field is set, though in a reality, either
  * submitter OR submitterName/submitterEmail would be set, not both at once.
+ *
  * @author Karen Hanson
  */
 public class SubmissionModelTests {
 
     private DateTimeFormatter dateFormatter = ISODateTimeFormat.dateTime().withZoneUTC();
-    
+
     /**
      * Simple verification that JSON file can be converted to Submission model
+     *
      * @throws Exception
      */
     @Test
@@ -60,7 +58,7 @@ public class SubmissionModelTests {
         InputStream json = SubmissionModelTests.class.getResourceAsStream("/submission.json");
         ObjectMapper objectMapper = new ObjectMapper();
         Submission submission = objectMapper.readValue(json, Submission.class);
-        
+
         assertEquals(TestValues.SUBMISSION_ID_1, submission.getId().toString());
         assertEquals(TestValues.SUBMISSION_METADATA, submission.getMetadata());
         assertEquals(TestValues.SUBMISSION_SUBMITTED, submission.getSubmitted());
@@ -81,6 +79,7 @@ public class SubmissionModelTests {
 
     /**
      * Simple verification that Submission model can be converted to JSON
+     *
      * @throws Exception
      */
     @Test
@@ -92,29 +91,30 @@ public class SubmissionModelTests {
 
         JSONObject root = new JSONObject(jsonSubmission);
 
-        assertEquals(root.getString("@id"),TestValues.SUBMISSION_ID_1);
-        assertEquals(root.getString("@type"),"Submission");
-        assertEquals(root.getString("submissionStatus"),TestValues.SUBMISSION_STATUS);
-        assertEquals(root.getString("aggregatedDepositStatus"),TestValues.SUBMISSION_AGG_DEPOSIT_STATUS);
-        assertEquals(root.getString("publication"),TestValues.PUBLICATION_ID_1);
-        assertEquals(root.getString("submitter"),TestValues.USER_ID_1);
-        assertEquals(root.getString("submitterName"),TestValues.SUBMISSION_SUBMITTERNAME);
-        assertEquals(root.getString("submitterEmail"),TestValues.SUBMISSION_SUBMITTEREMAIL);
-        assertEquals(root.getJSONArray("preparers").get(0),TestValues.USER_ID_2);
-        assertEquals(root.getBoolean("submitted"),TestValues.SUBMISSION_SUBMITTED);
-        assertEquals(root.getString("metadata"),TestValues.SUBMISSION_METADATA);
-        assertEquals(root.getJSONArray("repositories").get(0),TestValues.REPOSITORY_ID_1);
-        assertEquals(root.getJSONArray("repositories").get(1),TestValues.REPOSITORY_ID_2);
-        assertEquals(root.getJSONArray("grants").get(0),TestValues.GRANT_ID_1);
-        assertEquals(root.getJSONArray("grants").get(1),TestValues.GRANT_ID_2);
-        assertEquals(root.getString("submittedDate"),TestValues.SUBMISSION_DATE_STR);    
+        assertEquals(root.getString("@id"), TestValues.SUBMISSION_ID_1);
+        assertEquals(root.getString("@type"), "Submission");
+        assertEquals(root.getString("submissionStatus"), TestValues.SUBMISSION_STATUS);
+        assertEquals(root.getString("aggregatedDepositStatus"), TestValues.SUBMISSION_AGG_DEPOSIT_STATUS);
+        assertEquals(root.getString("publication"), TestValues.PUBLICATION_ID_1);
+        assertEquals(root.getString("submitter"), TestValues.USER_ID_1);
+        assertEquals(root.getString("submitterName"), TestValues.SUBMISSION_SUBMITTERNAME);
+        assertEquals(root.getString("submitterEmail"), TestValues.SUBMISSION_SUBMITTEREMAIL);
+        assertEquals(root.getJSONArray("preparers").get(0), TestValues.USER_ID_2);
+        assertEquals(root.getBoolean("submitted"), TestValues.SUBMISSION_SUBMITTED);
+        assertEquals(root.getString("metadata"), TestValues.SUBMISSION_METADATA);
+        assertEquals(root.getJSONArray("repositories").get(0), TestValues.REPOSITORY_ID_1);
+        assertEquals(root.getJSONArray("repositories").get(1), TestValues.REPOSITORY_ID_2);
+        assertEquals(root.getJSONArray("grants").get(0), TestValues.GRANT_ID_1);
+        assertEquals(root.getJSONArray("grants").get(1), TestValues.GRANT_ID_2);
+        assertEquals(root.getString("submittedDate"), TestValues.SUBMISSION_DATE_STR);
         assertEquals(root.getString("source"), TestValues.SUBMISSION_SOURCE);
     }
-    
+
     /**
-     * Creates two identical Submissions and checks the equals and hashcodes match. 
-     * Modifies one field on one of the submissions and verifies they no longer are 
+     * Creates two identical Submissions and checks the equals and hashcodes match.
+     * Modifies one field on one of the submissions and verifies they no longer are
      * equal or have matching hashcodes.
+     *
      * @throws Exception
      */
     @Test
@@ -122,19 +122,20 @@ public class SubmissionModelTests {
 
         Submission submission1 = createSubmission();
         Submission submission2 = createSubmission();
-        
-        assertEquals(submission1,submission2);
+
+        assertEquals(submission1, submission2);
         submission1.setSubmissionStatus(Submission.SubmissionStatus.CANCELLED);
         assertTrue(!submission1.equals(submission2));
-        
-        assertTrue(submission1.hashCode()!=submission2.hashCode());
+
+        assertTrue(submission1.hashCode() != submission2.hashCode());
         submission1 = submission2;
-        assertEquals(submission1.hashCode(),submission2.hashCode());
-        
+        assertEquals(submission1.hashCode(), submission2.hashCode());
+
     }
 
     /**
      * Verifies that we can use the "submitted" status related to a SubmissionStatus.
+     *
      * @throws Exception
      */
     @Test
@@ -142,13 +143,14 @@ public class SubmissionModelTests {
         assertFalse(SubmissionStatus.APPROVAL_REQUESTED.isSubmitted());
         assertFalse(SubmissionStatus.CANCELLED.isSubmitted());
         assertTrue(SubmissionStatus.COMPLETE.isSubmitted());
-        
+
         Submission submission = createSubmission();
         assertTrue(submission.getSubmissionStatus().isSubmitted());
     }
-    
+
     /**
      * Test copy constructor creates a valid duplicate that is not the same object
+     *
      * @throws Exception
      */
     @Test
@@ -158,17 +160,18 @@ public class SubmissionModelTests {
         submission.setPreparers(preparersOrig);
         Submission submissionCopy = new Submission(submission);
         assertEquals(submission, submissionCopy);
-        
+
         submissionCopy.setSubmissionStatus(SubmissionStatus.COMPLETE);
         assertEquals(SubmissionStatus.of(TestValues.SUBMISSION_STATUS), submission.getSubmissionStatus());
         assertEquals(SubmissionStatus.COMPLETE, submissionCopy.getSubmissionStatus());
 
-        List<URI> preparersNew = new ArrayList<URI>(Arrays.asList(new URI(TestValues.USER_ID_1),new URI(TestValues.USER_ID_2)));
+        List<URI> preparersNew = new ArrayList<URI>(
+            Arrays.asList(new URI(TestValues.USER_ID_1), new URI(TestValues.USER_ID_2)));
         submissionCopy.setPreparers(preparersNew);
         assertEquals(preparersOrig, submission.getPreparers());
         assertEquals(preparersNew, submissionCopy.getPreparers());
     }
-    
+
     private Submission createSubmission() throws Exception {
         Submission submission = new Submission();
         submission.setId(new URI(TestValues.SUBMISSION_ID_1));
@@ -181,11 +184,11 @@ public class SubmissionModelTests {
         submission.setSubmitterName(TestValues.SUBMISSION_SUBMITTERNAME);
         submission.setSubmitterEmail(new URI(TestValues.SUBMISSION_SUBMITTEREMAIL));
         submission.setSource(Source.PASS);
-        
+
         List<URI> preparers = new ArrayList<URI>();
         preparers.add(new URI(TestValues.USER_ID_2));
         submission.setPreparers(preparers);
-        
+
         List<URI> repositories = new ArrayList<URI>();
         repositories.add(new URI(TestValues.REPOSITORY_ID_1));
         repositories.add(new URI(TestValues.REPOSITORY_ID_2));
@@ -198,8 +201,8 @@ public class SubmissionModelTests {
 
         DateTime dt = dateFormatter.parseDateTime(TestValues.SUBMISSION_DATE_STR);
         submission.setSubmittedDate(dt);
-        
+
         return submission;
     }
-    
+
 }

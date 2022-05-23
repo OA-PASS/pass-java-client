@@ -16,10 +16,13 @@
 
 package org.dataconservancy.pass.client.integration;
 
+import static com.openpojo.reflection.impl.PojoClassFactory.enumerateClassesByExtendingType;
+import static java.util.Base64.getEncoder;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+
 import java.lang.reflect.Method;
-
 import java.net.URI;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -33,7 +36,6 @@ import java.util.concurrent.Callable;
 import java.util.stream.Collectors;
 
 import com.openpojo.reflection.PojoClass;
-
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -44,26 +46,18 @@ import org.apache.http.client.CredentialsProvider;
 import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
-
-import org.dataconservancy.pass.client.fedora.FedoraConfig;
-import org.junit.After;
-
 import org.dataconservancy.pass.client.PassClient;
 import org.dataconservancy.pass.client.PassClientFactory;
+import org.dataconservancy.pass.client.fedora.FedoraConfig;
 import org.dataconservancy.pass.model.Contributor;
 import org.dataconservancy.pass.model.PassEntity;
 import org.dataconservancy.pass.model.User;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
+import org.junit.After;
 import org.junit.Before;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import static com.openpojo.reflection.impl.PojoClassFactory.enumerateClassesByExtendingType;
-
-import static java.util.Base64.getEncoder;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
 
 /**
  * Base class for client ITs.
@@ -76,9 +70,9 @@ public abstract class ClientITBase {
     private static final Logger LOG = LoggerFactory.getLogger(ClientITBase.class);
 
     protected Map<URI, Class<? extends PassEntity>> createdUris = new HashMap<URI, Class<? extends PassEntity>>();
-    
+
     protected static final int RETRIES = 12;
-    
+
     static {
         if (System.getProperty("pass.fedora.baseurl") == null) {
             System.setProperty("pass.fedora.baseurl", "http://localhost:8080/fcrepo/rest/");
@@ -88,13 +82,15 @@ public abstract class ClientITBase {
         }
     }
 
-    /** All PassEntity classes from pass-model */
+    /**
+     * All PassEntity classes from pass-model
+     */
     @SuppressWarnings("unchecked")
     protected static final Collection<Class<? extends PassEntity>> PASS_TYPES = enumerateClassesByExtendingType(
-            "org.dataconservancy.pass.model", PassEntity.class, null)
-                    .stream()
-                    .map(PojoClass::getClazz)
-                    .map(cls -> (Class<? extends PassEntity>) cls).collect(Collectors.toList());
+        "org.dataconservancy.pass.model", PassEntity.class, null)
+        .stream()
+        .map(PojoClass::getClazz)
+        .map(cls -> (Class<? extends PassEntity>) cls).collect(Collectors.toList());
 
     protected final PassClient client = PassClientFactory.getPassClient();
 
@@ -115,10 +111,10 @@ public abstract class ClientITBase {
                 Request request = chain.request();
                 Request.Builder reqBuilder = request.newBuilder();
                 byte[] bytes = String.format("%s:%s",
-                        FedoraConfig.getUserName(), FedoraConfig.getPassword()).getBytes();
+                                             FedoraConfig.getUserName(), FedoraConfig.getPassword()).getBytes();
                 return chain.proceed(reqBuilder
-                        .addHeader("Authorization",
-                                "Basic " + getEncoder().encodeToString(bytes)).build());
+                                         .addHeader("Authorization",
+                                                    "Basic " + getEncoder().encodeToString(bytes)).build());
             });
 
             okHttp = okBuilder.build();
@@ -133,18 +129,19 @@ public abstract class ClientITBase {
 
     /**
      * Deletes resources listed in createdUris map, then waits for confirmation from indexer that they are processed
+     *
      * @throws InterruptedException
      */
     @After
     public void cleanUpResources() throws Exception {
         //need to log fail if this doesn't work as it could mess up re-testing if data isn't cleaned out
         try {
-            if (createdUris.size()>0) {
+            if (createdUris.size() > 0) {
                 URI uriCheck = null;
-                for (URI uri:createdUris.keySet()) {
-                  client.deleteResource(uri);
-                  uriCheck = uri;
-                }          
+                for (URI uri : createdUris.keySet()) {
+                    client.deleteResource(uri);
+                    uriCheck = uri;
+                }
                 final URI finalUriCheck = uriCheck;
                 attempt(RETRIES, () -> {
                     final URI uri = client.findByAttribute(createdUris.get(finalUriCheck), "@id", finalUriCheck);
@@ -156,7 +153,7 @@ public abstract class ClientITBase {
             fail("Could not clean up from test, this may interfere with results of other tests");
         }
     }
-    
+
     /**
      * Normalize the context and ID so entities created locally can be compared with entities from the repository.
      *
@@ -195,7 +192,7 @@ public abstract class ClientITBase {
      * Uses reflection to populate the fields with type-appropriate data.
      * </p>
      *
-     * @param obj Class of pass entity.
+     * @param obj         Class of pass entity.
      * @param sizeOfLists For fields that are lists, fill them with this many values.
      * @return Populated pass entity.
      */
@@ -204,7 +201,8 @@ public abstract class ClientITBase {
             final T entity = obj.newInstance();
 
             for (final Method m : obj.getMethods()) {
-                if (m.getName().startsWith("set") && !m.getName().equals("setId") && !m.getName().equals("setVersionTag")) {
+                if (m.getName().startsWith("set") && !m.getName().equals("setId") && !m.getName()
+                                                                                       .equals("setVersionTag")) {
                     final Class<?> type = m.getParameterTypes()[0];
 
                     if (String.class.isAssignableFrom(type)) {
@@ -216,7 +214,7 @@ public abstract class ClientITBase {
                         m.invoke(entity, URI.create("urn:uuid:" + UUID.randomUUID()));
                     } else if (DateTime.class.isAssignableFrom(type)) {
                         m.invoke(entity, new DateTime(randomIndex.nextInt(Integer.MAX_VALUE)).withZone(
-                                DateTimeZone.UTC));
+                            DateTimeZone.UTC));
                     } else if (List.class.isAssignableFrom(type)) {
                         m.invoke(entity, createList(m, sizeOfLists));
                     } else if (Boolean.class.isAssignableFrom(type)) {
@@ -234,15 +232,15 @@ public abstract class ClientITBase {
             throw new RuntimeException(e);
         }
     }
-    
 
     /* We can't infer types of lists due to erasure. so we cheat here. */
     @SuppressWarnings("unchecked")
     private static List<?> createList(Method method, int size) throws Exception {
-        @SuppressWarnings("rawtypes")
-        final List list = new ArrayList<>();
+        @SuppressWarnings("rawtypes") final List list = new ArrayList<>();
         for (int i = 0; i < size; i++) {
-            if (method.getName().equals("setIssns") || method.getName().equals("setExternalIds") || method.getName().equals("setLocatorIds")) {
+            if (method.getName().equals("setIssns") ||
+                method.getName().equals("setExternalIds") ||
+                method.getName().equals("setLocatorIds")) {
                 list.add(UUID.randomUUID().toString());
             } else if (method.getName().equals("setRoles")) {
                 final Object role = method.getDeclaringClass().newInstance();
@@ -273,7 +271,7 @@ public abstract class ClientITBase {
     /**
      * Try invoking a runnable until it succeeds.
      *
-     * @param times The number of times to run
+     * @param times  The number of times to run
      * @param thingy The runnable.
      */
     void attempt(final int times, final Runnable thingy) {
@@ -287,7 +285,7 @@ public abstract class ClientITBase {
      * Try invoking a callable until it succeeds.
      *
      * @param times Number of times to try
-     * @param it the thing to call.
+     * @param it    the thing to call.
      * @return the result from the callable, when successful.
      */
     <T> T attempt(final int times, final Callable<T> it) {
@@ -310,16 +308,16 @@ public abstract class ClientITBase {
         }
         throw new RuntimeException("Failed executing task", caught);
     }
-    
+
     static CloseableHttpClient getHttpClient() {
         final CredentialsProvider provider = new BasicCredentialsProvider();
         final UsernamePasswordCredentials credentials = new UsernamePasswordCredentials(FedoraConfig.getUserName(),
-                FedoraConfig.getPassword());
+                                                                                        FedoraConfig.getPassword());
         provider.setCredentials(AuthScope.ANY, credentials);
 
         return HttpClientBuilder.create()
-                .setDefaultCredentialsProvider(provider)
-                .build();
+                                .setDefaultCredentialsProvider(provider)
+                                .build();
 
     }
 

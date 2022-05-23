@@ -16,25 +16,21 @@
 
 package org.dataconservancy.pass.client.integration;
 
-import java.beans.Introspector;
-import java.beans.PropertyDescriptor;
-
-import java.lang.reflect.Method;
-
-import java.net.URI;
-
-import java.util.List;
-import java.util.Set;
-
-import org.junit.Test;
-
-import org.dataconservancy.pass.model.PassEntity;
-
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import java.beans.Introspector;
+import java.beans.PropertyDescriptor;
+import java.lang.reflect.Method;
+import java.net.URI;
+import java.util.List;
+import java.util.Set;
+
+import org.dataconservancy.pass.model.PassEntity;
+import org.junit.Test;
+
 /**
- * Creates PASS entities, and makes sure they can be searched on by each field 
+ * Creates PASS entities, and makes sure they can be searched on by each field
  * in the indexer
  *
  * @author Karen Hanson
@@ -43,40 +39,42 @@ import static org.junit.Assert.assertTrue;
 public class CreateFindByRoundTripIT extends ClientITBase {
 
     /**
-    * Creates a resource and then checks that resource can be searched on in the indexer
-    * using each of its field in the model. All lists contain ONE entry
-    */
+     * Creates a resource and then checks that resource can be searched on in the indexer
+     * using each of its field in the model. All lists contain ONE entry
+     */
     @Test
     public void indexerRoundTripTest() {
         PASS_TYPES.stream()
-                .map(cls -> random(cls, 2))
-                .forEach(this::roundTrip);
+                  .map(cls -> random(cls, 2))
+                  .forEach(this::roundTrip);
     }
 
     /**
      * Creates the object of the type provided, and then uses the getters for that Object
      * to a findByAttribute call to the index for each field
+     *
      * @param forDeposit
      */
     @SuppressWarnings("rawtypes")
     private void roundTrip(PassEntity forDeposit) {
-        final URI entityUri = client.createResource(forDeposit);   
+        final URI entityUri = client.createResource(forDeposit);
         try {
             //check for record in indexer before proceeding to other tests
             attempt(RETRIES, () -> {
-                URI uri = client.findByAttribute(forDeposit.getClass(), "@id", entityUri);   
+                URI uri = client.findByAttribute(forDeposit.getClass(), "@id", entityUri);
                 assertEquals(entityUri, uri);
             });
             createdUris.put(entityUri, forDeposit.getClass());
 
-            for (final PropertyDescriptor pd : Introspector.getBeanInfo(forDeposit.getClass(), PassEntity.class).getPropertyDescriptors()) {
+            for (final PropertyDescriptor pd : Introspector.getBeanInfo(forDeposit.getClass(), PassEntity.class)
+                                                           .getPropertyDescriptors()) {
                 Method m = pd.getReadMethod();
-                
-                if (!m.getName().equals("getType")) {                   
+
+                if (!m.getName().equals("getType")) {
                     final Class<?> type = m.getReturnType();
                     System.out.println(String.format("Looking at %s with type %s", m.getName(), type));
                     Object val = null;
-                    
+
                     if (List.class.isAssignableFrom(type)) {
                         List listval = (List) m.invoke(forDeposit);
                         val = listval.get(0);
@@ -85,30 +83,33 @@ public class CreateFindByRoundTripIT extends ClientITBase {
                         val = setval.iterator().next();
                     } else {
                         val = m.invoke(forDeposit);
-                    } 
+                    }
 
                     Set<URI> uris = client.findAllByAttribute(forDeposit.getClass(), fieldName(m.getName()), val);
-                    System.out.println(String.format("Comparing entity uri (%s) to found uri (%s) for method %s", entityUri, uris, m.getName()));
+                    System.out.println(
+                        String.format("Comparing entity uri (%s) to found uri (%s) for method %s", entityUri, uris,
+                                      m.getName()));
                     assertTrue(uris.contains(entityUri));
                 }
-            } 
+            }
         } catch (Exception ex) {
             throw new RuntimeException("Round trip check of indexer failed", ex);
         }
-        
+
     }
-    
+
     /**
      * Get json fieldname corresponding to GET
+     *
      * @param methodname
      * @return
      */
-    private String fieldName(String methodname) {                    
+    private String fieldName(String methodname) {
         if (methodname.equals("getPublicationAbstract")) { //the only exception, could not use keyword "abstract"
             return "abstract";
         }
         String fldname = methodname.substring(3, 4).toLowerCase() + methodname.substring(4);
         return fldname;
     }
-    
+
 }
