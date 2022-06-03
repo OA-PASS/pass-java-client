@@ -461,9 +461,9 @@
 
 
   <scm>
-    <connection>scm:git:https://github.com/eclipse-pass/java-fedora-client.git</connection>
-    <developerConnection>scm:git:https://github.com/eclipse-pass/java-fedora-client.git</developerConnection>
-    <url>https://github.com/eclipse-pass/java-fedora-client</url>
+    <connection>scm:git:https://github.com/eclipse-pass/pass-java-client.git</connection>
+    <developerConnection>scm:git:https://github.com/eclipse-pass/pass-java-client.git</developerConnection>
+    <url>https://github.com/eclipse-pass/pass-java-client</url>
     <tag>HEAD</tag>
   </scm>
 
