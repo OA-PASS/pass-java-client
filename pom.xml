@@ -143,8 +143,6 @@
     <unitils.version>3.4.6</unitils.version>
     <okhttp.version>4.2.2</okhttp.version>
     <log4j2.version>2.14.1</log4j2.version>
-
-    <checkstyle.suppressions.file>duraspace-checkstyle/checkstyle-suppressions.xml</checkstyle.suppressions.file>
   </properties>
 
   <build>
@@ -463,9 +461,9 @@
 
 
   <scm>
-    <connection>scm:git:https://github.com/OA-PASS/java-fedora-client.git</connection>
-    <developerConnection>scm:git:https://github.com/OA-PASS/java-fedora-client.git</developerConnection>
-    <url>https://github.com/OA-PASS/java-fedora-client</url>
+    <connection>scm:git:https://github.com/eclipse-pass/java-fedora-client.git</connection>
+    <developerConnection>scm:git:https://github.com/eclipse-pass/java-fedora-client.git</developerConnection>
+    <url>https://github.com/eclipse-pass/java-fedora-client</url>
     <tag>HEAD</tag>
   </scm>
 
