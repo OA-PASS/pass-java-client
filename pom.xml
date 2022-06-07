@@ -76,55 +76,16 @@
     <module>pass-status-service</module>
   </modules>
 
-  <profiles>
-
-    <profile>
-      <id>release</id>
-      <build>
-        <pluginManagement>
-          <plugins>
-            <plugin>
-              <artifactId>maven-gpg-plugin</artifactId>
-              <version>${maven-gpg-plugin.version}</version>
-              <executions>
-                <execution>
-                  <id>sign-artifacts</id>
-                  <phase>verify</phase>
-                  <goals>
-                    <goal>sign</goal>
-                  </goals>
-                </execution>
-              </executions>
-              <configuration>
-                <useAgent>true</useAgent>
-              </configuration>
-            </plugin>
-          </plugins>
-        </pluginManagement>
-        <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-gpg-plugin</artifactId>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-
-  </profiles>
-
   <properties>
 
     <build-helper-maven-plugin.version>3.0.0</build-helper-maven-plugin.version>
     <docker-maven-plugin.version>0.31.0</docker-maven-plugin.version>
     <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
     <maven-failsafe-plugin.version>2.22.2</maven-failsafe-plugin.version>
-    <maven-gpg-plugin.version>1.6</maven-gpg-plugin.version>
     <maven-javadoc-pugin.version>3.1.1</maven-javadoc-pugin.version>
     <maven-release-plugin.version>2.5.3</maven-release-plugin.version>
     <maven-surefire-plugin.version>2.22.2</maven-surefire-plugin.version>
     <maven-source-plugin.version>3.0.1</maven-source-plugin.version>
-    <maven.deploy.plugin.version>2.8.2</maven.deploy.plugin.version>
-    <maven.wagon.ssh.version>3.2.0</maven.wagon.ssh.version>
 
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
@@ -188,42 +149,8 @@
 
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-gpg-plugin</artifactId>
-          <version>${maven-gpg-plugin.version}</version>
-          <executions>
-            <execution>
-              <id>sign-artifacts</id>
-              <phase>verify</phase>
-              <goals>
-                <goal>sign</goal>
-              </goals>
-            </execution>
-          </executions>
-          <configuration>
-            <useAgent>true</useAgent>
-          </configuration>
-        </plugin>
-
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-surefire-plugin</artifactId>
           <version>${maven-surefire-plugin.version}</version>
-        </plugin>
-
-        <plugin>
-          <artifactId>maven-deploy-plugin</artifactId>
-          <version>${maven.deploy.plugin.version}</version>
-          <configuration>
-            <retryFailedDeploymentCount>5</retryFailedDeploymentCount>
-          </configuration>
-          <!-- See https://jira.codehaus.org/browse/WAGON-393 -->
-          <dependencies>
-            <dependency>
-              <groupId>org.apache.maven.wagon</groupId>
-              <artifactId>wagon-ssh</artifactId>
-              <version>${maven.wagon.ssh.version}</version>
-            </dependency>
-          </dependencies>
         </plugin>
 
         <plugin>
@@ -420,47 +347,6 @@
       </dependency>
     </dependencies>
   </dependencyManagement>
-
-  <distributionManagement>
-
-    <repository>
-      <id>maven-central-staging</id>
-      <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-    </repository>
-
-    <snapshotRepository>
-      <id>oss.snapshots</id>
-      <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-      <uniqueVersion>false</uniqueVersion>
-    </snapshotRepository>
-
-  </distributionManagement>
-
-  <repositories>
-    <repository>
-      <id>oss.snapshots</id>
-      <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-      <snapshots>
-        <enabled>true</enabled>
-      </snapshots>
-      <releases>
-        <enabled>false</enabled>
-      </releases>
-    </repository>
-    <repository>
-      <id>dc.public.snapshots</id>
-      <name>Data Conservancy Public Maven Repository (snapshots)</name>
-      <layout>default</layout>
-      <url>http://maven.dataconservancy.org/public/snapshots/</url>
-      <releases>
-        <enabled>false</enabled>
-      </releases>
-      <snapshots>
-        <enabled>true</enabled>
-      </snapshots>
-    </repository>
-  </repositories>
-
 
   <scm>
     <connection>scm:git:https://github.com/OA-PASS/java-fedora-client.git</connection>
