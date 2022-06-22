@@ -2,7 +2,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <groupId>org.dataconservancy.pass</groupId>
+    <groupId>org.eclipse.pass</groupId>
     <artifactId>pass-client</artifactId>
     <version>0.9.0-SNAPSHOT</version>
   </parent>
@@ -43,8 +43,8 @@
               <shadeSourcesContent>true</shadeSourcesContent>
               <relocations>
                 <relocation>
-                  <shadedPattern>org.dataconservancy.pass.v2_3</shadedPattern>
-                  <pattern>org.dataconservancy.pass</pattern>
+                  <shadedPattern>org.eclipse.pass.v2_3</shadedPattern>
+                  <pattern>org.eclipse.pass</pattern>
                 </relocation>
               </relocations>
               <transformers>
