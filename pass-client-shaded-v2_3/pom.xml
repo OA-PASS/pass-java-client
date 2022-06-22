@@ -43,8 +43,8 @@
               <shadeSourcesContent>true</shadeSourcesContent>
               <relocations>
                 <relocation>
-                  <shadedPattern>org.eclipse.pass.v2_3</shadedPattern>
-                  <pattern>org.eclipse.pass</pattern>
+                  <shadedPattern>org.dataconservancy.pass.v2_3</shadedPattern>
+                  <pattern>org.dataconservancy.pass</pattern>
                 </relocation>
               </relocations>
               <transformers>

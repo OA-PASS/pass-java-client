@@ -215,7 +215,7 @@
     </dependency>
 
     <dependency>
-      <groupId>org.dataconservancy.pass</groupId>
+      <groupId>org.eclipse.pass</groupId>
       <artifactId>pass-client-shaded-v2_3</artifactId>
       <version>${project.version}</version>
       <scope>test</scope>
