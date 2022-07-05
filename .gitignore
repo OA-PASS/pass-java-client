@@ -31,3 +31,5 @@ dependency-reduced-pom.xml
 
 # Locally stored "Eclipse launch configurations"
 *.launch
+
+.vscode/
