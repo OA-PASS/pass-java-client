@@ -83,14 +83,6 @@
 
   <properties>
 
-    <build-helper-maven-plugin.version>3.0.0</build-helper-maven-plugin.version>
-    <docker-maven-plugin.version>0.31.0</docker-maven-plugin.version>
-    <maven-failsafe-plugin.version>2.22.2</maven-failsafe-plugin.version>
-    <maven-javadoc-pugin.version>3.1.1</maven-javadoc-pugin.version>
-    <maven-release-plugin.version>2.5.3</maven-release-plugin.version>
-    <maven-surefire-plugin.version>2.22.2</maven-surefire-plugin.version>
-    <maven-source-plugin.version>3.0.1</maven-source-plugin.version>
-
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
     <commons-io.version>2.6</commons-io.version>
@@ -284,7 +276,7 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-javadoc-plugin</artifactId>
-          <version>${maven-javadoc-pugin.version}</version>
+          <version>${maven-javadoc-plugin.version}</version>
           <executions>
             <execution>
               <id>attach-javadocs</id>
