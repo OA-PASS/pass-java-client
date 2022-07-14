@@ -1,34 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
+
   <parent>
     <groupId>org.eclipse.pass</groupId>
     <artifactId>pass-client</artifactId>
     <version>0.1.0-SNAPSHOT</version>
   </parent>
+
   <artifactId>pass-client-integration</artifactId>
 
-  <profiles>
-    <profile>
-      <id>standard</id>
-      <properties>
-        <FCREPO_PORT>8080</FCREPO_PORT>
-        <FCREPO_JMX_PORT>1099</FCREPO_JMX_PORT>
-        <FCREPO_JMS_PORT>61616</FCREPO_JMS_PORT>
-        <FCREPO_STOMP_PORT>61613</FCREPO_STOMP_PORT>
-        <ES_PORT>9200</ES_PORT>
-      </properties>
-    </profile>
-    <profile>
-      <id>local-context</id>
-      <properties>
-        <COMPACTION_PRELOAD_FILE_PASS_STATIC>/mnt/context.jsonld</COMPACTION_PRELOAD_FILE_PASS_STATIC>
-      </properties>
-    </profile>
-  </profiles>
   <properties>
     <FCREPO_HOST>${docker.host.address}</FCREPO_HOST>
     <ES_HOST>${docker.host.address}</ES_HOST>
   </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.eclipse.pass</groupId>
+      <artifactId>pass-model</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.eclipse.pass</groupId>
+      <artifactId>pass-data-client</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.eclipse.pass</groupId>
+      <artifactId>pass-status-service</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.eclipse.pass</groupId>
+      <artifactId>pass-client-shaded-v2_3</artifactId>
+      <version>${project.version}</version>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.unitils</groupId>
+      <artifactId>unitils-core</artifactId>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>commons-beanutils</groupId>
+      <artifactId>commons-beanutils</artifactId>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>com.openpojo</groupId>
+      <artifactId>openpojo</artifactId>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>ch.qos.logback</groupId>
+      <artifactId>logback-classic</artifactId>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>com.squareup.okhttp3</groupId>
+      <artifactId>okhttp</artifactId>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>com.squareup.okhttp3</groupId>
+      <artifactId>logging-interceptor</artifactId>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>commons-io</groupId>
+      <artifactId>commons-io</artifactId>
+      <scope>test</scope>
+    </dependency>
+
+  </dependencies>
 
   <build>
     <plugins>
@@ -194,79 +255,22 @@
     </plugins>
   </build>
 
-  <dependencies>
-    <dependency>
-      <groupId>org.eclipse.pass</groupId>
-      <artifactId>pass-model</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-
-    <dependency>
-      <groupId>org.eclipse.pass</groupId>
-      <artifactId>pass-data-client</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-
-    <dependency>
-      <groupId>org.eclipse.pass</groupId>
-      <artifactId>pass-status-service</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-
-    <dependency>
-      <groupId>org.eclipse.pass</groupId>
-      <artifactId>pass-client-shaded-v2_3</artifactId>
-      <version>${project.version}</version>
-      <scope>test</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>org.unitils</groupId>
-      <artifactId>unitils-core</artifactId>
-      <scope>test</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>commons-beanutils</groupId>
-      <artifactId>commons-beanutils</artifactId>
-      <scope>test</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>com.openpojo</groupId>
-      <artifactId>openpojo</artifactId>
-      <scope>test</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <scope>test</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>ch.qos.logback</groupId>
-      <artifactId>logback-classic</artifactId>
-      <scope>test</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>com.squareup.okhttp3</groupId>
-      <artifactId>okhttp</artifactId>
-      <scope>test</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>com.squareup.okhttp3</groupId>
-      <artifactId>logging-interceptor</artifactId>
-      <scope>test</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>commons-io</groupId>
-      <artifactId>commons-io</artifactId>
-      <scope>test</scope>
-    </dependency>
-
-  </dependencies>
+  <profiles>
+    <profile>
+      <id>standard</id>
+      <properties>
+        <FCREPO_PORT>8080</FCREPO_PORT>
+        <FCREPO_JMX_PORT>1099</FCREPO_JMX_PORT>
+        <FCREPO_JMS_PORT>61616</FCREPO_JMS_PORT>
+        <FCREPO_STOMP_PORT>61613</FCREPO_STOMP_PORT>
+        <ES_PORT>9200</ES_PORT>
+      </properties>
+    </profile>
+    <profile>
+      <id>local-context</id>
+      <properties>
+        <COMPACTION_PRELOAD_FILE_PASS_STATIC>/mnt/context.jsonld</COMPACTION_PRELOAD_FILE_PASS_STATIC>
+      </properties>
+    </profile>
+  </profiles>
 </project>
