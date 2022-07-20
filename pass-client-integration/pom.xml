@@ -123,7 +123,7 @@
           <images>
             <image>
               <alias>fcrepo</alias>
-              <name>oapass/fcrepo:4.7.5-3.4</name>
+              <name>oapass/fcrepo:0.1.0@sha256:ffa09bb4f3481ef2840f5e40d8a214609da0600ad00f9a741f69b18a4fa4c3a1</name>
               <run>
                 <hostname>fcrepo</hostname>
                 <namingStrategy>alias</namingStrategy>
@@ -157,7 +157,7 @@
             </image>
             <image>
               <alias>indexer</alias>
-              <name>oapass/indexer:0.0.18-3.4</name>
+              <name>oapass/indexer:0.1.0@sha256:5ad45a9d227d9e48a607d9344b72a6bf9eeb66388a8088794bdbd5e4eab5de2d</name>
               <run>
                 <namingStrategy>alias</namingStrategy>
                 <env>
